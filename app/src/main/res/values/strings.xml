@@ -1,0 +1,27 @@
+<resources>
+    <string name="app_name">project50</string>
+    <string name="lose_belly_fat">LOSE\nBELLY FAT</string>
+    <string name="privacy_policy">Agree to\t<u>Privacy policy</u> </string>
+    <string name="title_activity_main">MainActivity</string>
+
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+
+    <string name="action_settings">Settings</string>
+    
+    <string-array name="excersize_type">
+        <item>FULL BODY PLAN</item>
+        <item>ABS PLAN</item>
+        <item>BUTT PLAN</item>
+    </string-array>
+    <string-array name="excersize_type_icon">
+        <item>http://fit4lifegym.co.ke/wp-content/uploads/2018/06/lady-with-dumbells-smaller.png</item>
+        <item>http://fit4lifegym.co.ke/wp-content/uploads/2018/06/lady-with-dumbells-smaller.png</item>
+        <item>http://fit4lifegym.co.ke/wp-content/uploads/2018/06/lady-with-dumbells-smaller.png</item>
+    </string-array>
+    <string-array name="excersize_type_total_days">
+        <item>30</item>
+        <item>30</item>
+        <item>30</item>
+    </string-array>
+</resources>

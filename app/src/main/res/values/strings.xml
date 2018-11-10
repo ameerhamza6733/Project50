@@ -8,7 +8,7 @@
     <string name="navigation_drawer_close">Close navigation drawer</string>
 
     <string name="action_settings">Settings</string>
-    
+
     <string-array name="excersize_type">
         <item>FULL BODY PLAN</item>
         <item>ABS PLAN</item>
@@ -24,4 +24,8 @@
         <item>30</item>
         <item>30</item>
     </string-array>
+    <string name="title_activity_all_excersizes">AllExcersizesActivity</string>
+    <string name="title_home">Home</string>
+    <string name="title_dashboard">Dashboard</string>
+    <string name="title_notifications">Notifications</string>
 </resources>

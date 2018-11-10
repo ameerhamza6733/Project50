@@ -1,111 +1,61 @@
 package com.yourdomain.project50.Activitys
 
-import android.arch.lifecycle.ViewModelProviders
-import android.content.Intent
 import android.os.Bundle
-import android.support.design.widget.NavigationView
-import android.support.design.widget.Snackbar
-import android.support.v4.view.GravityCompat
-import android.support.v7.app.ActionBarDrawerToggle
+import android.support.design.widget.BottomNavigationView
 import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
-import android.view.*
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
 import com.bumptech.glide.Glide
 import com.yourdomain.project50.Model.Excersize
 import com.yourdomain.project50.R
 import com.yourdomain.project50.ViewModle.ExcersizePlansViewModle
-import kotlinx.android.synthetic.main.activity_main.*
-import kotlinx.android.synthetic.main.app_bar_main.*
+import kotlinx.android.synthetic.main.activity_all_excersizes.*
 
-class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener {
+class AllExcersizesActivity : AppCompatActivity() {
+
+    private val mOnNavigationItemSelectedListener = BottomNavigationView.OnNavigationItemSelectedListener { item ->
+        when (item.itemId) {
+            R.id.navigation_home -> {
+                return@OnNavigationItemSelectedListener true
+            }
+            R.id.navigation_dashboard -> {
+                return@OnNavigationItemSelectedListener true
+            }
+            R.id.navigation_notifications -> {
+                return@OnNavigationItemSelectedListener true
+            }
+        }
+        false
+    }
 
     private lateinit var recyclerView: RecyclerView
+    private lateinit var recyclerView2: RecyclerView;
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
-        setSupportActionBar(toolbar)
-
-        fab.setOnClickListener { view ->
-            Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                    .setAction("Action", null).show()
-        }
-
-        val toggle = ActionBarDrawerToggle(
-                this, drawer_layout, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close)
-        drawer_layout.addDrawerListener(toggle)
-        toggle.syncState()
-
-        nav_view.setNavigationItemSelectedListener(this)
-recyclerView=findViewById(R.id.recylerview)
+        setContentView(R.layout.activity_all_excersizes)
+        recyclerView=findViewById(R.id.excersizeType)
+        recyclerView2=findViewById(R.id.islandRecyclerView)
         intiDataSet()
+      //  navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener)
     }
-
-    override fun onBackPressed() {
-        if (drawer_layout.isDrawerOpen(GravityCompat.START)) {
-            drawer_layout.closeDrawer(GravityCompat.START)
-        } else {
-            super.onBackPressed()
-        }
-    }
-
-    override fun onCreateOptionsMenu(menu: Menu): Boolean {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        menuInflater.inflate(R.menu.main, menu)
-        return true
-    }
-
-    override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        when (item.itemId) {
-            R.id.action_settings -> return true
-            else -> return super.onOptionsItemSelected(item)
-        }
-    }
-
-    override fun onNavigationItemSelected(item: MenuItem): Boolean {
-        // Handle navigation view item clicks here.
-        when (item.itemId) {
-            R.id.nav_camera -> {
-                // Handle the camera action
-            }
-            R.id.nav_gallery -> {
-
-            }
-            R.id.nav_slideshow -> {
-
-            }
-            R.id.nav_manage -> {
-
-            }
-            R.id.nav_share -> {
-
-            }
-            R.id.nav_send -> {
-
-            }
-        }
-
-        drawer_layout.closeDrawer(GravityCompat.START)
-        return true
-    }
-
-   private fun intiDataSet(){
+    private fun intiDataSet(){
         val model = ExcersizePlansViewModle(application)
-       var list  = model.getExcersizePlans();
+        var list  = model.getExcersizePlans();
         if (list.size>0) {
             var excersizeAdupter = ExcersizeAdupter(list);
-            recyclerView.layoutManager=LinearLayoutManager(this)
+            recyclerView.layoutManager= LinearLayoutManager(this,LinearLayoutManager.HORIZONTAL, false)
             recyclerView.adapter=excersizeAdupter
+            recyclerView2.layoutManager= LinearLayoutManager(this,LinearLayoutManager.VERTICAL, false)
+            recyclerView2.adapter=excersizeAdupter
         }
 
     }
-
     private class ExcersizeAdupter(val excersizes: MutableList<Excersize>) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
         override fun onCreateViewHolder(p0: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
@@ -154,7 +104,6 @@ recyclerView=findViewById(R.id.recylerview)
             var tvTotalDays: TextView
 
             init {
-                itemView.setOnClickListener {itemView.context.startActivity(Intent(itemView.context,AllExcersizesActivity::class.java)) }
                 tvtitle = itemView.findViewById(R.id.excersizeTitle)
                 image = itemView.findViewById(R.id.image)
                 tvTotalDays = itemView.findViewById(R.id.tvTotalDays)
@@ -171,7 +120,5 @@ recyclerView=findViewById(R.id.recylerview)
             }
         }
     }
+
 }
-
-
-

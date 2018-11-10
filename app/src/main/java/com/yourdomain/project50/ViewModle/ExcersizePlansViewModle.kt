@@ -20,12 +20,12 @@ class ExcersizePlansViewModle(application: Application) : AndroidViewModel(appli
         val excersizeTypeImages = getApplication<Application>().resources.getStringArray(R.array.excersize_type_icon)
         val excersizeTypeTotalDays = getApplication<Application>().resources.getStringArray(R.array.excersize_type_total_days)
 
-        for (i in 0..excersizesTypes.size - 1) {
+        for (i in 0 until excersizesTypes.size) {
          var excersize=   Excersize(excersizesTypes[i], excersizeTypeTotalDays[i].toInt(), -1, excersizeTypeImages[i],Excersize.TYPE_EXCERSISE)
             excersizeList?.add(excersize)
 
                       }
-        var excersize=   Excersize("",Excersize.TYPE_AD)
+        var excersize=   Excersize("native ad",0,0,"native ad id",Excersize.TYPE_AD)
         excersizeList?.add(excersize)
         return excersizeList!!;
     }

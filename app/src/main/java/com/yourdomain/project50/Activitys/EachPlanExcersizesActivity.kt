@@ -70,7 +70,7 @@ class EachPlanExcersizesActivity : AppCompatActivity() {
         val model = ExcersizePlansViewModle(application)
         var list = model.getExcersizePlans();
         if (list.size > 0) {
-            list.removeAt(3)
+            list.add(0,ExcersizePlans("native ad",0,0,"native ad id",ExcersizePlans.TYPE_AD))
             var excersizeAdupter = ExcersizePlansAdupter(list);
             val llm = LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false);
 
@@ -98,7 +98,7 @@ class EachPlanExcersizesActivity : AppCompatActivity() {
                 }
                 ExcersizePlans.TYPE_AD -> {
                     AdViewHolderViewHolder(LayoutInflater.from(p0.context)
-                            .inflate(R.layout.native_adview, p0, false));
+                            .inflate(R.layout.emptyview, p0, false));
                 }
                 else -> {
                     ExcersizeViewHolder(LayoutInflater.from(p0.context)
@@ -118,9 +118,10 @@ class EachPlanExcersizesActivity : AppCompatActivity() {
                 p0 as ExcersizeViewHolder
                 p0.tvtitle.text = excersizePlans[p0.adapterPosition].name
                 Glide.with(p0.tvtitle.context).load(excersizePlans[p0.adapterPosition].image).into(p0.image)
-                Log.d(TAG,"onBind"+p1 +" "+p0.adapterPosition);
+              //  Log.d(TAG,"onBind"+p1 +" "+p0.adapterPosition);
             } else if (ExcersizePlans.TYPE_AD == p0.itemViewType) {
                 p0 as AdViewHolderViewHolder
+
             }
 
         }
@@ -135,12 +136,15 @@ class EachPlanExcersizesActivity : AppCompatActivity() {
             var tvTotalDays: TextView
 
             init {
+                itemView.isFocusableInTouchMode = true
                 tvtitle = itemView.findViewById(R.id.excersizeTitle)
                 image = itemView.findViewById(R.id.image)
                 tvTotalDays = itemView.findViewById(R.id.tvTotalDays)
-                itemView.setOnClickListener {
-
+                itemView.setOnFocusChangeListener { v, hasFocus ->
+                  //  Log.d(TAG, "focus: $hasFocus  $adapterPosition")
                 }
+
+
             }
 
 
@@ -148,11 +152,12 @@ class EachPlanExcersizesActivity : AppCompatActivity() {
 
 
         inner class AdViewHolderViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-            var nativeAd: TextView
+           // var nativeAd: TextView
 
             init {
 
-                nativeAd = itemView.findViewById(R.id.nativeAd)
+               // nativeAd = itemView.findViewById(R.id.nativeAd)
+               // nativeAd.visibility=View.GONE
             }
         }
     }
@@ -163,7 +168,18 @@ class EachPlanExcersizesActivity : AppCompatActivity() {
 
             val handler = Handler()
             handler.post(Runnable {
-                Log.d(TAG, "findLastVisibleItemPosition" + llm.findFirstCompletelyVisibleItemPosition())
+                Log.d(TAG, "onChildViewAttachedToWindow" + llm.findFirstCompletelyVisibleItemPosition())
+                when(llm.findFirstCompletelyVisibleItemPosition()){
+                    0->{
+                        mPager.setCurrentItem(0,true)
+                    }
+                    2->{
+                        mPager.setCurrentItem(1,true)
+                    }
+                    3->{
+                        mPager.setCurrentItem(2,true)
+                    }
+                }
 
             })
         }
@@ -192,7 +208,7 @@ class EachPlanExcersizesActivity : AppCompatActivity() {
                     return ButtPlanFragment()
                 }
             }
-            return null
+            return FullBodyPlanFragment()
         }
     }
 

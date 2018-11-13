@@ -10,7 +10,7 @@
 
     >
     <ImageView
-        android:src="@drawable/body_plan_background_screm"
+        android:src="@drawable/page4_back_ground_screm"
         android:id="@+id/imageViewScream"
         android:layout_width="match_parent"
         android:layout_height="match_parent"

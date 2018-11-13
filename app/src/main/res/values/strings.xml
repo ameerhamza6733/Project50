@@ -9,6 +9,10 @@
 
     <string name="action_settings">Settings</string>
 
+
+
+    <!--starting excersize_type-->
+    <!--//TODO:Ad new excersize type and make sure you add icon,total days and title aslo-->
     <string-array name="excersize_type">
         <item>FULL BODY PLAN</item>
         <item>ABS PLAN</item>
@@ -24,6 +28,8 @@
         <item>30</item>
         <item>30</item>
     </string-array>
+    <!--End excersize_type-->
+
     <string name="title_activity_all_excersizes">AllExcersizesActivity</string>
     <string name="title_home">Home</string>
     <string name="title_dashboard">Dashboard</string>
@@ -31,4 +37,10 @@
     <string name="title_fitness">Fitness</string>
     <string name="title_reports">Reports</string>
     <string name="title_settings">Settings</string>
+
+
+
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>

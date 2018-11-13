@@ -2,6 +2,7 @@ package com.yourdomain.project50.Activitys
 
 import android.os.Bundle
 import android.support.design.widget.BottomNavigationView
+import android.support.v4.app.*
 import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
@@ -11,11 +12,20 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
 import com.bumptech.glide.Glide
+import com.yourdomain.project50.Fragments.BlankFragment
 import com.yourdomain.project50.Model.ExcersizeDays
 import com.yourdomain.project50.Model.ExcersizePlans
 import com.yourdomain.project50.R
 import com.yourdomain.project50.ViewModle.ExcersizeDayGernaterViewModle
 import com.yourdomain.project50.ViewModle.ExcersizePlansViewModle
+import android.support.v4.view.PagerAdapter
+import android.support.v4.view.ViewPager
+import android.support.v7.widget.Toolbar
+import android.view.Menu
+import com.yourdomain.project50.Adupters.MainPagerAdapter
+import kotlinx.android.synthetic.main.app_bar_main.*
+import java.util.*
+
 
 class EachPlanExcersizesActivity : AppCompatActivity() {
 
@@ -35,14 +45,23 @@ class EachPlanExcersizesActivity : AppCompatActivity() {
     }
 
     private lateinit var recyclerView: RecyclerView
-    private lateinit var recyclerView2: RecyclerView;
+    private lateinit var mPager: ViewPager
+    private  val NUM_PAGES = 5
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_days_excersizes)
+        val mToolbar = findViewById<Toolbar>(R.id.toolbar)
+        setSupportActionBar(mToolbar)
         recyclerView = findViewById(R.id.excersizeType)
-        recyclerView2 = findViewById(R.id.islandRecyclerView)
+        mPager = findViewById(R.id.viewpager)
         intiDataSet()
+        val pagerAdapter = ScreenSlidePagerAdapter(supportFragmentManager)
+        mPager.adapter = pagerAdapter
+
+
+
         //  navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener)
     }
 
@@ -53,23 +72,18 @@ class EachPlanExcersizesActivity : AppCompatActivity() {
             var excersizeAdupter = ExcersizePlansAdupter(list);
             recyclerView.layoutManager = LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false)
             recyclerView.adapter = excersizeAdupter
-//            var excersizeDaysAdupter = EachExcersizeDayAdupter(list);
-//            recyclerView2.layoutManager= LinearLayoutManager(this,LinearLayoutManager.VERTICAL, false)
-//            recyclerView2.adapter=excersizeDaysAdupter
         }
 
 
-        val modleDays = ExcersizeDayGernaterViewModle()
-        val dayList = modleDays.getDays()
-        dayList?.let {
-            var excersizeDaysAdupter = EachExcersizeDayAdupter(it);
-            recyclerView2.layoutManager = LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
-            recyclerView2.adapter = excersizeDaysAdupter
-        }
+
 
     }
-
-    private class ExcersizePlansAdupter(val excersizePlans: MutableList<ExcersizePlans>) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+    override fun onCreateOptionsMenu(menu: Menu): Boolean {
+        // Inflate the menu; this adds items to the action bar if it is present.
+        menuInflater.inflate(R.menu.main, menu)
+        return true
+    }
+    inner class ExcersizePlansAdupter(val excersizePlans: MutableList<ExcersizePlans>) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
         override fun onCreateViewHolder(p0: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
             return when (viewType) {
@@ -120,7 +134,14 @@ class EachPlanExcersizesActivity : AppCompatActivity() {
                 tvtitle = itemView.findViewById(R.id.excersizeTitle)
                 image = itemView.findViewById(R.id.image)
                 tvTotalDays = itemView.findViewById(R.id.tvTotalDays)
+                itemView.setOnClickListener {
+                    if (adapterPosition==0){
+
+                    }
+                }
             }
+
+
         }
 
 
@@ -134,62 +155,11 @@ class EachPlanExcersizesActivity : AppCompatActivity() {
         }
     }
 
-    private class EachExcersizeDayAdupter(val excersizeList: MutableList<ExcersizeDays>) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
-        override fun onCreateViewHolder(p0: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
-            return when (viewType) {
-                ExcersizeDays.VIEW_TYPE_DAY -> {
-                    ExcersizeDAYViewHolder(LayoutInflater.from(p0.context)
-                            .inflate(R.layout.each_excersize_day, p0, false));
+    private inner class ScreenSlidePagerAdapter(fm: FragmentManager) : FragmentStatePagerAdapter(fm) {
+        override fun getCount(): Int = NUM_PAGES
 
-                }
-                ExcersizePlans.TYPE_AD -> {
-                    AdViewHolderViewHolder(LayoutInflater.from(p0.context)
-                            .inflate(R.layout.native_adview, p0, false));
-                }
-                else -> {
-                    ExcersizeDAYViewHolder(LayoutInflater.from(p0.context)
-                            .inflate(R.layout.each_excersize_day, p0, false));
-                }
-            }
-
-
-        }
-
-        override fun getItemCount(): Int {
-            return excersizeList.size
-        }
-
-        override fun onBindViewHolder(p0: RecyclerView.ViewHolder, p1: Int) {
-
-            if (ExcersizeDays.VIEW_TYPE_DAY == p0.itemViewType) {
-                p0 as ExcersizeDAYViewHolder
-                p0.tvDay.text= "Day "+excersizeList[p0.adapterPosition].day.toString()
-            } else if (ExcersizeDays.VIEW_TYPE_AD == p0.itemViewType) {
-                p0 as AdViewHolderViewHolder
-            }
-
-        }
-
-        override fun getItemViewType(position: Int): Int {
-            return excersizeList[position].viewType
-        }
-
-        inner class ExcersizeDAYViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-             val tvDay: TextView
-
-            init {
-                tvDay = itemView.findViewById(R.id.tvDay)
-            }
-        }
-
-
-        inner class AdViewHolderViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-            var nativeAd: TextView
-
-            init {
-
-                nativeAd = itemView.findViewById(R.id.nativeAd)
-            }
-        }
+        override fun getItem(position: Int): Fragment = BlankFragment()
     }
+
+
 }

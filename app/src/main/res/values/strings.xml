@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">project50</string>
+    <string name="app_name">App Name</string>
     <string name="lose_belly_fat">LOSE\nBELLY FAT</string>
     <string name="privacy_policy">Agree to\t<u>Privacy policy</u> </string>
     <string name="title_activity_main">MainActivity</string>
@@ -28,4 +28,7 @@
     <string name="title_home">Home</string>
     <string name="title_dashboard">Dashboard</string>
     <string name="title_notifications">Notifications</string>
+    <string name="title_fitness">Fitness</string>
+    <string name="title_reports">Reports</string>
+    <string name="title_settings">Settings</string>
 </resources>

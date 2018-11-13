@@ -1,6 +1,5 @@
 package com.yourdomain.project50.Activitys
 
-import android.arch.lifecycle.ViewModelProviders
 import android.content.Intent
 import android.os.Bundle
 import android.support.design.widget.NavigationView
@@ -14,7 +13,8 @@ import android.view.*
 import android.widget.ImageView
 import android.widget.TextView
 import com.bumptech.glide.Glide
-import com.yourdomain.project50.Model.Excersize
+import com.bumptech.glide.request.RequestOptions
+import com.yourdomain.project50.Model.ExcersizePlans
 import com.yourdomain.project50.R
 import com.yourdomain.project50.ViewModle.ExcersizePlansViewModle
 import kotlinx.android.synthetic.main.activity_main.*
@@ -34,13 +34,15 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
                     .setAction("Action", null).show()
         }
 
-        val toggle = ActionBarDrawerToggle(
-                this, drawer_layout, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close)
-        drawer_layout.addDrawerListener(toggle)
-        toggle.syncState()
+//        val toggle = ActionBarDrawerToggle(
+//                this, drawer_layout, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close)
+//        drawer_layout.addDrawerListener(toggle)
+//        toggle.syncState()
+//
+//        nav_view.setNavigationItemSelectedListener(this)
 
-        nav_view.setNavigationItemSelectedListener(this)
-recyclerView=findViewById(R.id.recylerview)
+        recyclerView = findViewById(R.id.recylerview)
+
         intiDataSet()
     }
 
@@ -55,7 +57,7 @@ recyclerView=findViewById(R.id.recylerview)
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
         // Inflate the menu; this adds items to the action bar if it is present.
         menuInflater.inflate(R.menu.main, menu)
-        return true
+        return false
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
@@ -95,32 +97,32 @@ recyclerView=findViewById(R.id.recylerview)
         return true
     }
 
-   private fun intiDataSet(){
+    private fun intiDataSet() {
         val model = ExcersizePlansViewModle(application)
-       var list  = model.getExcersizePlans();
-        if (list.size>0) {
+        var list = model.getExcersizePlans();
+        if (list.size > 0) {
             var excersizeAdupter = ExcersizeAdupter(list);
-            recyclerView.layoutManager=LinearLayoutManager(this)
-            recyclerView.adapter=excersizeAdupter
+            recyclerView.layoutManager = LinearLayoutManager(this)
+            recyclerView.adapter = excersizeAdupter
         }
 
     }
 
-    private class ExcersizeAdupter(val excersizes: MutableList<Excersize>) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+    private class ExcersizeAdupter(val excersizePlans: MutableList<ExcersizePlans>) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
         override fun onCreateViewHolder(p0: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
             return when (viewType) {
-                Excersize.TYPE_EXCERSISE -> {
+                ExcersizePlans.TYPE_EXCERSISE -> {
                     ExcersizeViewHolder(LayoutInflater.from(p0.context)
-                            .inflate(R.layout.singal_excersize, p0, false));
+                            .inflate(R.layout.each_excersize_plan, p0, false));
                 }
-                Excersize.TYPE_AD -> {
+                ExcersizePlans.TYPE_AD -> {
                     AdViewHolderViewHolder(LayoutInflater.from(p0.context)
                             .inflate(R.layout.native_adview, p0, false));
                 }
                 else -> {
                     ExcersizeViewHolder(LayoutInflater.from(p0.context)
-                            .inflate(R.layout.singal_excersize, p0, false));
+                            .inflate(R.layout.each_excersize_plan, p0, false));
                 }
             }
 
@@ -128,36 +130,39 @@ recyclerView=findViewById(R.id.recylerview)
         }
 
         override fun getItemCount(): Int {
-            return excersizes.size
+            return excersizePlans.size
         }
+        val requestOptions =  RequestOptions();
 
         override fun onBindViewHolder(p0: RecyclerView.ViewHolder, p1: Int) {
 
-            if (Excersize.TYPE_EXCERSISE == p0.itemViewType) {
+            if (ExcersizePlans.TYPE_EXCERSISE == p0.itemViewType) {
                 p0 as ExcersizeViewHolder
-                p0.tvtitle.text=excersizes[p0.adapterPosition].name
-                Glide.with(p0.tvtitle.context).load(excersizes[p0.adapterPosition].image).into(p0.image)
+                p0.tvtitle.text = excersizePlans[p0.adapterPosition].name
+                Glide.with(p0.tvtitle.context).load(excersizePlans[p0.adapterPosition].image).into(p0.image)
 
-            } else if (Excersize.TYPE_AD == p0.itemViewType) {
+            } else if (ExcersizePlans.TYPE_AD == p0.itemViewType) {
                 p0 as AdViewHolderViewHolder
             }
 
         }
 
         override fun getItemViewType(position: Int): Int {
-            return excersizes[position].ViewType
+            return excersizePlans[position].ViewType
         }
 
         inner class ExcersizeViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
             var tvtitle: TextView
             var image: ImageView
             var tvTotalDays: TextView
+            var imScrem:ImageView
 
             init {
-                itemView.setOnClickListener {itemView.context.startActivity(Intent(itemView.context,AllExcersizesActivity::class.java)) }
+                itemView.setOnClickListener { itemView.context.startActivity(Intent(itemView.context, EachPlanExcersizesActivity::class.java)) }
                 tvtitle = itemView.findViewById(R.id.excersizeTitle)
                 image = itemView.findViewById(R.id.image)
                 tvTotalDays = itemView.findViewById(R.id.tvTotalDays)
+                imScrem=itemView.findViewById(R.id.imageViewScream);
             }
         }
 

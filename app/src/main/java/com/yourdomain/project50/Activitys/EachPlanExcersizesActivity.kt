@@ -1,30 +1,31 @@
 package com.yourdomain.project50.Activitys
 
 import android.os.Bundle
+import android.os.Handler
 import android.support.design.widget.BottomNavigationView
-import android.support.v4.app.*
+import android.support.v4.app.Fragment
+import android.support.v4.app.FragmentManager
+import android.support.v4.app.FragmentStatePagerAdapter
+import android.support.v4.view.ViewPager
 import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
+import android.support.v7.widget.RecyclerView.OnChildAttachStateChangeListener
+import android.support.v7.widget.Toolbar
+import android.util.Log
 import android.view.LayoutInflater
+import android.view.Menu
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
 import com.bumptech.glide.Glide
-import com.yourdomain.project50.Fragments.BlankFragment
-import com.yourdomain.project50.Model.ExcersizeDays
+import com.yourdomain.project50.Fragments.ABSPlanFragment
+import com.yourdomain.project50.Fragments.ButtPlanFragment
+import com.yourdomain.project50.Fragments.FullBodyPlanFragment
 import com.yourdomain.project50.Model.ExcersizePlans
 import com.yourdomain.project50.R
-import com.yourdomain.project50.ViewModle.ExcersizeDayGernaterViewModle
 import com.yourdomain.project50.ViewModle.ExcersizePlansViewModle
-import android.support.v4.view.PagerAdapter
-import android.support.v4.view.ViewPager
-import android.support.v7.widget.Toolbar
-import android.view.Menu
-import com.yourdomain.project50.Adupters.MainPagerAdapter
-import kotlinx.android.synthetic.main.app_bar_main.*
-import java.util.*
 
 
 class EachPlanExcersizesActivity : AppCompatActivity() {
@@ -43,10 +44,10 @@ class EachPlanExcersizesActivity : AppCompatActivity() {
         }
         false
     }
-
+    protected val TAG = "ExcersizesActivity";
     private lateinit var recyclerView: RecyclerView
     private lateinit var mPager: ViewPager
-    private  val NUM_PAGES = 5
+    private val NUM_PAGES = 5
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -55,11 +56,11 @@ class EachPlanExcersizesActivity : AppCompatActivity() {
         val mToolbar = findViewById<Toolbar>(R.id.toolbar)
         setSupportActionBar(mToolbar)
         recyclerView = findViewById(R.id.excersizeType)
+        recyclerView.setHasFixedSize(true)
         mPager = findViewById(R.id.viewpager)
         intiDataSet()
         val pagerAdapter = ScreenSlidePagerAdapter(supportFragmentManager)
         mPager.adapter = pagerAdapter
-
 
 
         //  navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener)
@@ -69,20 +70,24 @@ class EachPlanExcersizesActivity : AppCompatActivity() {
         val model = ExcersizePlansViewModle(application)
         var list = model.getExcersizePlans();
         if (list.size > 0) {
+            list.removeAt(3)
             var excersizeAdupter = ExcersizePlansAdupter(list);
-            recyclerView.layoutManager = LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false)
+            val llm = LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false);
+
+            recyclerView.layoutManager = llm
+            recyclerView.addOnChildAttachStateChangeListener(ChildAttachListener(llm))
             recyclerView.adapter = excersizeAdupter
         }
 
 
-
-
     }
+
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
         // Inflate the menu; this adds items to the action bar if it is present.
         menuInflater.inflate(R.menu.main, menu)
         return true
     }
+
     inner class ExcersizePlansAdupter(val excersizePlans: MutableList<ExcersizePlans>) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
         override fun onCreateViewHolder(p0: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
@@ -109,12 +114,11 @@ class EachPlanExcersizesActivity : AppCompatActivity() {
         }
 
         override fun onBindViewHolder(p0: RecyclerView.ViewHolder, p1: Int) {
-
             if (ExcersizePlans.TYPE_EXCERSISE == p0.itemViewType) {
                 p0 as ExcersizeViewHolder
                 p0.tvtitle.text = excersizePlans[p0.adapterPosition].name
                 Glide.with(p0.tvtitle.context).load(excersizePlans[p0.adapterPosition].image).into(p0.image)
-
+                Log.d(TAG,"onBind"+p1 +" "+p0.adapterPosition);
             } else if (ExcersizePlans.TYPE_AD == p0.itemViewType) {
                 p0 as AdViewHolderViewHolder
             }
@@ -135,9 +139,7 @@ class EachPlanExcersizesActivity : AppCompatActivity() {
                 image = itemView.findViewById(R.id.image)
                 tvTotalDays = itemView.findViewById(R.id.tvTotalDays)
                 itemView.setOnClickListener {
-                    if (adapterPosition==0){
 
-                    }
                 }
             }
 
@@ -155,10 +157,43 @@ class EachPlanExcersizesActivity : AppCompatActivity() {
         }
     }
 
+    private inner class ChildAttachListener(internal var llm: LinearLayoutManager) : OnChildAttachStateChangeListener {
+
+        override fun onChildViewAttachedToWindow(view: View) {
+
+            val handler = Handler()
+            handler.post(Runnable {
+                Log.d(TAG, "findLastVisibleItemPosition" + llm.findFirstCompletelyVisibleItemPosition())
+
+            })
+        }
+
+        override fun onChildViewDetachedFromWindow(view: View) {
+            val handler = Handler()
+            handler.post(Runnable {
+                Log.d(TAG, "onChildViewDetachedFromWindow" + llm.findLastCompletelyVisibleItemPosition())
+
+            })
+        }
+    }
+
     private inner class ScreenSlidePagerAdapter(fm: FragmentManager) : FragmentStatePagerAdapter(fm) {
         override fun getCount(): Int = NUM_PAGES
 
-        override fun getItem(position: Int): Fragment = BlankFragment()
+        override fun getItem(position: Int): Fragment? {
+            when (position) {
+                0 -> {
+                    return FullBodyPlanFragment()
+                }
+                1 -> {
+                    return ABSPlanFragment()
+                }
+                2 -> {
+                    return ButtPlanFragment()
+                }
+            }
+            return null
+        }
     }
 
 

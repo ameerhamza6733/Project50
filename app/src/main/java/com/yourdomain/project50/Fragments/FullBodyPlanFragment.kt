@@ -22,10 +22,10 @@ import com.yourdomain.project50.ViewModle.ExcersizeDayGernaterViewModle
 
 /**
  * A simple [Fragment] subclass.
- * Use the [BlankFragment.newInstance] factory method to
+ * Use the [FullBodyPlanFragment.newInstance] factory method to
  * create an instance of this fragment.
  */
-class BlankFragment : Fragment() {
+class FullBodyPlanFragment : Fragment() {
 
     // TODO: Rename and change types of parameters
     private var mParam1: String? = null
@@ -93,7 +93,11 @@ class BlankFragment : Fragment() {
             val tvDay: TextView
 
             init {
-                itemView.setOnClickListener { itemView.context.startActivity(Intent(itemView.context,ExcersizeListActivity::class.java)) }
+
+                itemView.setOnClickListener {
+                  val intent=  Intent(itemView.context,ExcersizeListActivity::class.java)
+                    intent.putExtra(ExcersizeListActivity.EXTRA_DAY,adapterPosition)
+                    itemView.context.startActivity(intent) }
                 tvDay = itemView.findViewById(R.id.tvDay)
             }
         }
@@ -134,11 +138,11 @@ class BlankFragment : Fragment() {
          *
          * @param param1 Parameter 1.
          * @param param2 Parameter 2.
-         * @return A new instance of fragment BlankFragment.
+         * @return A new instance of fragment FullBodyPlanFragment.
          */
         // TODO: Rename and change types and number of parameters
-        fun newInstance(param1: String, param2: String): BlankFragment {
-            val fragment = BlankFragment()
+        fun newInstance(param1: String, param2: String): FullBodyPlanFragment {
+            val fragment = FullBodyPlanFragment()
             val args = Bundle()
             args.putString(ARG_PARAM1, param1)
             args.putString(ARG_PARAM2, param2)

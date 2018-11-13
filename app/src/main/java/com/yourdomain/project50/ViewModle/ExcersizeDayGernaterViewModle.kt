@@ -19,8 +19,8 @@ class ExcersizeDayGernaterViewModle : ViewModel() {
             mutableList = ArrayList();
 
             for (day in 1..30) {
-                var list = getExcersizes()
-                var excersizeDays= ExcersizeDays(day,list,1)
+
+                var excersizeDays= ExcersizeDays(day,1)
                 mutableList?.add(excersizeDays)
             }
             mutableLiveData?.value=mutableList
@@ -28,13 +28,5 @@ class ExcersizeDayGernaterViewModle : ViewModel() {
         return mutableLiveData
     }
 
-    private fun getExcersizes(): ArrayList<Excersize> {
-        var excersize = Excersize("Jumping jacks", 30, "nn", Excersize.VIEW_TYPE_EXCERSIZE)
-        val list = ArrayList<Excersize>()
-        for (i in 1..20) {
-            list.add(excersize)
-        }
 
-        return list;
-    }
 }

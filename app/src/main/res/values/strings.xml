@@ -10,7 +10,6 @@
     <string name="action_settings">Settings</string>
 
 
-
     <!--starting excersize_type-->
     <!--//TODO:Ad new excersize type and make sure you add icon,total days and title aslo-->
     <string-array name="excersize_type">
@@ -37,8 +36,6 @@
     <string name="title_fitness">Fitness</string>
     <string name="title_reports">Reports</string>
     <string name="title_settings">Settings</string>
-
-
 
 
     <!-- TODO: Remove or change this placeholder text -->

@@ -2,12 +2,12 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.yourdomain.project50.Fragments.FullBodyPlanFragment">
+    tools:context="com.yourdomain.project50.Fragments.ButtPlanFragment">
 
-    <android.support.v7.widget.RecyclerView
-        android:id="@+id/daysRecyclerView"
-
+    <!-- TODO: Update blank fragment layout -->
+    <TextView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:paddingBottom="16dp" />
+        android:text="@string/hello_blank_fragment" />
+
 </FrameLayout>

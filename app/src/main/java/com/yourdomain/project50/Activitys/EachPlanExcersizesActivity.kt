@@ -20,9 +20,9 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
 import com.bumptech.glide.Glide
-import com.yourdomain.project50.Fragments.ABSPlanFragment
-import com.yourdomain.project50.Fragments.ButtPlanFragment
-import com.yourdomain.project50.Fragments.FullBodyPlanFragment
+import com.yourdomain.project50.Fragments.ABSPlanDayFragment
+import com.yourdomain.project50.Fragments.ButtPlanDayFragment
+import com.yourdomain.project50.Fragments.FullBodyPlanDayFragment
 import com.yourdomain.project50.Model.ExcersizePlans
 import com.yourdomain.project50.R
 import com.yourdomain.project50.ViewModle.ExcersizePlansViewModle
@@ -199,16 +199,16 @@ class EachPlanExcersizesActivity : AppCompatActivity() {
         override fun getItem(position: Int): Fragment? {
             when (position) {
                 0 -> {
-                    return FullBodyPlanFragment()
+                    return FullBodyPlanDayFragment()
                 }
                 1 -> {
-                    return ABSPlanFragment()
+                    return ABSPlanDayFragment()
                 }
                 2 -> {
-                    return ButtPlanFragment()
+                    return ButtPlanDayFragment()
                 }
             }
-            return FullBodyPlanFragment()
+            return FullBodyPlanDayFragment()
         }
     }
 

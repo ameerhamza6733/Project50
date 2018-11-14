@@ -1,21 +1,22 @@
 package com.yourdomain.project50.ViewModle
 
+import android.app.Application
+import android.arch.lifecycle.AndroidViewModel
 import android.arch.lifecycle.MutableLiveData
 import android.arch.lifecycle.ViewModel
-import com.yourdomain.project50.Model.Excersize
 import com.yourdomain.project50.Model.ExcersizeDays
-import java.util.*
+import java.util.ArrayList
 
 /**
- * Created by apple on 11/13/18.
+ * Created by apple on 11/14/18.
  */
-class ExcersizeDayGernaterViewModle : ViewModel() {
+class FragmentDayButtPlanViewModle(application: Application) :AndroidViewModel(application){
     private var mutableList: java.util.ArrayList<ExcersizeDays>? = null
     private var mutableLiveData : MutableLiveData<ArrayList<ExcersizeDays>?>?=null
 
     fun getDays(): MutableLiveData<ArrayList<ExcersizeDays>?>? {
         if (mutableLiveData == null) {
-            mutableLiveData=MutableLiveData()
+            mutableLiveData= MutableLiveData()
             mutableList = ArrayList();
 
             for (day in 1..30) {
@@ -27,6 +28,4 @@ class ExcersizeDayGernaterViewModle : ViewModel() {
         }
         return mutableLiveData
     }
-
-
 }

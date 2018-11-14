@@ -19,7 +19,7 @@ public class ExcersizesConstants {
     private static HashMap<Integer,Excesizes> mDayToExsizeHashMap =  new HashMap<>();
 
     public  static void  fillUpdata(){
-        Excesizes day1Excersizes = new Excesizes(excersizes_day1_title,excersizes_day1_gif_icons,excersize_day1_times);
+        Excesizes day1Excersizes = new Excesizes(excersizes_day1_title,excersizes_day1_gif_icons,excersize_day1_times,excersizes_day1_detail);
         mDayToExsizeHashMap.put(1,day1Excersizes);
 
     }
@@ -29,7 +29,7 @@ public class ExcersizesConstants {
         if (mDayToExsizeHashMap.containsKey(day)){
             return mDayToExsizeHashMap.get(day);
         }
-        return  new Excesizes(excersizes_defults_title,excersizes_defults_gif_icons,excersize_defult_times);
+        return  new Excesizes(excersizes_defults_title,excersizes_defults_gif_icons,excersize_defult_times,excersizes_day1_detail);
     }
 
 
@@ -49,6 +49,14 @@ public class ExcersizesConstants {
             60,
             40,
     };
+private static String [] excersizes_day1_detail={
+        "A jumping jack  or star jump also called side-straddle hop in the US military,",
+        "moving with a high step a high-stepping horse."
+        ,"Stand tall with your feet shoulder-width and your toes pointing forward. Place your fingertips behind the neck with your elbows pointing out to your sides in line with your shoulders"
+        ,": Crossed Arm Crunch. Crossed arm crunch is a beginner friendly bodyweight crunch exercise that works your"
+};
+
+
 
 
     private static String [] excersizes_defults_title ={"Jumping jacks"

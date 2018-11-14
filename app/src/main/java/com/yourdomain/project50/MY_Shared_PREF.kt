@@ -47,6 +47,13 @@ class MY_Shared_PREF{
 
         }
 
+        fun getCurrentDay(application: Application,key:String) :ExcersizeDays?{
+            val sharedPreferences=application.applicationContext.getSharedPreferences(SHARED_PREF_FULL_BODY_FILE,0)
+            if (sharedPreferences.contains(key))
+                return null
+            return gson.fromJson(sharedPreferences.getString(key,null),ExcersizeDays::class.java)
+        }
+
         fun getAllFullBodyPlanDays(application: Application):HashMap<String,ExcersizeDays>{
            val list = HashMap<String,ExcersizeDays>()
             val sharedPreferences=application.applicationContext.getSharedPreferences(SHARED_PREF_FULL_BODY_FILE,0)
@@ -57,6 +64,7 @@ class MY_Shared_PREF{
             }
             return list
         }
+
     }
 
 }

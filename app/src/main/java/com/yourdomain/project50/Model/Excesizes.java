@@ -11,11 +11,18 @@ public class Excesizes {
     private int [] icons;
     private int [] seconds;
     private String[] detail;
+    private int[] viewType;
 
-    public Excesizes(String[] title, int[] icons, int[] seconds,String[] detail) {
+    public Excesizes(String[] title, int[] icons, int[] seconds,String[] detail,int [] viewType) {
         this.title = title;
         this.icons = icons;
         this.seconds = seconds;
+        this.detail=detail;
+        this.viewType=viewType;
+    }
+
+    public int[] getViewType() {
+        return viewType;
     }
 
     public String[] getTitle() {
@@ -33,4 +40,9 @@ public class Excesizes {
     public String[] getDetail() {
         return detail;
     }
+
+
+    public static final int VIEW_TYPE_LIMTED_EXCERSIZE=0;
+    public static final int VIEW_TYPE_UN_LIMTED_EXCERSIZE=1;
+    public static final int VIEW_TYPE_REST=2;
 }

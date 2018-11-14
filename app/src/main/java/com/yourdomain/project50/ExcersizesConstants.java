@@ -42,7 +42,8 @@ public class ExcersizesConstants {
     };
 
 
-    private static String[] excersizes_defults_title = {"Jumping jacks"
+    private static String[] excersizes_defults_title = {
+            "Jumping jacks"
             , "High stepping"
             , "Standing bicycle crunches"
             , "Cross arm crunches"
@@ -68,8 +69,11 @@ public class ExcersizesConstants {
             , R.drawable.simple
             , R.drawable.simple
             , R.drawable.simple
-            , R.drawable.simple};
-    private static int[] excersize_defult_times = {10,
+            , R.drawable.simple
+            ,R.drawable.simple
+    ,R.drawable.simple};
+    private static int[] excersize_defult_times = {
+            10,
             20,
             30,
             40,
@@ -82,6 +86,7 @@ public class ExcersizesConstants {
             40,
             40,
             40
+            ,40
     };
     private static int[] getExcersize_view_type_defult = {
             Excesizes.VIEW_TYPE_LIMTED_EXCERSIZE,

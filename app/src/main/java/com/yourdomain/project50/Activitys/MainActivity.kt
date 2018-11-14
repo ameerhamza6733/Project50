@@ -2,6 +2,7 @@ package com.yourdomain.project50.Activitys
 
 import android.content.Intent
 import android.os.Bundle
+import android.os.Handler
 import android.support.design.widget.NavigationView
 import android.support.design.widget.Snackbar
 import android.support.v4.view.GravityCompat
@@ -19,10 +20,14 @@ import com.yourdomain.project50.R
 import com.yourdomain.project50.ViewModle.ExcersizePlansViewModle
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.app_bar_main.*
+import android.support.v4.os.HandlerCompat.postDelayed
+import android.widget.ProgressBar
+
 
 class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener {
 
     private lateinit var recyclerView: RecyclerView
+    private lateinit var progressBar:ProgressBar
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -42,8 +47,12 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         nav_view.setNavigationItemSelectedListener(this)
 
         recyclerView = findViewById(R.id.recylerview)
+        progressBar=findViewById(R.id.progressBar)
+        val handler = Handler()
 
-        intiDataSet()
+        handler.postDelayed({
+            intiDataSet()
+        }, 1000)
     }
 
     override fun onBackPressed() {
@@ -101,6 +110,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         val model = ExcersizePlansViewModle(application)
         var list = model.getExcersizePlans();
         if (list.size > 0) {
+            progressBar.visibility=View.INVISIBLE
             var excersizeAdupter = ExcersizeAdupter(list);
             recyclerView.layoutManager = LinearLayoutManager(this)
             recyclerView.adapter = excersizeAdupter

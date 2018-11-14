@@ -13,10 +13,7 @@ import android.support.v7.widget.RecyclerView
 import android.support.v7.widget.RecyclerView.OnChildAttachStateChangeListener
 import android.support.v7.widget.Toolbar
 import android.util.Log
-import android.view.LayoutInflater
-import android.view.Menu
-import android.view.View
-import android.view.ViewGroup
+import android.view.*
 import android.widget.ImageView
 import android.widget.TextView
 import com.bumptech.glide.Glide
@@ -26,10 +23,24 @@ import com.yourdomain.project50.Fragments.FullBodyPlanDayFragment
 import com.yourdomain.project50.Model.ExcersizePlans
 import com.yourdomain.project50.R
 import com.yourdomain.project50.ViewModle.ExcersizePlansViewModle
+import android.view.MotionEvent
+import android.view.View.OnTouchListener
+import com.yourdomain.project50.Adupters.MYViewPager
+import android.opengl.ETC1.getWidth
+import android.support.v4.view.ViewCompat.setTranslationX
+
+
+
+
+
 
 
 class EachPlanExcersizesActivity : AppCompatActivity() {
+    companion object {
 
+        private val MIN_SCALE = 0.65f
+        private val MIN_ALPHA = 0.3f
+    }
     private val mOnNavigationItemSelectedListener = BottomNavigationView.OnNavigationItemSelectedListener { item ->
         when (item.itemId) {
             R.id.navigation_home -> {
@@ -46,8 +57,8 @@ class EachPlanExcersizesActivity : AppCompatActivity() {
     }
     protected val TAG = "ExcersizesActivity";
     private lateinit var recyclerView: RecyclerView
-    private lateinit var mPager: ViewPager
-    private val NUM_PAGES = 5
+    private lateinit var mPager: com.yourdomain.project50.Adupters.MYViewPager
+    private val NUM_PAGES = 3
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -60,17 +71,18 @@ class EachPlanExcersizesActivity : AppCompatActivity() {
         mPager = findViewById(R.id.viewpager)
         intiDataSet()
         val pagerAdapter = ScreenSlidePagerAdapter(supportFragmentManager)
+   //     val fadeOutTransformation = FadeOutTransformation()
+      //  mPager.setPageTransformer(true, fadeOutTransformation);
+
         mPager.adapter = pagerAdapter
-
-
-        //  navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener)
+         //  navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener)
     }
 
     private fun intiDataSet() {
         val model = ExcersizePlansViewModle(application)
         var list = model.getExcersizePlans();
         if (list.size > 0) {
-            list.add(0,ExcersizePlans("native ad",0,0,"native ad id",ExcersizePlans.TYPE_AD))
+            list.add(0, ExcersizePlans("native ad", 0, 0, "native ad id", ExcersizePlans.TYPE_AD))
             var excersizeAdupter = ExcersizePlansAdupter(list);
             val llm = LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false);
 
@@ -118,7 +130,7 @@ class EachPlanExcersizesActivity : AppCompatActivity() {
                 p0 as ExcersizeViewHolder
                 p0.tvtitle.text = excersizePlans[p0.adapterPosition].name
                 Glide.with(p0.tvtitle.context).load(excersizePlans[p0.adapterPosition].image).into(p0.image)
-              //  Log.d(TAG,"onBind"+p1 +" "+p0.adapterPosition);
+                //  Log.d(TAG,"onBind"+p1 +" "+p0.adapterPosition);
             } else if (ExcersizePlans.TYPE_AD == p0.itemViewType) {
                 p0 as AdViewHolderViewHolder
 
@@ -141,7 +153,7 @@ class EachPlanExcersizesActivity : AppCompatActivity() {
                 image = itemView.findViewById(R.id.image)
                 tvTotalDays = itemView.findViewById(R.id.tvTotalDays)
                 itemView.setOnFocusChangeListener { v, hasFocus ->
-                  //  Log.d(TAG, "focus: $hasFocus  $adapterPosition")
+                    //  Log.d(TAG, "focus: $hasFocus  $adapterPosition")
                 }
 
 
@@ -152,12 +164,12 @@ class EachPlanExcersizesActivity : AppCompatActivity() {
 
 
         inner class AdViewHolderViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-           // var nativeAd: TextView
+            // var nativeAd: TextView
 
             init {
 
-               // nativeAd = itemView.findViewById(R.id.nativeAd)
-               // nativeAd.visibility=View.GONE
+                // nativeAd = itemView.findViewById(R.id.nativeAd)
+                // nativeAd.visibility=View.GONE
             }
         }
     }
@@ -169,15 +181,15 @@ class EachPlanExcersizesActivity : AppCompatActivity() {
             val handler = Handler()
             handler.post(Runnable {
                 Log.d(TAG, "onChildViewAttachedToWindow" + llm.findFirstCompletelyVisibleItemPosition())
-                when(llm.findFirstCompletelyVisibleItemPosition()){
-                    0->{
-                        mPager.setCurrentItem(0,true)
+                when (llm.findFirstCompletelyVisibleItemPosition()) {
+                    0 -> {
+                        mPager.setCurrentItem(0)
                     }
-                    2->{
-                        mPager.setCurrentItem(1,true)
+                    2 -> {
+                        mPager.setCurrentItem(1)
                     }
-                    3->{
-                        mPager.setCurrentItem(2,true)
+                    3 -> {
+                        mPager.setCurrentItem(2)
                     }
                 }
 
@@ -208,9 +220,19 @@ class EachPlanExcersizesActivity : AppCompatActivity() {
                     return ButtPlanDayFragment()
                 }
             }
-            return FullBodyPlanDayFragment()
+            return null
         }
     }
 
+    inner class FadeOutTransformation : ViewPager.PageTransformer {
+        override fun transformPage(page: View, position: Float) {
+
+            mPager.translationX = -position * page.width
+
+            mPager.alpha = 1 - Math.abs(position)
+
+
+        }
+    }
 
 }

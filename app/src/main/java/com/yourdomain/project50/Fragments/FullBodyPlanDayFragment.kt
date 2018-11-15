@@ -68,11 +68,11 @@ class FullBodyPlanDayFragment : Fragment() {
 
             if (ExcersizeDays.VIEW_TYPE_DAY == p0.itemViewType) {
                 p0 as ExcersizeDAYViewHolder
-                if (excersizeList[p0.adapterPosition].totaleTime>0){
-                    p0.progressBar.max=excersizeList[p0.adapterPosition].totaleTime.toInt()
+                if (excersizeList[p0.adapterPosition].totaleExcersizes>0){
+                    p0.progressBar.max=excersizeList[p0.adapterPosition].totaleExcersizes.toInt()
                 }
-                if (excersizeList[p0.adapterPosition].totaleTime>0){
-                    p0.progressBar.progress=excersizeList[p0.adapterPosition].timeDone.toInt()
+                if (excersizeList[p0.adapterPosition].totaleExcersizes>0){
+                    p0.progressBar.progress=excersizeList[p0.adapterPosition].doneExcersises.toInt()
                     p0.tvProgress.setText(p0.progressBar.progress.toString())
                 }
                 p0.tvDay.text = "Day " + excersizeList[p0.adapterPosition].day.toString()

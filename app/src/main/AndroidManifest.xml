@@ -6,25 +6,28 @@
     <uses-permission android:name="android.permission.INTERNET" />
 
     <application
-        tools:replace="android:appComponentFactory"
+        android:allowBackup="true"
         android:appComponentFactory="whateverString"
 
-        android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:theme="@style/AppTheme">
+        android:theme="@style/AppTheme"
+        tools:replace="android:appComponentFactory">
         <activity
             android:name=".Activitys.ScaleActivity"
             android:theme="@style/SpalishTheme">
+
+        </activity>
+        <activity android:theme="@style/SpalishTheme"
+            android:name=".Activitys.SpalishActivity" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".Activitys.SpalishActivity" />
         <activity
             android:name=".Activitys.MainActivity"
             android:label="@string/title_activity_main"
@@ -34,9 +37,9 @@
             android:label="@string/title_activity_all_excersizes"
             android:theme="@style/SpalishTheme" />
         <activity android:name=".Activitys.ExcersizeListActivity" />
-        <activity android:name=".Activitys.ExcersizeActivity"
-            android:theme="@style/SpalishTheme"
-            ></activity>
+        <activity
+            android:name=".Activitys.ExcersizeActivity"
+            android:theme="@style/SpalishTheme"></activity>
     </application>
 
 </manifest>

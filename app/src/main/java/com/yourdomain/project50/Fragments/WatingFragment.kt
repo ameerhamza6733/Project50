@@ -16,7 +16,7 @@ import com.yourdomain.project50.R
 class WatingFragment : DialogFragment() {
 
 
-    private var mParamALlExcersizeTotalTime: Int? = null
+    private var mParamALlExcersizeTotalTime: String? = null
     private var mParamThisExcersizeTotalTime: String = ""
     private var mParamDiscription: String? = null
     private var mListener: OnFragmentInteractionListener? = null
@@ -33,7 +33,9 @@ class WatingFragment : DialogFragment() {
         }
 
         override fun onFinish() {
+            mListener?.onCountDownDonw()
             dismiss()
+
         }
     }
 
@@ -45,7 +47,7 @@ class WatingFragment : DialogFragment() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         if (arguments != null) {
-            mParamALlExcersizeTotalTime = arguments!!.getInt(mParamALlExcersizeTotalTime_KEY, 0)
+            mParamALlExcersizeTotalTime = arguments!!.getString(mParamALlExcersizeTotalTime_KEY)
             mParamThisExcersizeTotalTime = arguments!!.getString(mParamThisExcersizeTotalTime_KEY)
             mParamDiscription = arguments!!.getString(mParamDiscription_KEY)
         }
@@ -72,11 +74,7 @@ class WatingFragment : DialogFragment() {
         return view
     }
 
-    fun onButtonPressed(uri: Uri) {
-        if (mListener != null) {
-            mListener!!.onFragmentInteraction(uri)
-        }
-    }
+
 
     override fun onAttach(context: Context?) {
         super.onAttach(context)
@@ -100,7 +98,7 @@ class WatingFragment : DialogFragment() {
     }
 
     interface OnFragmentInteractionListener {
-        fun onFragmentInteraction(uri: Uri)
+        fun onCountDownDonw()
     }
 
     companion object {
@@ -109,10 +107,10 @@ class WatingFragment : DialogFragment() {
         private val mParamDiscription_KEY = "mParamDiscription_KEY";
 
 
-        fun newInstance(totaleTime: Int, totaleTimeForThis: String, discription: String): WatingFragment {
+        fun newInstance(totaleTime: String, totaleTimeForThis: String, discription: String): WatingFragment {
             val fragment = WatingFragment()
             val args = Bundle()
-            args.putInt(mParamALlExcersizeTotalTime_KEY, totaleTime)
+            args.putString(mParamALlExcersizeTotalTime_KEY, totaleTime)
             args.putString(mParamThisExcersizeTotalTime_KEY, totaleTimeForThis)
             args.putString(mParamDiscription_KEY, discription)
             fragment.arguments = args

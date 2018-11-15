@@ -21,7 +21,7 @@ class FragmentABSPlanViewModle(application: Application) :AndroidViewModel(appli
 
             for (day in 1..30) {
 
-                var excersizeDays= ExcersizeDays(day+30,1)
+                var excersizeDays= ExcersizeDays(day,1)
                 mutableList?.add(excersizeDays)
             }
             mutableLiveData?.value=mutableList

@@ -14,6 +14,7 @@ import com.yourdomain.project50.MY_Shared_PREF
 import com.yourdomain.project50.Model.ExcersizeDays
 import com.yourdomain.project50.Model.Excesizes
 import com.yourdomain.project50.R
+import com.yourdomain.project50.Utils
 import com.yourdomain.project50.Utils.CountTotalTime
 import com.yourdomain.project50.ViewModle.GetFullBodyPlanceExcersizesByDayViewModle
 import java.util.concurrent.TimeUnit
@@ -47,13 +48,15 @@ class ExcersizeActivity : AppCompatActivity(), WatingFragment.OnFragmentInteract
     private var counter = -1
     private var countDown: CountDownTimer? = null
 
+    private var currentDayKey: Int=-3
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.each_full_screen_excersize)
 
         findViews()
 
-        val currentDayKey = intent.getIntExtra(EXTRA_DAY, -2)
+         currentDayKey = intent.getIntExtra(EXTRA_DAY, -2)
         if (currentDayKey != -2) {
             currentDay = MY_Shared_PREF.getCurrentDay(application, currentDayKey.toString())
 
@@ -93,9 +96,9 @@ class ExcersizeActivity : AppCompatActivity(), WatingFragment.OnFragmentInteract
         mLayout=findViewById(R.id.type_unlimted)
 
 
-        mbtdone.setOnClickListener { onNext() }
+        mbtdone.setOnClickListener { onNext() ;updateExcersizeCountInSharePref() }
         mbtBack.setOnClickListener { onBack() }
-        mbtNext.setOnClickListener { onNext() }
+        mbtNext.setOnClickListener { onNext() ;updateExcersizeCountInSharePref()}
     }
 
     private fun updateWithOutCountDownUI() {
@@ -159,8 +162,10 @@ class ExcersizeActivity : AppCompatActivity(), WatingFragment.OnFragmentInteract
         var seconds = TimeUnit.SECONDS.toMillis(excesizes?.seconds!![counter]?.toLong())
         countDown = object : CountDownTimer(seconds, 1000) {
             override fun onFinish() {
+
                 onNext()
                 mCurrentProgressBar.progress = 0
+                updateExcersizeCountInSharePref()
             }
 
             override fun onTick(millisUntilFinished: Long) {
@@ -169,6 +174,11 @@ class ExcersizeActivity : AppCompatActivity(), WatingFragment.OnFragmentInteract
 
         }
         countDown?.start()
+    }
+
+    private fun updateExcersizeCountInSharePref() {
+        if (currentDayKey==-3) return
+        MY_Shared_PREF.saveCurrentDay(application,ExcersizeDays(currentDayKey+1, ExcersizeDays.VIEW_TYPE_DAY, excesizes?.title?.size?.toLong()!!,counter.toLong(),Utils.toPersentage(counter,excesizes?.title?.size!!)))
     }
 
     override fun onPause() {

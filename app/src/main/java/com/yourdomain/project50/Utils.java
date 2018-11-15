@@ -42,5 +42,7 @@ public class Utils {
         Log.d(TAG,"total seconds for currnet excersize"+TimeUnit.SECONDS.toMinutes(total));
         return  df.format(Math.round((total/60D)));
     }
-
+public static String toPersentage(int done , int totle){
+    return String.valueOf(((done * 100 / totle)))+"%";
+}
 }

@@ -73,7 +73,7 @@ class FullBodyPlanDayFragment : Fragment() {
                 }
                 if (excersizeList[p0.adapterPosition].totaleExcersizes>0){
                     p0.progressBar.progress=excersizeList[p0.adapterPosition].doneExcersises.toInt()
-                    p0.tvProgress.setText(p0.progressBar.progress.toString())
+                    p0.tvProgress.setText(excersizeList[p0.adapterPosition].progress)
                 }
                 p0.tvDay.text = "Day " + excersizeList[p0.adapterPosition].day.toString()
             } else if (ExcersizeDays.VIEW_TYPE_AD == p0.itemViewType) {

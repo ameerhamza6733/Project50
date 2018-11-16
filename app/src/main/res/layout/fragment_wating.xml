@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#3e465d"
-    tools:context="com.yourdomain.project50.Fragments.WatingFragment">
+    tools:context="com.yourdomain.project50.Fragments.WatingToStartExcersizeFragment">
 
 
     <ProgressBar

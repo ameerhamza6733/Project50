@@ -3,13 +3,15 @@ package com.yourdomain.project50.Activitys
 import android.arch.lifecycle.Observer
 import android.arch.lifecycle.ViewModelProviders
 import android.os.Bundle
-import android.os.CountDownTimer
 import android.support.v4.app.DialogFragment
 import android.support.v7.app.AppCompatActivity
 import android.view.View
 import android.widget.*
 import com.bumptech.glide.Glide
-import com.yourdomain.project50.Fragments.WatingFragment
+import com.yourdomain.project50.CustomCountDownTimer
+import com.yourdomain.project50.Fragments.PauseExcersizeFragment
+import com.yourdomain.project50.Fragments.QuitFragment
+import com.yourdomain.project50.Fragments.WatingToStartExcersizeFragment
 import com.yourdomain.project50.MY_Shared_PREF
 import com.yourdomain.project50.Model.ExcersizeDays
 import com.yourdomain.project50.Model.Excesizes
@@ -19,7 +21,22 @@ import com.yourdomain.project50.Utils.CountTotalTime
 import com.yourdomain.project50.ViewModle.GetFullBodyPlanceExcersizesByDayViewModle
 import java.util.concurrent.TimeUnit
 
-class ExcersizeActivity : AppCompatActivity(), WatingFragment.OnFragmentInteractionListener {
+class ExcersizeActivity : AppCompatActivity(), WatingToStartExcersizeFragment.OnFragmentInteractionListener,PauseExcersizeFragment.OnResumeListener,QuitFragment.OnQuitListener {
+    override fun onQuit() {
+        finish()
+    }
+
+    override fun onContinue() {
+    countDown?.resume()
+    }
+
+    override fun onComeBacKLater() {
+    }
+
+    override fun ResumeListener() {
+        countDown?.resume()
+    }
+
     override fun onCountDownDonw() {
         onNext()
     }
@@ -39,16 +56,16 @@ class ExcersizeActivity : AppCompatActivity(), WatingFragment.OnFragmentInteract
     private lateinit var mbtSpeaker: ImageButton
     private lateinit var mbtStop: TextView
     private lateinit var mLayout: LinearLayout
-    private lateinit var mbtNext:ImageButton
-    private lateinit var mbtBack:ImageButton
-    private lateinit var mbtdone:ImageButton
+    private lateinit var mbtNext: ImageButton
+    private lateinit var mbtBack: ImageButton
+    private lateinit var mbtdone: ImageButton
 
     private var currentDay: ExcersizeDays? = null
     private var excesizes: Excesizes? = null
     private var counter = -1
-    private var countDown: CountDownTimer? = null
+    private var countDown: CustomCountDownTimer? = null
 
-    private var currentDayKey: Int=-3
+    private var currentDayKey: Int = -3
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -56,7 +73,7 @@ class ExcersizeActivity : AppCompatActivity(), WatingFragment.OnFragmentInteract
 
         findViews()
 
-         currentDayKey = intent.getIntExtra(EXTRA_DAY, -2)
+        currentDayKey = intent.getIntExtra(EXTRA_DAY, -2)
         if (currentDayKey != -2) {
             currentDay = MY_Shared_PREF.getCurrentDay(application, currentDayKey.toString())
 
@@ -71,9 +88,9 @@ class ExcersizeActivity : AppCompatActivity(), WatingFragment.OnFragmentInteract
                 } else if (it.viewType[0] == Excesizes.VIEW_TYPE_UN_LIMTED_EXCERSIZE) {
                     string = "x" + it.seconds[0].toString()
                 }
-                val fragmet = WatingFragment.newInstance(CountTotalTime(it.viewType,it.seconds), string, it.detail[0])
+                val fragmet = WatingToStartExcersizeFragment.newInstance(CountTotalTime(it.viewType, it.seconds), string, it.detail[0])
                 fragmet.setStyle(DialogFragment.STYLE_NORMAL, android.R.style.Theme_Black_NoTitleBar_Fullscreen);
-                fragmet.show(supportFragmentManager, null)
+                fragmet.show(supportFragmentManager, "WatingToStartExcersizeFragment")
             }
         })
 
@@ -90,15 +107,37 @@ class ExcersizeActivity : AppCompatActivity(), WatingFragment.OnFragmentInteract
         mtotalTextView = findViewById(R.id.tvRemaning);
         mbtStop = findViewById(R.id.btPassExcersize)
         mbtSpeaker = findViewById(R.id.btSpeaker)
-        mbtNext=findViewById(R.id.btNext)
-        mbtBack=findViewById(R.id.btBack)
-        mbtdone=findViewById(R.id.btDone)
-        mLayout=findViewById(R.id.type_unlimted)
+        mbtNext = findViewById(R.id.btNext)
+        mbtBack = findViewById(R.id.btBack)
+        mbtdone = findViewById(R.id.btDone)
+        mLayout = findViewById(R.id.type_unlimted)
 
 
-        mbtdone.setOnClickListener { onNext() ;updateExcersizeCountInSharePref() }
+        mbtdone.setOnClickListener { onNext();updateExcersizeCountInSharePref() }
         mbtBack.setOnClickListener { onBack() }
-        mbtNext.setOnClickListener { onNext() ;updateExcersizeCountInSharePref()}
+        mbtNext.setOnClickListener { onNext();updateExcersizeCountInSharePref() }
+        mbtStop.setOnClickListener {
+            try {
+                onPauseExcersize()
+                countDown?.pause()
+            } catch (E: Exception) {
+                E.printStackTrace()
+            }
+        }
+    }
+
+    private fun onPauseExcersize() {
+        var seconds = ""
+        if (excesizes?.viewType!![counter] == Excesizes.VIEW_TYPE_LIMTED_EXCERSIZE) {
+            seconds = excesizes?.seconds?.get(counter)?.toString() + "''"
+        } else if (excesizes?.viewType!![counter] == Excesizes.VIEW_TYPE_UN_LIMTED_EXCERSIZE) {
+            seconds = "x" + excesizes?.seconds?.get(counter)?.toString()
+
+        }
+        val pauseExcersizeFragment = PauseExcersizeFragment.newInstance(excesizes?.title!![counter], seconds, excesizes?.icons!![counter])
+        pauseExcersizeFragment.setStyle(DialogFragment.STYLE_NORMAL, android.R.style.Theme_Black_NoTitleBar_Fullscreen);
+        pauseExcersizeFragment.show(supportFragmentManager,"pauseExcersizeFragment")
+
     }
 
     private fun updateWithOutCountDownUI() {
@@ -115,7 +154,7 @@ class ExcersizeActivity : AppCompatActivity(), WatingFragment.OnFragmentInteract
         mtvescription.text = excesizes?.detail!![counter]
         mtvTitle.text = excesizes?.title!![counter]
         mTotalProgressBar.progress = counter
-        mLayout.visibility=View.VISIBLE
+        mLayout.visibility = View.VISIBLE
         mCurrentProgressBar.visibility = View.INVISIBLE
         mbtStop.visibility = View.INVISIBLE
 
@@ -143,7 +182,7 @@ class ExcersizeActivity : AppCompatActivity(), WatingFragment.OnFragmentInteract
     }
 
     private fun updateUIWithCountDown() {
-        mLayout.visibility=View.INVISIBLE
+        mLayout.visibility = View.INVISIBLE
         mCurrentProgressBar.visibility = View.VISIBLE
         mbtStop.visibility = View.VISIBLE
         mTotalProgressBar.max = excesizes?.title?.size!!
@@ -160,7 +199,7 @@ class ExcersizeActivity : AppCompatActivity(), WatingFragment.OnFragmentInteract
         mTotalProgressBar.progress = counter
         mCurrentProgressBar.max = excesizes?.seconds!![counter].toInt()
         var seconds = TimeUnit.SECONDS.toMillis(excesizes?.seconds!![counter]?.toLong())
-        countDown = object : CountDownTimer(seconds, 1000) {
+        countDown = object : CustomCountDownTimer(seconds, 1000) {
             override fun onFinish() {
 
                 onNext()
@@ -177,12 +216,25 @@ class ExcersizeActivity : AppCompatActivity(), WatingFragment.OnFragmentInteract
     }
 
     private fun updateExcersizeCountInSharePref() {
-        if (currentDayKey==-3) return
-        MY_Shared_PREF.saveCurrentDay(application,ExcersizeDays(currentDayKey+1, ExcersizeDays.VIEW_TYPE_DAY, excesizes?.title?.size?.toLong()!!,counter.toLong(),Utils.toPersentage(counter,excesizes?.title?.size!!)))
+        if (currentDayKey == -3) return
+        MY_Shared_PREF.saveCurrentDay(application, ExcersizeDays(currentDayKey + 1, ExcersizeDays.VIEW_TYPE_DAY, excesizes?.title?.size?.toLong()!!, counter.toLong(), Utils.toPersentage(counter, excesizes?.title?.size!!)))
     }
 
     override fun onPause() {
-            countDown?.cancel()
+        countDown?.cancel()
         super.onPause()
     }
+
+    override fun onDestroy() {
+        super.onDestroy()
+    }
+
+    override fun onBackPressed() {
+        countDown?.pause()
+        val quitFragment=QuitFragment()
+        quitFragment.setStyle(DialogFragment.STYLE_NORMAL, R.style.dialog);
+        quitFragment.show(supportFragmentManager,"quitFragment")
+
+    }
+
 }

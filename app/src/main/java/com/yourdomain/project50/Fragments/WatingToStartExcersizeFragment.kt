@@ -2,7 +2,6 @@ package com.yourdomain.project50.Fragments
 
 import android.app.Dialog
 import android.content.Context
-import android.net.Uri
 import android.os.Bundle
 import android.os.CountDownTimer
 import android.support.v4.app.DialogFragment
@@ -13,7 +12,7 @@ import android.widget.ProgressBar
 import android.widget.TextView
 import com.yourdomain.project50.R
 
-class WatingFragment : DialogFragment() {
+class WatingToStartExcersizeFragment : DialogFragment() {
 
 
     private var mParamALlExcersizeTotalTime: String? = null
@@ -107,8 +106,8 @@ class WatingFragment : DialogFragment() {
         private val mParamDiscription_KEY = "mParamDiscription_KEY";
 
 
-        fun newInstance(totaleTime: String, totaleTimeForThis: String, discription: String): WatingFragment {
-            val fragment = WatingFragment()
+        fun newInstance(totaleTime: String, totaleTimeForThis: String, discription: String): WatingToStartExcersizeFragment {
+            val fragment = WatingToStartExcersizeFragment()
             val args = Bundle()
             args.putString(mParamALlExcersizeTotalTime_KEY, totaleTime)
             args.putString(mParamThisExcersizeTotalTime_KEY, totaleTimeForThis)

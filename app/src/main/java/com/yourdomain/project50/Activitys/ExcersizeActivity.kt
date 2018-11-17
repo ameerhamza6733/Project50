@@ -5,12 +5,14 @@ import android.arch.lifecycle.ViewModelProviders
 import android.os.Bundle
 import android.support.v4.app.DialogFragment
 import android.support.v7.app.AppCompatActivity
+import android.util.Log
 import android.view.View
 import android.widget.*
 import com.bumptech.glide.Glide
 import com.yourdomain.project50.CustomCountDownTimer
 import com.yourdomain.project50.Fragments.PauseExcersizeFragment
 import com.yourdomain.project50.Fragments.QuitFragment
+import com.yourdomain.project50.Fragments.WatingForNextFragment
 import com.yourdomain.project50.Fragments.WatingToStartExcersizeFragment
 import com.yourdomain.project50.MY_Shared_PREF
 import com.yourdomain.project50.Model.ExcersizeDays
@@ -21,13 +23,17 @@ import com.yourdomain.project50.Utils.CountTotalTime
 import com.yourdomain.project50.ViewModle.GetFullBodyPlanceExcersizesByDayViewModle
 import java.util.concurrent.TimeUnit
 
-class ExcersizeActivity : AppCompatActivity(), WatingToStartExcersizeFragment.OnFragmentInteractionListener,PauseExcersizeFragment.OnResumeListener,QuitFragment.OnQuitListener {
+class ExcersizeActivity : AppCompatActivity(), WatingToStartExcersizeFragment.OnFragmentInteractionListener, PauseExcersizeFragment.OnResumeListener, QuitFragment.OnQuitListener,WatingForNextFragment.OnNextExcersizeDemoFragmentListener {
+    override fun onSkip() {
+        onNext(true)
+    }
+
     override fun onQuit() {
         finish()
     }
 
     override fun onContinue() {
-    countDown?.resume()
+        countDown?.resume()
     }
 
     override fun onComeBacKLater() {
@@ -38,7 +44,7 @@ class ExcersizeActivity : AppCompatActivity(), WatingToStartExcersizeFragment.On
     }
 
     override fun onCountDownDonw() {
-        onNext()
+        onNext(true)
     }
 
 
@@ -64,8 +70,9 @@ class ExcersizeActivity : AppCompatActivity(), WatingToStartExcersizeFragment.On
     private var excesizes: Excesizes? = null
     private var counter = -1
     private var countDown: CustomCountDownTimer? = null
-
     private var currentDayKey: Int = -3
+
+    private var TAG="ExcersizeActivity";
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -113,9 +120,9 @@ class ExcersizeActivity : AppCompatActivity(), WatingToStartExcersizeFragment.On
         mLayout = findViewById(R.id.type_unlimted)
 
 
-        mbtdone.setOnClickListener { onNext();updateExcersizeCountInSharePref() }
+        mbtdone.setOnClickListener { onNext(false);updateExcersizeCountInSharePref() }
         mbtBack.setOnClickListener { onBack() }
-        mbtNext.setOnClickListener { onNext();updateExcersizeCountInSharePref() }
+        mbtNext.setOnClickListener { onNext(false);updateExcersizeCountInSharePref() }
         mbtStop.setOnClickListener {
             try {
                 onPauseExcersize()
@@ -136,7 +143,7 @@ class ExcersizeActivity : AppCompatActivity(), WatingToStartExcersizeFragment.On
         }
         val pauseExcersizeFragment = PauseExcersizeFragment.newInstance(excesizes?.title!![counter], seconds, excesizes?.icons!![counter])
         pauseExcersizeFragment.setStyle(DialogFragment.STYLE_NORMAL, android.R.style.Theme_Black_NoTitleBar_Fullscreen);
-        pauseExcersizeFragment.show(supportFragmentManager,"pauseExcersizeFragment")
+        pauseExcersizeFragment.show(supportFragmentManager, "pauseExcersizeFragment")
 
     }
 
@@ -152,7 +159,7 @@ class ExcersizeActivity : AppCompatActivity(), WatingToStartExcersizeFragment.On
 
         }
         mtvescription.text = excesizes?.detail!![counter]
-        mtvTitle.text = excesizes?.title!![counter]
+        mtvTitle.text = excesizes?.title!![counter].toUpperCase()
         mTotalProgressBar.progress = counter
         mLayout.visibility = View.VISIBLE
         mCurrentProgressBar.visibility = View.INVISIBLE
@@ -161,12 +168,27 @@ class ExcersizeActivity : AppCompatActivity(), WatingToStartExcersizeFragment.On
 
     }
 
-    private fun onNext() {
-        counter++
-        if (excesizes?.viewType!![counter] == Excesizes.VIEW_TYPE_LIMTED_EXCERSIZE) {
-            updateUIWithCountDown()
-        } else if (excesizes?.viewType!![counter] == Excesizes.VIEW_TYPE_UN_LIMTED_EXCERSIZE) {
-            updateWithOutCountDownUI()
+    private fun onNext(showWatingForNextFragment: Boolean) {
+        if (showWatingForNextFragment) {
+            counter++
+            if (excesizes?.viewType!![counter] == Excesizes.VIEW_TYPE_LIMTED_EXCERSIZE) {
+                updateUIWithCountDown()
+            } else if (excesizes?.viewType!![counter] == Excesizes.VIEW_TYPE_UN_LIMTED_EXCERSIZE) {
+                updateWithOutCountDownUI()
+
+            }
+        } else {
+            var temp = "Next "
+            if (excesizes?.viewType!![counter + 1] == Excesizes.VIEW_TYPE_LIMTED_EXCERSIZE) {
+                temp = temp + excesizes?.seconds!![counter + 1].toString() + "s"
+            } else if (excesizes?.viewType!![counter + 1] == Excesizes.VIEW_TYPE_UN_LIMTED_EXCERSIZE) {
+                updateWithOutCountDownUI()
+                temp = temp + "x" + excesizes?.seconds!![counter + 1].toString()
+            }
+            Log.d(TAG,"showing data for wating fragment: "+temp)
+            val watingForNextFragment = WatingForNextFragment.newInstance(excesizes?.title!![counter + 1], temp, "NEXT " + (counter + 1).toString() +"/"+(excesizes!!.icons.size).toString(), excesizes?.icons!![counter + 1])
+            watingForNextFragment.setStyle(DialogFragment.STYLE_NORMAL, android.R.style.Theme_Black_NoTitleBar_Fullscreen);
+            watingForNextFragment.show(supportFragmentManager, "watingForNextFragment")
 
         }
     }
@@ -202,7 +224,7 @@ class ExcersizeActivity : AppCompatActivity(), WatingToStartExcersizeFragment.On
         countDown = object : CustomCountDownTimer(seconds, 1000) {
             override fun onFinish() {
 
-                onNext()
+                onNext(false)
                 mCurrentProgressBar.progress = 0
                 updateExcersizeCountInSharePref()
             }
@@ -221,6 +243,7 @@ class ExcersizeActivity : AppCompatActivity(), WatingToStartExcersizeFragment.On
     }
 
     override fun onPause() {
+        Log.d(TAG,"onPause");
         countDown?.cancel()
         super.onPause()
     }
@@ -231,9 +254,9 @@ class ExcersizeActivity : AppCompatActivity(), WatingToStartExcersizeFragment.On
 
     override fun onBackPressed() {
         countDown?.pause()
-        val quitFragment=QuitFragment()
+        val quitFragment = QuitFragment()
         quitFragment.setStyle(DialogFragment.STYLE_NORMAL, R.style.dialog);
-        quitFragment.show(supportFragmentManager,"quitFragment")
+        quitFragment.show(supportFragmentManager, "quitFragment")
 
     }
 

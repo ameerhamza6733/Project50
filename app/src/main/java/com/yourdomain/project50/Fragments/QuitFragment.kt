@@ -60,6 +60,7 @@ class QuitFragment : DialogFragment() {
     }
 
     override fun onDetach() {
+
         super.onDetach()
         mListener = null
     }

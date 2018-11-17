@@ -42,7 +42,11 @@ class WatingForNextFragment : DialogFragment() {
 
         override fun onFinish() {
             mListener?.onSkip()
-            dismiss()
+           try {
+               dismiss()
+           }catch (E:Exception){
+               E.printStackTrace()
+           }
 
         }
     }
@@ -73,7 +77,7 @@ class WatingForNextFragment : DialogFragment() {
 
         progressBar.max=30
         tvProgress.text="30"
-        tvTitle.text=mParamTitle
+        tvTitle.text=mParamTitle?.toUpperCase()
         tvDoneExcersize.text=mParamDoneExcersizes
         tvSeconds.text=mParamSeconds
         btSkip.setOnClickListener { mListener?.onSkip() ;dismiss() }

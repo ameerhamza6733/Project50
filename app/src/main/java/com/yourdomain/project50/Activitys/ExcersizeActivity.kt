@@ -22,6 +22,10 @@ import com.yourdomain.project50.Utils
 import com.yourdomain.project50.Utils.CountTotalTime
 import com.yourdomain.project50.ViewModle.GetFullBodyPlanceExcersizesByDayViewModle
 import java.util.concurrent.TimeUnit
+import android.view.WindowManager
+import android.os.Build
+
+
 
 class ExcersizeActivity : AppCompatActivity(), WatingToStartExcersizeFragment.OnFragmentInteractionListener, PauseExcersizeFragment.OnResumeListener, QuitFragment.OnQuitListener,WatingForNextFragment.OnNextExcersizeDemoFragmentListener {
     override fun onSkip() {
@@ -77,7 +81,11 @@ class ExcersizeActivity : AppCompatActivity(), WatingToStartExcersizeFragment.On
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.each_full_screen_excersize)
-
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+            val w = window
+            w.setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
+                    WindowManager.LayoutParams.FLAG_FULLSCREEN)
+        }
         findViews()
 
         currentDayKey = intent.getIntExtra(EXTRA_DAY, -2)
@@ -178,12 +186,12 @@ class ExcersizeActivity : AppCompatActivity(), WatingToStartExcersizeFragment.On
 
             }
         } else {
-            var temp = "Next "
+            var temp = ""
             if (excesizes?.viewType!![counter + 1] == Excesizes.VIEW_TYPE_LIMTED_EXCERSIZE) {
                 temp = temp + excesizes?.seconds!![counter + 1].toString() + "s"
             } else if (excesizes?.viewType!![counter + 1] == Excesizes.VIEW_TYPE_UN_LIMTED_EXCERSIZE) {
                 updateWithOutCountDownUI()
-                temp = temp + "x" + excesizes?.seconds!![counter + 1].toString()
+                temp = temp + "x " + excesizes?.seconds!![counter + 1].toString()
             }
             Log.d(TAG,"showing data for wating fragment: "+temp)
             val watingForNextFragment = WatingForNextFragment.newInstance(excesizes?.title!![counter + 1], temp, "NEXT " + (counter + 1).toString() +"/"+(excesizes!!.icons.size).toString(), excesizes?.icons!![counter + 1])
@@ -217,7 +225,7 @@ class ExcersizeActivity : AppCompatActivity(), WatingToStartExcersizeFragment.On
 
         }
         mtvescription.text = excesizes?.detail!![counter]
-        mtvTitle.text = excesizes?.title!![counter]
+        mtvTitle.text = excesizes?.title!![counter].toUpperCase()
         mTotalProgressBar.progress = counter
         mCurrentProgressBar.max = excesizes?.seconds!![counter].toInt()
         var seconds = TimeUnit.SECONDS.toMillis(excesizes?.seconds!![counter]?.toLong())

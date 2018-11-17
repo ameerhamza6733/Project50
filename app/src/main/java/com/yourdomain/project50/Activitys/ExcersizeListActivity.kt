@@ -20,17 +20,19 @@ import com.yourdomain.project50.MY_Shared_PREF
 import com.yourdomain.project50.Model.ExcersizeDays
 import com.yourdomain.project50.Model.Excesizes
 import com.yourdomain.project50.R
-import com.yourdomain.project50.ViewModle.GetFullBodyPlanceExcersizesByDayViewModle
+import com.yourdomain.project50.ViewModle.ExcersizesByDayandTypeViewModle
 
 class ExcersizeListActivity : AppCompatActivity() {
 
     companion object {
         val EXTRA_DAY = "extra day";
+        val EXTRA_PLAN="ExcersizeListActivity.EXTRA_PLAN";
         val TAG = "ExcersizeListActivity";
     }
 
    private var currentDay: ExcersizeDays? = null
     private var currentDayKey:Int=-2
+    private var currentExcesizesPlan=-2
     lateinit var btStart:Button
 
     private lateinit var recyclerView: RecyclerView
@@ -40,6 +42,7 @@ class ExcersizeListActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_excersize_list)
          currentDayKey = intent.getIntExtra(EXTRA_DAY, -2)
+        currentExcesizesPlan=intent.getIntExtra(EXTRA_PLAN,-2)
         if (currentDayKey != -2){
             currentDay = MY_Shared_PREF.getCurrentDay(application, currentDayKey.toString())
 
@@ -51,6 +54,7 @@ class ExcersizeListActivity : AppCompatActivity() {
 
         btStart.setOnClickListener {
             val internt = Intent(it.context,ExcersizeActivity::class.java)
+            internt.putExtra(ExcersizeActivity.EXTRA_PLAN,currentExcesizesPlan)
             internt.putExtra(ExcersizeActivity.EXTRA_DAY,currentDayKey)
             startActivity(internt)
         }
@@ -65,8 +69,8 @@ class ExcersizeListActivity : AppCompatActivity() {
     }
 
     private fun intiDataSet(){
-        val modle = ViewModelProviders.of(this)[GetFullBodyPlanceExcersizesByDayViewModle::class.java]
-        modle.getExcersizs(currentDayKey)?.observe(this, Observer {
+        val modle = ViewModelProviders.of(this)[ExcersizesByDayandTypeViewModle::class.java]
+        modle.getExcersizs(currentDayKey,currentExcesizesPlan)?.observe(this, Observer {
             if (it != null) {
                 progressBar.visibility=View.INVISIBLE
                 recyclerView.layoutManager = LinearLayoutManager(this@ExcersizeListActivity)

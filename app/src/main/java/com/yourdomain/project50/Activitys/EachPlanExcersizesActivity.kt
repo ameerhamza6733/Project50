@@ -13,7 +13,10 @@ import android.support.v7.widget.RecyclerView
 import android.support.v7.widget.RecyclerView.OnChildAttachStateChangeListener
 import android.support.v7.widget.Toolbar
 import android.util.Log
-import android.view.*
+import android.view.LayoutInflater
+import android.view.Menu
+import android.view.View
+import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
 import com.bumptech.glide.Glide
@@ -23,16 +26,6 @@ import com.yourdomain.project50.Fragments.FullBodyPlanDayFragment
 import com.yourdomain.project50.Model.ExcersizePlans
 import com.yourdomain.project50.R
 import com.yourdomain.project50.ViewModle.ExcersizePlansViewModle
-import android.view.MotionEvent
-import android.view.View.OnTouchListener
-import com.yourdomain.project50.Adupters.MYViewPager
-import android.opengl.ETC1.getWidth
-import android.support.v4.view.ViewCompat.setTranslationX
-
-
-
-
-
 
 
 class EachPlanExcersizesActivity : AppCompatActivity() {
@@ -41,6 +34,7 @@ class EachPlanExcersizesActivity : AppCompatActivity() {
         private val MIN_SCALE = 0.65f
         private val MIN_ALPHA = 0.3f
     }
+
     private val mOnNavigationItemSelectedListener = BottomNavigationView.OnNavigationItemSelectedListener { item ->
         when (item.itemId) {
             R.id.navigation_home -> {
@@ -58,6 +52,7 @@ class EachPlanExcersizesActivity : AppCompatActivity() {
     protected val TAG = "ExcersizesActivity";
     private lateinit var recyclerView: RecyclerView
     private lateinit var mPager: com.yourdomain.project50.Adupters.MYViewPager
+    private var currentExcersizePlan=ExcersizePlans.PLAN_FULL_BODY
     private val NUM_PAGES = 3
 
 
@@ -71,11 +66,11 @@ class EachPlanExcersizesActivity : AppCompatActivity() {
         mPager = findViewById(R.id.viewpager)
         intiDataSet()
         val pagerAdapter = ScreenSlidePagerAdapter(supportFragmentManager)
-   //     val fadeOutTransformation = FadeOutTransformation()
-      //  mPager.setPageTransformer(true, fadeOutTransformation);
+        //     val fadeOutTransformation = FadeOutTransformation()
+        //  mPager.setPageTransformer(true, fadeOutTransformation);
 
         mPager.adapter = pagerAdapter
-         //  navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener)
+        //  navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener)
     }
 
     private fun intiDataSet() {
@@ -183,12 +178,15 @@ class EachPlanExcersizesActivity : AppCompatActivity() {
                 Log.d(TAG, "onChildViewAttachedToWindow" + llm.findFirstCompletelyVisibleItemPosition())
                 when (llm.findFirstCompletelyVisibleItemPosition()) {
                     0 -> {
+                        currentExcersizePlan=ExcersizePlans.PLAN_FULL_BODY
                         mPager.setCurrentItem(0)
                     }
                     2 -> {
+                        currentExcersizePlan=ExcersizePlans.PLAN_ABS
                         mPager.setCurrentItem(1)
                     }
                     3 -> {
+                        currentExcersizePlan=ExcersizePlans.PLAN_BUTT
                         mPager.setCurrentItem(2)
                     }
                 }

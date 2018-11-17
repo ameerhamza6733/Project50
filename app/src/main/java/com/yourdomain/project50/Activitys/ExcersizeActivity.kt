@@ -20,11 +20,11 @@ import com.yourdomain.project50.Model.Excesizes
 import com.yourdomain.project50.R
 import com.yourdomain.project50.Utils
 import com.yourdomain.project50.Utils.CountTotalTime
-import com.yourdomain.project50.ViewModle.GetFullBodyPlanceExcersizesByDayViewModle
+import com.yourdomain.project50.ViewModle.ExcersizesByDayandTypeViewModle
 import java.util.concurrent.TimeUnit
 import android.view.WindowManager
 import android.os.Build
-
+import com.yourdomain.project50.Model.ExcersizePlans
 
 
 class ExcersizeActivity : AppCompatActivity(), WatingToStartExcersizeFragment.OnFragmentInteractionListener, PauseExcersizeFragment.OnResumeListener, QuitFragment.OnQuitListener,WatingForNextFragment.OnNextExcersizeDemoFragmentListener {
@@ -54,6 +54,7 @@ class ExcersizeActivity : AppCompatActivity(), WatingToStartExcersizeFragment.On
 
     companion object {
         val EXTRA_DAY = "ExcersizeActivity.extra day";
+        val EXTRA_PLAN="ExcersizeActivity.EXTRA_PLA"
     }
 
     private lateinit var mTotalProgressBar: ProgressBar
@@ -75,6 +76,7 @@ class ExcersizeActivity : AppCompatActivity(), WatingToStartExcersizeFragment.On
     private var counter = -1
     private var countDown: CustomCountDownTimer? = null
     private var currentDayKey: Int = -3
+    private var currentPlan=-2
 
     private var TAG="ExcersizeActivity";
 
@@ -89,12 +91,13 @@ class ExcersizeActivity : AppCompatActivity(), WatingToStartExcersizeFragment.On
         findViews()
 
         currentDayKey = intent.getIntExtra(EXTRA_DAY, -2)
+        currentPlan=intent.getIntExtra(EXTRA_PLAN,-2)
         if (currentDayKey != -2) {
             currentDay = MY_Shared_PREF.getCurrentDay(application, currentDayKey.toString())
 
         }
-        val modle = ViewModelProviders.of(this)[GetFullBodyPlanceExcersizesByDayViewModle::class.java]
-        modle.getExcersizs(currentDayKey)?.observe(this, Observer {
+        val modle = ViewModelProviders.of(this)[ExcersizesByDayandTypeViewModle::class.java]
+        modle.getExcersizs(currentDayKey,currentPlan)?.observe(this, Observer {
             if (it != null) {
                 excesizes = it
                 var string = ""

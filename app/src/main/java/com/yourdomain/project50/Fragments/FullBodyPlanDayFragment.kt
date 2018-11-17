@@ -95,6 +95,7 @@ class FullBodyPlanDayFragment : Fragment() {
 
                 itemView.setOnClickListener {
                     val intent = Intent(itemView.context, ExcersizeListActivity::class.java)
+                    intent.putExtra(ExcersizeListActivity.EXTRA_PLAN,ExcersizePlans.PLAN_FULL_BODY)
                     intent.putExtra(ExcersizeListActivity.EXTRA_DAY, adapterPosition)
                     itemView.context.startActivity(intent)
                 }

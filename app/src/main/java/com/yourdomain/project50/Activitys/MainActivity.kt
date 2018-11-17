@@ -28,6 +28,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
 
     private lateinit var recyclerView: RecyclerView
     private lateinit var progressBar:ProgressBar
+    private var currentExcersizePlan=-1
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

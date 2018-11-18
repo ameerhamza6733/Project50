@@ -2,11 +2,14 @@ package com.yourdomain.project50.Activitys
 
 import android.arch.lifecycle.Observer
 import android.arch.lifecycle.ViewModelProviders
+import android.content.Intent
+import android.os.Build
 import android.os.Bundle
 import android.support.v4.app.DialogFragment
 import android.support.v7.app.AppCompatActivity
 import android.util.Log
 import android.view.View
+import android.view.WindowManager
 import android.widget.*
 import com.bumptech.glide.Glide
 import com.yourdomain.project50.CustomCountDownTimer
@@ -22,14 +25,15 @@ import com.yourdomain.project50.Utils
 import com.yourdomain.project50.Utils.CountTotalTime
 import com.yourdomain.project50.ViewModle.ExcersizesByDayandTypeViewModle
 import java.util.concurrent.TimeUnit
-import android.view.WindowManager
-import android.os.Build
-import com.yourdomain.project50.Model.ExcersizePlans
 
 
-class ExcersizeActivity : AppCompatActivity(), WatingToStartExcersizeFragment.OnFragmentInteractionListener, PauseExcersizeFragment.OnResumeListener, QuitFragment.OnQuitListener,WatingForNextFragment.OnNextExcersizeDemoFragmentListener {
+class ExcersizeActivity : AppCompatActivity(), WatingToStartExcersizeFragment.OnFragmentInteractionListener, PauseExcersizeFragment.OnResumeListener, QuitFragment.OnQuitListener, WatingForNextFragment.OnNextExcersizeDemoFragmentListener {
     override fun onSkip() {
-        onNext(true)
+        if (counter+1<excesizes?.icons?.size!!){
+            onNext(true);
+        }else{
+            sayCongragulation()
+        }
     }
 
     override fun onQuit() {
@@ -48,13 +52,28 @@ class ExcersizeActivity : AppCompatActivity(), WatingToStartExcersizeFragment.On
     }
 
     override fun onCountDownDonw() {
-        onNext(true)
+        if (counter + 1 < excesizes?.icons?.size!!) {
+            onNext(true)
+        } else {
+            sayCongragulation()
+        }
+
+    }
+
+    private fun sayCongragulation() {
+        val intent = Intent(this@ExcersizeActivity, CongragulationActivity::class.java)
+        intent.putExtra(CongragulationActivity.EXTRA_DURACTION,totleTime)
+        intent.putExtra(CongragulationActivity.EXTRA_DAY, currentDayKey + 1)
+        startActivity(intent)
+        finish()
+
     }
 
 
     companion object {
         val EXTRA_DAY = "ExcersizeActivity.extra day";
-        val EXTRA_PLAN="ExcersizeActivity.EXTRA_PLA"
+        val EXTRA_EXCERSIZES_DONE = "ExcersizeListActivity.EXTRA_EXCERSIZES_DONE"
+        val EXTRA_PLAN = "ExcersizeActivity.EXTRA_PLA"
     }
 
     private lateinit var mTotalProgressBar: ProgressBar
@@ -76,9 +95,12 @@ class ExcersizeActivity : AppCompatActivity(), WatingToStartExcersizeFragment.On
     private var counter = -1
     private var countDown: CustomCountDownTimer? = null
     private var currentDayKey: Int = -3
-    private var currentPlan=-2
+    private var excersizeDone = -2
+    private var currentPlan = "-2"
 
-    private var TAG="ExcersizeActivity";
+    private var TAG = "ExcersizeActivity";
+
+    private var totleTime=""
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -91,13 +113,17 @@ class ExcersizeActivity : AppCompatActivity(), WatingToStartExcersizeFragment.On
         findViews()
 
         currentDayKey = intent.getIntExtra(EXTRA_DAY, -2)
-        currentPlan=intent.getIntExtra(EXTRA_PLAN,-2)
+        excersizeDone = intent.getIntExtra(EXTRA_EXCERSIZES_DONE, -2)
+        currentPlan = intent.getStringExtra(EXTRA_PLAN)
         if (currentDayKey != -2) {
-            currentDay = MY_Shared_PREF.getCurrentDay(application, currentDayKey.toString())
+            currentDay = MY_Shared_PREF.getCurrentDay(application, currentPlan + currentDayKey.toString())
 
         }
+        if (excersizeDone != -2) {
+            counter = excersizeDone
+        }
         val modle = ViewModelProviders.of(this)[ExcersizesByDayandTypeViewModle::class.java]
-        modle.getExcersizs(currentDayKey,currentPlan)?.observe(this, Observer {
+        modle.getExcersizs(currentDayKey, currentPlan)?.observe(this, Observer {
             if (it != null) {
                 excesizes = it
                 var string = ""
@@ -106,7 +132,8 @@ class ExcersizeActivity : AppCompatActivity(), WatingToStartExcersizeFragment.On
                 } else if (it.viewType[0] == Excesizes.VIEW_TYPE_UN_LIMTED_EXCERSIZE) {
                     string = "x" + it.seconds[0].toString()
                 }
-                val fragmet = WatingToStartExcersizeFragment.newInstance(CountTotalTime(it.viewType, it.seconds), string, it.detail[0])
+               totleTime= CountTotalTime(it.viewType, it.seconds)
+                val fragmet = WatingToStartExcersizeFragment.newInstance(totleTime, string, it.detail[0])
                 fragmet.setStyle(DialogFragment.STYLE_NORMAL, android.R.style.Theme_Black_NoTitleBar_Fullscreen);
                 fragmet.show(supportFragmentManager, "WatingToStartExcersizeFragment")
             }
@@ -131,9 +158,24 @@ class ExcersizeActivity : AppCompatActivity(), WatingToStartExcersizeFragment.On
         mLayout = findViewById(R.id.type_unlimted)
 
 
-        mbtdone.setOnClickListener { onNext(false);updateExcersizeCountInSharePref() }
+        mbtdone.setOnClickListener {
+
+            if (counter + 1 < excesizes?.icons?.size!!) {
+                onNext(false);
+                updateExcersizeCountInSharePref()
+            } else {
+                sayCongragulation()
+            }
+        }
         mbtBack.setOnClickListener { onBack() }
-        mbtNext.setOnClickListener { onNext(false);updateExcersizeCountInSharePref() }
+        mbtNext.setOnClickListener {
+            if (counter + 1 < excesizes?.icons?.size!!) {
+                onNext(false);
+                updateExcersizeCountInSharePref()
+            } else {
+                sayCongragulation()
+            }
+        }
         mbtStop.setOnClickListener {
             try {
                 onPauseExcersize()
@@ -161,7 +203,8 @@ class ExcersizeActivity : AppCompatActivity(), WatingToStartExcersizeFragment.On
     private fun updateWithOutCountDownUI() {
 
         mTotalProgressBar.max = excesizes?.title?.size!!
-        mtotalTextView.text = counter.toString() + "/" + excesizes?.icons?.size.toString()
+
+        mtotalTextView.text = (counter + 1).toString() + "/" + excesizes?.icons?.size.toString()
         Glide.with(this).asGif().load(excesizes?.icons?.get(counter)).into(mImageVIew)
         if (excesizes?.viewType!![counter] == Excesizes.VIEW_TYPE_LIMTED_EXCERSIZE) {
             mTotalSeconds.text = excesizes?.seconds?.get(counter)?.toString() + "''"
@@ -196,8 +239,8 @@ class ExcersizeActivity : AppCompatActivity(), WatingToStartExcersizeFragment.On
                 updateWithOutCountDownUI()
                 temp = temp + "x " + excesizes?.seconds!![counter + 1].toString()
             }
-            Log.d(TAG,"showing data for wating fragment: "+temp)
-            val watingForNextFragment = WatingForNextFragment.newInstance(excesizes?.title!![counter + 1], temp, "NEXT " + (counter + 1).toString() +"/"+(excesizes!!.icons.size).toString(), excesizes?.icons!![counter + 1])
+            Log.d(TAG, "showing data for wating fragment: " + temp)
+            val watingForNextFragment = WatingForNextFragment.newInstance(excesizes?.title!![counter + 1], temp, "NEXT " + (counter + 1).toString() + "/" + (excesizes!!.icons.size).toString(), excesizes?.icons!![counter + 1])
             watingForNextFragment.setStyle(DialogFragment.STYLE_NORMAL, android.R.style.Theme_Black_NoTitleBar_Fullscreen);
             watingForNextFragment.show(supportFragmentManager, "watingForNextFragment")
 
@@ -219,7 +262,7 @@ class ExcersizeActivity : AppCompatActivity(), WatingToStartExcersizeFragment.On
         mCurrentProgressBar.visibility = View.VISIBLE
         mbtStop.visibility = View.VISIBLE
         mTotalProgressBar.max = excesizes?.title?.size!!
-        mtotalTextView.text = counter.toString() + "/" + excesizes?.icons?.size.toString()
+        mtotalTextView.text = (counter + 1).toString() + "/" + excesizes?.icons?.size.toString()
         Glide.with(this).asGif().load(excesizes?.icons?.get(counter)).into(mImageVIew)
         if (excesizes?.viewType!![counter] == Excesizes.VIEW_TYPE_LIMTED_EXCERSIZE) {
             mTotalSeconds.text = excesizes?.seconds?.get(counter)?.toString() + "''"
@@ -229,19 +272,26 @@ class ExcersizeActivity : AppCompatActivity(), WatingToStartExcersizeFragment.On
         }
         mtvescription.text = excesizes?.detail!![counter]
         mtvTitle.text = excesizes?.title!![counter].toUpperCase()
-        mTotalProgressBar.progress = counter
+        mTotalProgressBar.progress = counter + 1
         mCurrentProgressBar.max = excesizes?.seconds!![counter].toInt()
         var seconds = TimeUnit.SECONDS.toMillis(excesizes?.seconds!![counter]?.toLong())
         countDown = object : CustomCountDownTimer(seconds, 1000) {
             override fun onFinish() {
+                if (counter+1<excesizes?.icons?.size!!){
+                    onNext(false);
 
-                onNext(false)
+                }else{
+                    sayCongragulation()
+                }
+                mTotalSeconds.text="0"
                 mCurrentProgressBar.progress = 0
                 updateExcersizeCountInSharePref()
             }
 
             override fun onTick(millisUntilFinished: Long) {
-                mCurrentProgressBar.progress = (millisUntilFinished / 1000).toInt()
+             val seconds=   (millisUntilFinished / 1000).toInt()
+                mTotalSeconds.text=seconds.toString()
+                mCurrentProgressBar.progress = seconds
             }
 
         }
@@ -249,12 +299,14 @@ class ExcersizeActivity : AppCompatActivity(), WatingToStartExcersizeFragment.On
     }
 
     private fun updateExcersizeCountInSharePref() {
+        Log.d(TAG, "Saving currnet day in shared pref: " + Utils.toPersentage(counter + 1, excesizes?.title?.size!!))
         if (currentDayKey == -3) return
-        MY_Shared_PREF.saveCurrentDay(application, ExcersizeDays(currentDayKey + 1, ExcersizeDays.VIEW_TYPE_DAY, excesizes?.title?.size?.toLong()!!, counter.toLong(), Utils.toPersentage(counter, excesizes?.title?.size!!)))
+
+        MY_Shared_PREF.saveCurrentDay(application, (currentPlan) + (currentDayKey + 1).toString(), ExcersizeDays(currentDayKey + 1, ExcersizeDays.VIEW_TYPE_DAY, excesizes?.title?.size?.toLong()!!, counter.toLong(), Utils.toPersentage(counter + 1, excesizes?.title?.size!!)))
     }
 
     override fun onPause() {
-        Log.d(TAG,"onPause");
+        Log.d(TAG, "onPause");
         countDown?.cancel()
         super.onPause()
     }

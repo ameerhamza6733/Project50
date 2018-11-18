@@ -11,6 +11,7 @@ import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ProgressBar
 import android.widget.TextView
 import com.yourdomain.project50.Activitys.ExcersizeListActivity
 import com.yourdomain.project50.Model.ExcersizeDays
@@ -62,6 +63,13 @@ class ButtPlanDayFragment : Fragment() {
 
             if (ExcersizeDays.VIEW_TYPE_DAY == p0.itemViewType) {
                 p0 as ExcersizeDAYViewHolder
+                if (excersizeList[p0.adapterPosition].totaleExcersizes>0){
+                    p0.progressBar.max=excersizeList[p0.adapterPosition].totaleExcersizes.toInt()
+                }
+                if (excersizeList[p0.adapterPosition].totaleExcersizes>0){
+                    p0.progressBar.progress=excersizeList[p0.adapterPosition].doneExcersises.toInt()
+                    p0.tvProgress.setText(excersizeList[p0.adapterPosition].progress)
+                }
                 p0.tvDay.text = "Day " + excersizeList[p0.adapterPosition].day.toString()
             } else if (ExcersizeDays.VIEW_TYPE_AD == p0.itemViewType) {
                 p0 as AdViewHolderViewHolder
@@ -75,7 +83,8 @@ class ButtPlanDayFragment : Fragment() {
 
         inner class ExcersizeDAYViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
             val tvDay: TextView
-
+            val progressBar: ProgressBar
+            val tvProgress:TextView
             init {
 
                 itemView.setOnClickListener {
@@ -84,6 +93,8 @@ class ButtPlanDayFragment : Fragment() {
                     intent.putExtra(ExcersizeListActivity.EXTRA_DAY,adapterPosition)
                     itemView.context.startActivity(intent) }
                 tvDay = itemView.findViewById(R.id.tvDay)
+                tvProgress=itemView.findViewById(R.id.tvProgress)
+                progressBar = itemView.findViewById(R.id.progressBar)
             }
         }
 

@@ -33,7 +33,11 @@ class WatingToStartExcersizeFragment : DialogFragment() {
 
         override fun onFinish() {
             mListener?.onCountDownDonw()
-            dismiss()
+           try {
+               dismiss()
+           }catch (e:Exception){
+               e.printStackTrace()
+           }
 
         }
     }

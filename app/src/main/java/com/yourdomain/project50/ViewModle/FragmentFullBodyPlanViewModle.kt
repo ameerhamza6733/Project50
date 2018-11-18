@@ -5,6 +5,7 @@ import android.arch.lifecycle.AndroidViewModel
 import android.arch.lifecycle.MutableLiveData
 import com.yourdomain.project50.MY_Shared_PREF
 import com.yourdomain.project50.Model.ExcersizeDays
+import com.yourdomain.project50.Model.ExcersizePlans
 import java.util.*
 
 /**
@@ -21,8 +22,8 @@ class FragmentFullBodyPlanViewModle(application: Application) : AndroidViewModel
             mutableList = ArrayList();
             val hashMap = MY_Shared_PREF.getAllFullBodyPlanDays(getApplication())
             for (dayNumber in 1..30) {
-                if (hashMap.containsKey(dayNumber.toString())) {
-                    mutableList?.add(hashMap.get(dayNumber.toString())!!)
+                if (hashMap.containsKey(ExcersizePlans.PLAN_FULL_BODY+dayNumber.toString())) {
+                    mutableList?.add(hashMap.get(ExcersizePlans.PLAN_FULL_BODY+dayNumber.toString())!!)
 
                 } else {
                     var excersizeDays = ExcersizeDays(dayNumber, 1)

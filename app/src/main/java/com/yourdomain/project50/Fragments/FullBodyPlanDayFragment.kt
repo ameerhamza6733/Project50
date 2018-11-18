@@ -8,6 +8,7 @@ import android.os.Bundle
 import android.support.v4.app.Fragment
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -24,7 +25,7 @@ import com.yourdomain.project50.ViewModle.FragmentFullBodyPlanViewModle
 class FullBodyPlanDayFragment : Fragment() {
 
     private lateinit var recyclerView2: RecyclerView;
-
+ val TAG="FullBodyPlanDayFragment"
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -90,11 +91,14 @@ class FullBodyPlanDayFragment : Fragment() {
             val tvDay: TextView
             val progressBar: ProgressBar
             val tvProgress:TextView
+            val TAG="FullBodyPlanDayFragment"
 
             init {
 
                 itemView.setOnClickListener {
+                    Log.d(TAG,""+excersizeList[adapterPosition].toString())
                     val intent = Intent(itemView.context, ExcersizeListActivity::class.java)
+                    intent.putExtra(ExcersizeListActivity.EXTRA_EXCERSIZES_DONE,excersizeList[adapterPosition].doneExcersises.toInt())
                     intent.putExtra(ExcersizeListActivity.EXTRA_PLAN,ExcersizePlans.PLAN_FULL_BODY)
                     intent.putExtra(ExcersizeListActivity.EXTRA_DAY, adapterPosition)
                     itemView.context.startActivity(intent)

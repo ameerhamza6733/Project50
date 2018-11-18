@@ -7,8 +7,8 @@ class ExcersizePlans(var name:String, var totalDays:Int, var completedDays:Int, 
     companion object {
         val TYPE_AD=2
         val TYPE_EXCERSISE=1;
-        val PLAN_FULL_BODY=0
-        val PLAN_ABS=1;
-        val PLAN_BUTT=2
+        val PLAN_FULL_BODY="plan full body"
+        val PLAN_ABS="plan abs";
+        val PLAN_BUTT="plan butt"
     }
 }

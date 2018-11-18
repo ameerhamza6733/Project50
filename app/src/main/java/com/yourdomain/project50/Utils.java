@@ -33,14 +33,15 @@ public class Utils {
     }
 
     public static String CountTotalTime(int [] viewType,int[] seconds) {
-        int total = 0;
+        double total = 0;
         for (int i=0;i<seconds.length ;i++) {
             if (viewType[i]== Excesizes.VIEW_TYPE_UN_LIMTED_EXCERSIZE)
                 continue;
             total = total + seconds[i];
         }
-        Log.d(TAG,"total seconds for currnet excersize"+TimeUnit.SECONDS.toMinutes(total));
-        return  df.format(Math.round((total/60D)));
+       String mints= String.valueOf(total/60);
+        Log.d(TAG,"total seconds for currnet excersize"+mints.substring(0,mints.lastIndexOf(".")+2));
+        return mints.substring(0,mints.lastIndexOf(".")+2);
     }
 public static String toPersentage(int done , int totle){
     return String.valueOf(((done * 100 / totle)))+"%";

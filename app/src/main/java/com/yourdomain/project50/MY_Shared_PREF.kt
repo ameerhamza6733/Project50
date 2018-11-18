@@ -40,10 +40,10 @@ class MY_Shared_PREF{
 
 
 
-        fun saveCurrentDay(application: Application,days: ExcersizeDays){
+        fun saveCurrentDay(application: Application,key:String,days: ExcersizeDays){
             val sharedPreferences=application.applicationContext.getSharedPreferences(SHARED_PREF_FULL_BODY_FILE,0)
             val editer = sharedPreferences.edit()
-            editer.putString(days.day.toString(), gson.toJson(days)).apply()
+            editer.putString(key, gson.toJson(days)).apply()
 
         }
 

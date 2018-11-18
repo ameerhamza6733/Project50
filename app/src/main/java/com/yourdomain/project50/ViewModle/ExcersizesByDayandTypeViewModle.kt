@@ -20,7 +20,7 @@ class ExcersizesByDayandTypeViewModle : ViewModel() {
 
     private var mutableLiveData: MutableLiveData<Excesizes>? = null
 
-    fun getExcersizs(day: Int,plan :Int): LiveData<Excesizes>? {
+    fun getExcersizs(day: Int,plan :String): LiveData<Excesizes>? {
         if (mutableLiveData == null) {
             mutableLiveData = MutableLiveData()
             when (plan) {

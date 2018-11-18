@@ -1,5 +1,7 @@
 package com.yourdomain.project50.Model
 
+import com.google.gson.Gson
+
 /**
  * Created by apple on 11/12/18.
  */
@@ -7,5 +9,9 @@ class ExcersizeDays(var day : Int,val  viewType:Int=-1,var totaleExcersizes:Long
     companion object {
         val VIEW_TYPE_DAY:Int=1
         val VIEW_TYPE_AD=2;
+        val gson=Gson()
+    }
+    public override fun toString():String{
+        return gson.toJson(this)
     }
 }

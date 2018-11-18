@@ -8,6 +8,7 @@ import android.os.Handler
 import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -27,13 +28,16 @@ class ExcersizeListActivity : AppCompatActivity() {
     companion object {
         val EXTRA_DAY = "extra day";
         val EXTRA_PLAN="ExcersizeListActivity.EXTRA_PLAN";
+        val EXTRA_EXCERSIZES_DONE="ExcersizeListActivity.EXTRA_EXCERSIZES_DONE"
         val TAG = "ExcersizeListActivity";
     }
 
    private var currentDay: ExcersizeDays? = null
     private var currentDayKey:Int=-2
-    private var currentExcesizesPlan=-2
+    private var excersizeDone=-2
+    private var currentExcesizesPlan=""
     lateinit var btStart:Button
+    private var totaleExsersize=-1
 
     private lateinit var recyclerView: RecyclerView
     private lateinit var progressBar:ProgressBar
@@ -42,9 +46,11 @@ class ExcersizeListActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_excersize_list)
          currentDayKey = intent.getIntExtra(EXTRA_DAY, -2)
-        currentExcesizesPlan=intent.getIntExtra(EXTRA_PLAN,-2)
+        excersizeDone=intent.getIntExtra(EXTRA_EXCERSIZES_DONE,-2)
+        Log.d(TAG,"excersize done: "+excersizeDone);
+        currentExcesizesPlan=intent.getStringExtra(EXTRA_PLAN)
         if (currentDayKey != -2){
-            currentDay = MY_Shared_PREF.getCurrentDay(application, currentDayKey.toString())
+            currentDay = MY_Shared_PREF.getCurrentDay(application, currentExcesizesPlan+currentDayKey.toString())
 
         }
 
@@ -54,6 +60,9 @@ class ExcersizeListActivity : AppCompatActivity() {
 
         btStart.setOnClickListener {
             val internt = Intent(it.context,ExcersizeActivity::class.java)
+            if (excersizeDone==totaleExsersize-1)
+                excersizeDone=-1
+            internt.putExtra(ExcersizeActivity.EXTRA_EXCERSIZES_DONE,excersizeDone)
             internt.putExtra(ExcersizeActivity.EXTRA_PLAN,currentExcesizesPlan)
             internt.putExtra(ExcersizeActivity.EXTRA_DAY,currentDayKey)
             startActivity(internt)
@@ -72,6 +81,7 @@ class ExcersizeListActivity : AppCompatActivity() {
         val modle = ViewModelProviders.of(this)[ExcersizesByDayandTypeViewModle::class.java]
         modle.getExcersizs(currentDayKey,currentExcesizesPlan)?.observe(this, Observer {
             if (it != null) {
+                totaleExsersize=it.icons.size
                 progressBar.visibility=View.INVISIBLE
                 recyclerView.layoutManager = LinearLayoutManager(this@ExcersizeListActivity)
                 recyclerView.adapter = ExcersizeAdupter(it)

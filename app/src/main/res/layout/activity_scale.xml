@@ -101,7 +101,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
-            <com.yourdomain.project50.Scale.view.ScaleRulerView
+            <com.yourdomain.project50.Scale.view.DecimalScaleRulerView
                 android:id="@+id/scaleWheelView_weight"
                 android:layout_width="match_parent"
                 android:layout_height="45dp"

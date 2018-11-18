@@ -1,10 +1,12 @@
 package com.yourdomain.project50.Fragments
 
 import android.content.Context
+import android.content.Intent
 import android.os.Bundle
 import android.os.CountDownTimer
 import android.support.v4.app.DialogFragment
 import android.support.v4.app.Fragment
+import android.support.v4.content.LocalBroadcastManager
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -15,6 +17,7 @@ import android.widget.TextView
 import com.bumptech.glide.Glide
 
 import com.yourdomain.project50.R
+import com.yourdomain.project50.TTSHelper
 
 
 class WatingForNextFragment : DialogFragment() {
@@ -36,8 +39,16 @@ class WatingForNextFragment : DialogFragment() {
     private var countDownTimer: CountDownTimer = object : CountDownTimer(30 * 1000, 1000) {
 
         override fun onTick(millisUntilFinished: Long) {
-            progressBar.progress = (millisUntilFinished / 1000).toInt()
+          var s = (millisUntilFinished / 1000).toInt()
+            progressBar.progress = s
             tvProgress.text=(millisUntilFinished / 1000).toString()
+            if (s==15){
+                sendTTSBroadCast(getString(R.string.next))
+                sendTTSBroadCast(mParamTitle!!)
+            }
+           if (s<4){
+               sendTTSBroadCast(s.toString())
+           }
         }
 
         override fun onFinish() {
@@ -60,6 +71,16 @@ class WatingForNextFragment : DialogFragment() {
             mParamDrawble=arguments!!.getInt(ARG_PARAM_ICON)
 
         }
+
+        sendTTSBroadCast(getString(R.string.take_a_rest))
+    }
+    private fun sendTTSBroadCast(text: String) {
+
+        val intent = Intent(TTSHelper.ACTION_TTS)
+        intent.putExtra("TTStext", text)
+
+        LocalBroadcastManager.getInstance(activity?.applicationContext!!).sendBroadcast(intent)
+
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,

@@ -11,6 +11,11 @@ import android.view.ViewGroup
 import android.widget.ProgressBar
 import android.widget.TextView
 import com.yourdomain.project50.R
+import android.support.v4.content.LocalBroadcastManager
+import android.content.Intent
+import com.yourdomain.project50.TTSHelper
+import kotlinx.android.synthetic.main.fragment_wating_for_next_excersize.*
+
 
 class WatingToStartExcersizeFragment : DialogFragment() {
 
@@ -28,7 +33,11 @@ class WatingToStartExcersizeFragment : DialogFragment() {
     private var countDownTimer: CountDownTimer = object : CountDownTimer(15 * 1000, 1000) {
 
         override fun onTick(millisUntilFinished: Long) {
-            mPrograssBar.progress = (millisUntilFinished / 1000).toInt()
+           var sconds_= (millisUntilFinished / 1000).toInt()
+            mPrograssBar.progress = sconds_
+            if (sconds_<4){
+                sendTTSBroadCast(sconds_.toString())
+            }
         }
 
         override fun onFinish() {
@@ -53,8 +62,19 @@ class WatingToStartExcersizeFragment : DialogFragment() {
             mParamALlExcersizeTotalTime = arguments!!.getString(mParamALlExcersizeTotalTime_KEY)
             mParamThisExcersizeTotalTime = arguments!!.getString(mParamThisExcersizeTotalTime_KEY)
             mParamDiscription = arguments!!.getString(mParamDiscription_KEY)
+
+
         }
     }
+    private fun sendTTSBroadCast(text: String) {
+
+        val intent = Intent(TTSHelper.ACTION_TTS)
+        intent.putExtra("TTStext", text)
+
+        LocalBroadcastManager.getInstance(activity?.applicationContext!!).sendBroadcast(intent)
+
+    }
+
 
     private lateinit var mPrograssBar: ProgressBar
 

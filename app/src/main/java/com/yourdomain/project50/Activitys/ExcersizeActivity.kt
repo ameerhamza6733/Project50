@@ -6,22 +6,20 @@ import android.content.Intent
 import android.os.Build
 import android.os.Bundle
 import android.support.v4.app.DialogFragment
+import android.support.v4.content.LocalBroadcastManager
 import android.support.v7.app.AppCompatActivity
 import android.util.Log
 import android.view.View
 import android.view.WindowManager
 import android.widget.*
 import com.bumptech.glide.Glide
-import com.yourdomain.project50.CustomCountDownTimer
+import com.yourdomain.project50.*
 import com.yourdomain.project50.Fragments.PauseExcersizeFragment
 import com.yourdomain.project50.Fragments.QuitFragment
 import com.yourdomain.project50.Fragments.WatingForNextFragment
 import com.yourdomain.project50.Fragments.WatingToStartExcersizeFragment
-import com.yourdomain.project50.MY_Shared_PREF
 import com.yourdomain.project50.Model.ExcersizeDays
 import com.yourdomain.project50.Model.Excesizes
-import com.yourdomain.project50.R
-import com.yourdomain.project50.Utils
 import com.yourdomain.project50.Utils.CountTotalTime
 import com.yourdomain.project50.ViewModle.ExcersizesByDayandTypeViewModle
 import java.util.concurrent.TimeUnit
@@ -127,13 +125,16 @@ class ExcersizeActivity : AppCompatActivity(), WatingToStartExcersizeFragment.On
             if (it != null) {
                 excesizes = it
                 var string = ""
-                if (it.viewType[0] == Excesizes.VIEW_TYPE_LIMTED_EXCERSIZE) {
-                    string = it.seconds[0].toString() + "''"
-                } else if (it.viewType[0] == Excesizes.VIEW_TYPE_UN_LIMTED_EXCERSIZE) {
-                    string = "x" + it.seconds[0].toString()
+                if (it.viewType[counter+1] == Excesizes.VIEW_TYPE_LIMTED_EXCERSIZE) {
+                    string = it.seconds[counter+1].toString() + "''"
+                } else if (it.viewType[counter+1] == Excesizes.VIEW_TYPE_UN_LIMTED_EXCERSIZE) {
+                    string = "x" + it.seconds[counter+1].toString()
                 }
+                sendTTSBroadCast(getString(R.string.ready_to_go))
+                sendTTSBroadCast(getString(R.string.next))
+                sendTTSBroadCast(it.title[counter+1])
                totleTime= CountTotalTime(it.viewType, it.seconds)
-                val fragmet = WatingToStartExcersizeFragment.newInstance(totleTime, string, it.detail[0])
+                val fragmet = WatingToStartExcersizeFragment.newInstance(totleTime, string, it.detail[counter+1])
                 fragmet.setStyle(DialogFragment.STYLE_NORMAL, android.R.style.Theme_Black_NoTitleBar_Fullscreen);
                 fragmet.show(supportFragmentManager, "WatingToStartExcersizeFragment")
             }
@@ -317,10 +318,19 @@ class ExcersizeActivity : AppCompatActivity(), WatingToStartExcersizeFragment.On
 
     override fun onBackPressed() {
         countDown?.pause()
+        sendTTSBroadCast(getString(R.string.dont_quit_keep_going))
         val quitFragment = QuitFragment()
         quitFragment.setStyle(DialogFragment.STYLE_NORMAL, R.style.dialog);
         quitFragment.show(supportFragmentManager, "quitFragment")
 
     }
 
+    private fun sendTTSBroadCast(text: String) {
+
+        val intent = Intent(TTSHelper.ACTION_TTS)
+        intent.putExtra("TTStext", text)
+
+        LocalBroadcastManager.getInstance(this@ExcersizeActivity.applicationContext!!).sendBroadcast(intent)
+
+    }
 }

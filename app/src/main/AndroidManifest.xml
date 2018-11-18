@@ -42,6 +42,7 @@
             android:theme="@style/SpalishTheme" />
         <activity android:theme="@style/SpalishTheme" android:name=".Activitys.CongragulationActivity"
             ></activity>
+        <service android:name=".TTSHelper"/>
     </application>
 
 </manifest>

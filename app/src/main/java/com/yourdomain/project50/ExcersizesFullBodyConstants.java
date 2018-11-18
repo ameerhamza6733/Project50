@@ -10,7 +10,7 @@ import java.util.HashMap;
  * Created by apple on 11/13/18.
  */
 
-public class ExcersizesConstants {
+public class ExcersizesFullBodyConstants {
 
 
     @SuppressLint("UseSparseArrays")

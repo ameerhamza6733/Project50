@@ -121,7 +121,7 @@
         android:autoLink="all"
         android:drawableEnd="@drawable/ic_chevron_right_wgite_24dp"
         android:gravity="center"
-        android:text="@string/come_back_in_30_mints"
+        android:text="COME BACK IN 30 MINTS "
         android:textColor="#f0f0f0"
         android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="parent"

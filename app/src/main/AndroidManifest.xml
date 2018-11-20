@@ -43,7 +43,7 @@
             android:name=".Activitys.CongragulationActivity"
             android:theme="@style/SpalishTheme" />
 
-        <service android:name=".TTSHelper" />
+        <service android:name=".TTSHelperService" />
 
         <activity android:name=".Activitys.SettingsActivity"></activity>
     </application>

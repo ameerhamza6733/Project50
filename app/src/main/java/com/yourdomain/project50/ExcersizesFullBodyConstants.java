@@ -31,7 +31,7 @@ public class ExcersizesFullBodyConstants {
 
     };
     private static int[] excersizes_day1_couch_tips = {
-            R.string.excersize_full_body_plan_couch_tip_defult
+            R.string.excersize_full_body_plan_couch_tips_day1_excerise1
 
 
     };

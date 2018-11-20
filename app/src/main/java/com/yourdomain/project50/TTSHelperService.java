@@ -18,10 +18,10 @@ import java.util.Locale;
  * Created by apple on 11/19/18.
  */
 
-public class TTSHelper extends Service implements TextToSpeech.OnInitListener, TextToSpeech.OnUtteranceCompletedListener {
+public class TTSHelperService extends Service implements TextToSpeech.OnInitListener, TextToSpeech.OnUtteranceCompletedListener {
     private static TextToSpeech myTTS;
     private static final String TAG = "SpeachService";
-    public static final String ACTION_TTS="TTSHelper.ACTION_TTS";
+    public static final String ACTION_TTS="TTSHelperService.ACTION_TTS";
     //private String msg;
 
 
@@ -40,7 +40,7 @@ public class TTSHelper extends Service implements TextToSpeech.OnInitListener, T
         if (myTTS != null) {
 
                 HashMap<String, String> hashMap = new HashMap<String, String>();
-            myTTS.setLanguage(new Locale("hi"));
+            myTTS.setLanguage(new Locale("th"));
                 myTTS.speak(string, TextToSpeech.QUEUE_ADD, hashMap);
 
         }
@@ -69,8 +69,8 @@ public class TTSHelper extends Service implements TextToSpeech.OnInitListener, T
     @Override
     public void onInit(int initStatus) {
         if (initStatus == TextToSpeech.SUCCESS) {
-            if (myTTS.isLanguageAvailable(new Locale("hi")) == TextToSpeech.LANG_AVAILABLE) {
-                myTTS.setLanguage(new Locale("hi"));
+            if (myTTS.isLanguageAvailable(new Locale("th")) == TextToSpeech.LANG_AVAILABLE) {
+                myTTS.setLanguage(new Locale("th"));
             }
             sayString("");
         } else if (initStatus == TextToSpeech.ERROR) {

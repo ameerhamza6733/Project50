@@ -13,8 +13,7 @@ import android.widget.TextView
 import com.yourdomain.project50.R
 import android.support.v4.content.LocalBroadcastManager
 import android.content.Intent
-import com.yourdomain.project50.TTSHelper
-import kotlinx.android.synthetic.main.fragment_wating_for_next_excersize.*
+import com.yourdomain.project50.TTSHelperService
 
 
 class WatingToStartExcersizeFragment : DialogFragment() {
@@ -68,7 +67,7 @@ class WatingToStartExcersizeFragment : DialogFragment() {
     }
     private fun sendTTSBroadCast(text: String) {
 
-        val intent = Intent(TTSHelper.ACTION_TTS)
+        val intent = Intent(TTSHelperService.ACTION_TTS)
         intent.putExtra("TTStext", text)
 
         LocalBroadcastManager.getInstance(activity?.applicationContext!!).sendBroadcast(intent)

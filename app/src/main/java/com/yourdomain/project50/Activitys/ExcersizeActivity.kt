@@ -3,6 +3,7 @@ package com.yourdomain.project50.Activitys
 import android.arch.lifecycle.Observer
 import android.arch.lifecycle.ViewModelProviders
 import android.content.Intent
+import android.media.MediaPlayer
 import android.os.Build
 import android.os.Bundle
 import android.os.Handler
@@ -107,6 +108,7 @@ class ExcersizeActivity : AppCompatActivity(), WatingToStartExcersizeFragment.On
     private var excesizes: Excesizes? = null
     private var counter = -1
     private var countDown: CustomCountDownTimer? = null
+    private var mediaPlayer: MediaPlayer? = null
     private var currentDayKey: Int = -3
     private var excersizeDone = -2
     private var currentPlan = "-2"
@@ -239,21 +241,23 @@ class ExcersizeActivity : AppCompatActivity(), WatingToStartExcersizeFragment.On
     }
 
     private var handle: Handler? = null
-    private var runable:Runnable?=null
+    private var runable: Runnable? = null
 
     private fun onNext(showWatingForNextFragment: Boolean) {
         if (showWatingForNextFragment) {
-            handle=  Handler()
-           runable = Runnable {
+            playSound(R.raw.beep_start_exercise)
+            handle = Handler()
+            runable = Runnable {
                 try {
-                    Log.d(TAG,"cuch tips "+getString(excesizes?.couchTips!![counter]))
+                    Log.d(TAG, "cuch tips " + getString(excesizes?.couchTips!![counter]))
 
-                        sendTTSBroadCast(getString(excesizes?.couchTips!![counter]!!))
+                    sendTTSBroadCast(getString(excesizes?.couchTips!![counter]!!))
 
                 } catch (e: Exception) {
                     e.printStackTrace()
-                } }
-           handle?.postDelayed(runable,3*1000)
+                }
+            }
+            handle?.postDelayed(runable, 3 * 1000)
 
             counter++
             if (excesizes?.viewType!![counter] == Excesizes.VIEW_TYPE_LIMTED_EXCERSIZE) {
@@ -310,6 +314,7 @@ class ExcersizeActivity : AppCompatActivity(), WatingToStartExcersizeFragment.On
         var half3time = (excesizes?.seconds!![counter] / 2)
         countDown = object : CustomCountDownTimer(seconds, 1000) {
             override fun onFinish() {
+                playSound(R.raw.beep_end_exercise)
                 if (counter + 1 < excesizes?.icons?.size!!) {
                     onNext(false);
 
@@ -329,6 +334,10 @@ class ExcersizeActivity : AppCompatActivity(), WatingToStartExcersizeFragment.On
 
                 if (temseconds == halftime) {
                     runOnUiThread { sendTTSBroadCast(getString(R.string.half_the_time)) }
+                }
+
+                if (temseconds < 4) {
+                    sendTTSBroadCast(temseconds.toString())
                 }
 
             }
@@ -352,8 +361,9 @@ class ExcersizeActivity : AppCompatActivity(), WatingToStartExcersizeFragment.On
 
     override fun onDestroy() {
 
-handle?.removeCallbacks(runable)
-
+        handle?.removeCallbacks(runable)
+        mediaPlayer?.stop()
+        mediaPlayer?.release()
         super.onDestroy()
     }
 
@@ -368,10 +378,17 @@ handle?.removeCallbacks(runable)
 
     private fun sendTTSBroadCast(text: String) {
 
-        val intent = Intent(TTSHelper.ACTION_TTS)
+        val intent = Intent(TTSHelperService.ACTION_TTS)
         intent.putExtra("TTStext", text)
 
         LocalBroadcastManager.getInstance(this@ExcersizeActivity.applicationContext!!).sendBroadcast(intent)
 
+    }
+
+
+    private fun playSound(raw: Int) {
+
+        mediaPlayer = MediaPlayer.create(this, raw);
+        mediaPlayer?.start()
     }
 }

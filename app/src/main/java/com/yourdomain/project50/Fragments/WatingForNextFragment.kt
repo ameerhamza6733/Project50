@@ -5,9 +5,7 @@ import android.content.Intent
 import android.os.Bundle
 import android.os.CountDownTimer
 import android.support.v4.app.DialogFragment
-import android.support.v4.app.Fragment
 import android.support.v4.content.LocalBroadcastManager
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -17,7 +15,7 @@ import android.widget.TextView
 import com.bumptech.glide.Glide
 
 import com.yourdomain.project50.R
-import com.yourdomain.project50.TTSHelper
+import com.yourdomain.project50.TTSHelperService
 
 
 class WatingForNextFragment : DialogFragment() {
@@ -76,7 +74,7 @@ class WatingForNextFragment : DialogFragment() {
     }
     private fun sendTTSBroadCast(text: String) {
 
-        val intent = Intent(TTSHelper.ACTION_TTS)
+        val intent = Intent(TTSHelperService.ACTION_TTS)
         intent.putExtra("TTStext", text)
 
         LocalBroadcastManager.getInstance(activity?.applicationContext!!).sendBroadcast(intent)

@@ -2,6 +2,7 @@ package com.yourdomain.project50;
 
 import android.app.Application;
 import android.content.Intent;
+import android.media.MediaPlayer;
 import android.util.Log;
 
 import com.yourdomain.project50.Model.Excesizes;
@@ -56,5 +57,6 @@ public class Utils {
         intent2.putExtra(Intent.EXTRA_TEXT, text);
         application. startActivity(Intent.createChooser(intent2, "Share via"));
     }
+
 
 }

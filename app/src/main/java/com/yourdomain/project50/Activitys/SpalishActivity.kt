@@ -11,7 +11,7 @@ import android.widget.ImageView
 import android.widget.TextView
 import com.bumptech.glide.Glide
 import com.yourdomain.project50.R
-import com.yourdomain.project50.TTSHelper
+import com.yourdomain.project50.TTSHelperService
 
 
 class SpalishActivity : AppCompatActivity() {
@@ -33,7 +33,7 @@ class SpalishActivity : AppCompatActivity() {
         val handler = Handler()
         handler.postDelayed(object :Runnable{
             override fun run() {
-                startService(Intent(this@SpalishActivity,TTSHelper::class.java))
+                startService(Intent(this@SpalishActivity, TTSHelperService::class.java))
                 startActivity(Intent(this@SpalishActivity,MainActivity::class.java))
             }
 

@@ -21,7 +21,7 @@ import com.yourdomain.project50.MY_Shared_PREF
 import com.yourdomain.project50.Model.ExcersizeDays
 import com.yourdomain.project50.Model.Excesizes
 import com.yourdomain.project50.R
-import com.yourdomain.project50.TTSHelper
+import com.yourdomain.project50.TTSHelperService
 import com.yourdomain.project50.ViewModle.ExcersizesByDayandTypeViewModle
 
 class ExcersizeListActivity : AppCompatActivity() {
@@ -60,7 +60,7 @@ class ExcersizeListActivity : AppCompatActivity() {
         btStart=findViewById(R.id.btStart)
 
         btStart.setOnClickListener {
-            startService(Intent(it.context,TTSHelper::class.java))
+            startService(Intent(it.context, TTSHelperService::class.java))
             val internt = Intent(it.context,ExcersizeActivity::class.java)
             if (excersizeDone==totaleExsersize-1)
                 excersizeDone=-1

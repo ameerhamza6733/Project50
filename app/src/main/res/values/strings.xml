@@ -45,4 +45,24 @@
     <string name="dont_quit_keep_going">don\'t quit keep going</string>
     <string name="take_a_rest">Take a rest</string>
 
+    <string name="excersize_abs_couch_tips_day1_excerise1">this is couch tips day 1 exercise 1</string>
+    <string name="excersize_abs_couch_tips_day1_excerise2">this is couch tips day 1 exercise 2</string>
+    <string name="excersize_abs_couch_tips_day1_excerise3">this is couch tips day 1 exercise 3</string>
+    <string name="excersize_abs_couch_tips_day1_excerise4">this is couch tips day 1 exercise 4</string>
+
+    <string name="excersize_abs_couch_tip_defult"></string>
+
+
+    <string name="excersize_butt_plan_couch_tips_day1_excerise1">this is couch tips day 1 exercise 1</string>
+    <string name="excersize_butt_plan_tips_day1_excerise2">this is couch tips day 1 exercise 2</string>
+    <string name="excersize_butt_plan_tips_day1_excerise3">this is couch tips day 1 exercise 3</string>
+    <string name="excersize_butt_plan_tips_day1_excerise4">this is couch tips day 1 exercise 4</string>
+
+    <string name="excersize_butt_plan_couch_tip_defult"></string>
+
+    <string name="excersize_full_body_plan_couch_tips_day1_excerise1">this is couch tips day 1 exercise 1</string>
+
+    <string name="excersize_full_body_plan_couch_tip_defult"></string>
+
+
 </resources>

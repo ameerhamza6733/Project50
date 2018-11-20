@@ -4,30 +4,23 @@
         android:key="workout"
         android:title="WORKOUT">
         <SwitchPreference
-            android:dependency=""
+
             android:defaultValue="false"
-            android:icon="@drawable/ic_volume_mute_black_24dp"
+            android:icon="@drawable/ic_volume_up_black2_24dp"
             android:key="Mute"
             android:title="Mute" />
         <SwitchPreference
             android:defaultValue="true"
-            android:icon="@drawable/ic_volume_up_black2_24dp"
+
             android:key="voice_guide"
             android:title="Voice guide" />
         <SwitchPreference
             android:defaultValue="true"
-            android:icon="@drawable/ic_record_voice_over_black_24dp"
             android:key="Coach_tips"
             android:title="Coach tips" />
 
+
     </PreferenceCategory>
 
-    <PreferenceCategory
-        android:key="tts_PreferenceCategory"
-        android:title="Voice Options(TTS)">
-        <ListPreference
 
-            android:key="tts_engine_list_key"
-            android:title="Select TTS Engine" />
-    </PreferenceCategory>
 </PreferenceScreen>

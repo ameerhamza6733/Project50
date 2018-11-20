@@ -9,9 +9,7 @@ class ExcersizeDays(var day : Int,val  viewType:Int=-1,var totaleExcersizes:Long
     companion object {
         val VIEW_TYPE_DAY:Int=1
         val VIEW_TYPE_AD=2;
-        val gson=Gson()
+
     }
-    public override fun toString():String{
-        return gson.toJson(this)
-    }
+
 }

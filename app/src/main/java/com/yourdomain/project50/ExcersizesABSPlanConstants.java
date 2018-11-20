@@ -28,6 +28,13 @@ public class ExcersizesABSPlanConstants {
             60,
             40
     };
+
+    private static double[] excersize_day1_calories = {150,
+            400,
+            600,
+            470
+    };
+
     private static int[] getExcersize_day1_view_typet = {
             Excesizes.VIEW_TYPE_LIMTED_EXCERSIZE,
             Excesizes.VIEW_TYPE_LIMTED_EXCERSIZE,
@@ -40,6 +47,15 @@ public class ExcersizesABSPlanConstants {
             "Stand tall with your feet shoulder-width and your toes pointing forward. Place your fingertips behind the neck with your elbows pointing out to your sides in line with your shoulders",
             ": Crossed Arm Crunch. Crossed arm crunch is a beginner friendly bodyweight crunch exercise that works your"
     };
+    private static int[] excersizes_day1_couch_tips = {
+            R.string.excersize_abs_couch_tips_day1_excerise1,
+            R.string.excersize_abs_couch_tips_day1_excerise2,
+            R.string.excersize_abs_couch_tip_defult,
+            R.string.excersize_abs_couch_tips_day1_excerise4
+
+    };
+
+
 
 
     private static String[] excersizes_defults_title = {
@@ -88,6 +104,40 @@ public class ExcersizesABSPlanConstants {
             40
             ,40
     };
+
+    private static double[] excersize_defult_calrious  = {
+            100,
+            290,
+            300,
+            408,
+            128,
+            128,
+            106,
+            404,
+            106,
+            100,
+            403,
+            406,
+            408
+            ,400
+    };
+    private static int[] excersizes_defult_couch_tips = {
+            R.string.excersize_abs_couch_tip_defult,
+            R.string.excersize_abs_couch_tip_defult,
+            R.string.excersize_abs_couch_tip_defult,
+            R.string.excersize_abs_couch_tip_defult,
+            R.string.excersize_abs_couch_tip_defult,
+            R.string.excersize_abs_couch_tip_defult,
+            R.string.excersize_abs_couch_tip_defult,
+            R.string.excersize_abs_couch_tip_defult,
+            R.string.excersize_abs_couch_tip_defult,
+            R.string.excersize_abs_couch_tip_defult,
+            R.string.excersize_abs_couch_tip_defult,
+            R.string.excersize_abs_couch_tip_defult,
+            R.string.excersize_abs_couch_tip_defult,
+            R.string.excersize_abs_couch_tip_defult
+
+    };
     private static int[] getExcersize_view_type_defult = {
             Excesizes.VIEW_TYPE_LIMTED_EXCERSIZE,
             Excesizes.VIEW_TYPE_LIMTED_EXCERSIZE,
@@ -122,7 +172,7 @@ public class ExcersizesABSPlanConstants {
     };
 
     public static void fillUpdata() {
-        Excesizes day1Excersizes = new Excesizes(excersizes_day1_title, excersizes_day1_gif_icons, excersize_day1_times, excersizes_day1_detail, getExcersize_day1_view_typet);
+        Excesizes day1Excersizes = new Excesizes(excersizes_day1_title, excersizes_day1_gif_icons, excersize_day1_times, excersizes_day1_detail, getExcersize_day1_view_typet,excersize_day1_calories,excersizes_day1_couch_tips);
         mDayToExsizeHashMap.put(1, day1Excersizes);
 
     }
@@ -133,6 +183,6 @@ public class ExcersizesABSPlanConstants {
         if (mDayToExsizeHashMap.containsKey(day)) {
             return mDayToExsizeHashMap.get(day);
         }
-        return new Excesizes(excersizes_defults_title, excersizes_defults_gif_icons, excersize_defult_times, excersizes_defult_detail, getExcersize_view_type_defult);
+        return new Excesizes(excersizes_defults_title, excersizes_defults_gif_icons, excersize_defult_times, excersizes_defult_detail, getExcersize_view_type_defult,excersize_defult_calrious,excersizes_defult_couch_tips);
     }
 }

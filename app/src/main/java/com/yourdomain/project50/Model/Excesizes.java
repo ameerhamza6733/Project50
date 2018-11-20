@@ -12,13 +12,17 @@ public class Excesizes {
     private int [] seconds;
     private String[] detail;
     private int[] viewType;
+    private double [] calories;
+    private int [] couchTips;
 
-    public Excesizes(String[] title, int[] icons, int[] seconds,String[] detail,int [] viewType) {
+    public Excesizes(String[] title, int[] icons, int[] seconds,String[] detail,int [] viewType,double []calories,int[] couchTips) {
         this.title = title;
         this.icons = icons;
         this.seconds = seconds;
         this.detail=detail;
         this.viewType=viewType;
+        this.calories=calories;
+        this.couchTips=couchTips;
     }
 
     public int[] getViewType() {
@@ -41,6 +45,13 @@ public class Excesizes {
         return detail;
     }
 
+    public double[] getCalories() {
+        return calories;
+    }
+
+    public int[] getCouchTips() {
+        return couchTips;
+    }
 
     public static final int VIEW_TYPE_LIMTED_EXCERSIZE=0;
     public static final int VIEW_TYPE_UN_LIMTED_EXCERSIZE=1;

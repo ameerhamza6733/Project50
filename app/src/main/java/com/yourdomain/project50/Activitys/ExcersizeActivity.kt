@@ -5,6 +5,7 @@ import android.arch.lifecycle.ViewModelProviders
 import android.content.Intent
 import android.os.Build
 import android.os.Bundle
+import android.os.Handler
 import android.support.v4.app.DialogFragment
 import android.support.v4.content.LocalBroadcastManager
 import android.support.v7.app.AppCompatActivity
@@ -27,9 +28,9 @@ import java.util.concurrent.TimeUnit
 
 class ExcersizeActivity : AppCompatActivity(), WatingToStartExcersizeFragment.OnFragmentInteractionListener, PauseExcersizeFragment.OnResumeListener, QuitFragment.OnQuitListener, WatingForNextFragment.OnNextExcersizeDemoFragmentListener {
     override fun onSkip() {
-        if (counter+1<excesizes?.icons?.size!!){
+        if (counter + 1 < excesizes?.icons?.size!!) {
             onNext(true);
-        }else{
+        } else {
             sayCongragulation()
         }
     }
@@ -59,9 +60,23 @@ class ExcersizeActivity : AppCompatActivity(), WatingToStartExcersizeFragment.On
     }
 
     private fun sayCongragulation() {
+        var person = MY_Shared_PREF.getPerson(application)
+        var totleCal = person.totleKCalBurn
+
+        for (i in excesizes!!.calories)
+            totleCal = totleCal + i
+        person.totleKCalBurn = totleCal
+
+        person.totleEXERCISES = person.totleEXERCISES + excesizes?.title?.size!!
+        person.totleMintsDuration = person.totleMintsDuration + totleTime.toDouble()
+        MY_Shared_PREF.savePerson(application, person)
+
         val intent = Intent(this@ExcersizeActivity, CongragulationActivity::class.java)
-        intent.putExtra(CongragulationActivity.EXTRA_DURACTION,totleTime)
+        intent.putExtra(CongragulationActivity.EXTRA_DURACTION, person.totleMintsDuration)
+        intent.putExtra(CongragulationActivity.EXTRA_EXCERSIZES, person.totleEXERCISES)
         intent.putExtra(CongragulationActivity.EXTRA_DAY, currentDayKey + 1)
+        intent.putExtra(CongragulationActivity.EXTRA_CAL, person.totleKCalBurn)
+
         startActivity(intent)
         finish()
 
@@ -98,7 +113,7 @@ class ExcersizeActivity : AppCompatActivity(), WatingToStartExcersizeFragment.On
 
     private var TAG = "ExcersizeActivity";
 
-    private var totleTime=""
+    private var totleTime = ""
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -125,16 +140,16 @@ class ExcersizeActivity : AppCompatActivity(), WatingToStartExcersizeFragment.On
             if (it != null) {
                 excesizes = it
                 var string = ""
-                if (it.viewType[counter+1] == Excesizes.VIEW_TYPE_LIMTED_EXCERSIZE) {
-                    string = it.seconds[counter+1].toString() + "''"
-                } else if (it.viewType[counter+1] == Excesizes.VIEW_TYPE_UN_LIMTED_EXCERSIZE) {
-                    string = "x" + it.seconds[counter+1].toString()
+                if (it.viewType[counter + 1] == Excesizes.VIEW_TYPE_LIMTED_EXCERSIZE) {
+                    string = it.seconds[counter + 1].toString() + "''"
+                } else if (it.viewType[counter + 1] == Excesizes.VIEW_TYPE_UN_LIMTED_EXCERSIZE) {
+                    string = "x" + it.seconds[counter + 1].toString()
                 }
                 sendTTSBroadCast(getString(R.string.ready_to_go))
                 sendTTSBroadCast(getString(R.string.next))
-                sendTTSBroadCast(it.title[counter+1])
-               totleTime= CountTotalTime(it.viewType, it.seconds)
-                val fragmet = WatingToStartExcersizeFragment.newInstance(totleTime, string, it.detail[counter+1])
+                sendTTSBroadCast(it.title[counter + 1])
+                totleTime = CountTotalTime(it.viewType, it.seconds)
+                val fragmet = WatingToStartExcersizeFragment.newInstance(totleTime, string, it.detail[counter + 1])
                 fragmet.setStyle(DialogFragment.STYLE_NORMAL, android.R.style.Theme_Black_NoTitleBar_Fullscreen);
                 fragmet.show(supportFragmentManager, "WatingToStartExcersizeFragment")
             }
@@ -223,8 +238,23 @@ class ExcersizeActivity : AppCompatActivity(), WatingToStartExcersizeFragment.On
 
     }
 
+    private var handle: Handler? = null
+    private var runable:Runnable?=null
+
     private fun onNext(showWatingForNextFragment: Boolean) {
         if (showWatingForNextFragment) {
+            handle=  Handler()
+           runable = Runnable {
+                try {
+                    Log.d(TAG,"cuch tips "+getString(excesizes?.couchTips!![counter]))
+
+                        sendTTSBroadCast(getString(excesizes?.couchTips!![counter]!!))
+
+                } catch (e: Exception) {
+                    e.printStackTrace()
+                } }
+           handle?.postDelayed(runable,3*1000)
+
             counter++
             if (excesizes?.viewType!![counter] == Excesizes.VIEW_TYPE_LIMTED_EXCERSIZE) {
                 updateUIWithCountDown()
@@ -276,23 +306,31 @@ class ExcersizeActivity : AppCompatActivity(), WatingToStartExcersizeFragment.On
         mTotalProgressBar.progress = counter + 1
         mCurrentProgressBar.max = excesizes?.seconds!![counter].toInt()
         var seconds = TimeUnit.SECONDS.toMillis(excesizes?.seconds!![counter]?.toLong())
+        var halftime = (excesizes?.seconds!![counter] / 2)
+        var half3time = (excesizes?.seconds!![counter] / 2)
         countDown = object : CustomCountDownTimer(seconds, 1000) {
             override fun onFinish() {
-                if (counter+1<excesizes?.icons?.size!!){
+                if (counter + 1 < excesizes?.icons?.size!!) {
                     onNext(false);
 
-                }else{
+                } else {
                     sayCongragulation()
                 }
-                mTotalSeconds.text="0"
+                mTotalSeconds.text = "0"
                 mCurrentProgressBar.progress = 0
                 updateExcersizeCountInSharePref()
             }
 
             override fun onTick(millisUntilFinished: Long) {
-             val seconds=   (millisUntilFinished / 1000).toInt()
-                mTotalSeconds.text=seconds.toString()
-                mCurrentProgressBar.progress = seconds
+                val temseconds = (millisUntilFinished / 1000).toInt()
+                mTotalSeconds.text = temseconds.toString()
+                mCurrentProgressBar.progress = temseconds
+
+
+                if (temseconds == halftime) {
+                    runOnUiThread { sendTTSBroadCast(getString(R.string.half_the_time)) }
+                }
+
             }
 
         }
@@ -313,6 +351,9 @@ class ExcersizeActivity : AppCompatActivity(), WatingToStartExcersizeFragment.On
     }
 
     override fun onDestroy() {
+
+handle?.removeCallbacks(runable)
+
         super.onDestroy()
     }
 

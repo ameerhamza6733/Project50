@@ -6,7 +6,6 @@
     <uses-permission android:name="android.permission.INTERNET" />
 
     <application
-
         android:allowBackup="true"
         android:appComponentFactory="whateverString"
         android:icon="@mipmap/ic_launcher"
@@ -17,7 +16,7 @@
         tools:replace="android:appComponentFactory">
         <activity
             android:name=".Activitys.ScaleActivity"
-            android:theme="@style/SpalishTheme"></activity>
+            android:theme="@style/SpalishTheme" />
         <activity
             android:name=".Activitys.SpalishActivity"
             android:theme="@style/SpalishTheme">
@@ -37,12 +36,16 @@
             android:theme="@style/SpalishTheme" />
         <activity android:name=".Activitys.ExcersizeListActivity" />
         <activity
-            android:screenOrientation="portrait"
             android:name=".Activitys.ExcersizeActivity"
+            android:screenOrientation="portrait"
             android:theme="@style/SpalishTheme" />
-        <activity android:theme="@style/SpalishTheme" android:name=".Activitys.CongragulationActivity"
-            ></activity>
-        <service android:name=".TTSHelper"/>
+        <activity
+            android:name=".Activitys.CongragulationActivity"
+            android:theme="@style/SpalishTheme" />
+
+        <service android:name=".TTSHelper" />
+
+        <activity android:name=".Activitys.SettingsActivity"></activity>
     </application>
 
 </manifest>

@@ -21,6 +21,8 @@ public class ExcersizesFullBodyConstants {
            };
     private static int[] excersize_day1_times = {15
     };
+    private static double[] excersize_day1_calories = {150
+    };
     private static int[] getExcersize_day1_view_typet = {
             Excesizes.VIEW_TYPE_LIMTED_EXCERSIZE
     };
@@ -28,7 +30,11 @@ public class ExcersizesFullBodyConstants {
             "A jumping jack  or star jump also called side-straddle hop in the US military,"
 
     };
+    private static int[] excersizes_day1_couch_tips = {
+            R.string.excersize_full_body_plan_couch_tip_defult
 
+
+    };
 
     private static String[] excersizes_defults_title = {
             "Jumping jacks"
@@ -76,6 +82,22 @@ public class ExcersizesFullBodyConstants {
             40
             ,40
     };
+    private static double[] excersize_defult_calrious  = {
+            100,
+            290,
+            300,
+            408,
+            128,
+            128,
+            106,
+            404,
+            106,
+            100,
+            403,
+            406,
+            408
+            ,400
+    };
     private static int[] getExcersize_view_type_defult = {
             Excesizes.VIEW_TYPE_LIMTED_EXCERSIZE,
             Excesizes.VIEW_TYPE_LIMTED_EXCERSIZE,
@@ -109,8 +131,26 @@ public class ExcersizesFullBodyConstants {
             , "Child's pose description"
     };
 
+    private static int[] excersizes_defult_couch_tips = {
+            R.string.excersize_full_body_plan_couch_tip_defult,
+            R.string.excersize_full_body_plan_couch_tip_defult,
+            R.string.excersize_full_body_plan_couch_tip_defult,
+            R.string.excersize_full_body_plan_couch_tip_defult,
+            R.string.excersize_full_body_plan_couch_tip_defult,
+            R.string.excersize_full_body_plan_couch_tip_defult,
+            R.string.excersize_full_body_plan_couch_tip_defult,
+            R.string.excersize_full_body_plan_couch_tip_defult,
+            R.string.excersize_full_body_plan_couch_tip_defult,
+            R.string.excersize_full_body_plan_couch_tip_defult,
+            R.string.excersize_full_body_plan_couch_tip_defult,
+            R.string.excersize_full_body_plan_couch_tip_defult,
+            R.string.excersize_full_body_plan_couch_tip_defult,
+            R.string.excersize_full_body_plan_couch_tip_defult
+
+    };
+
     public static void fillUpdata() {
-        Excesizes day1Excersizes = new Excesizes(excersizes_day1_title, excersizes_day1_gif_icons, excersize_day1_times, excersizes_day1_detail, getExcersize_day1_view_typet);
+        Excesizes day1Excersizes = new Excesizes(excersizes_day1_title, excersizes_day1_gif_icons, excersize_day1_times, excersizes_day1_detail, getExcersize_day1_view_typet,excersize_day1_calories,excersizes_day1_couch_tips);
         mDayToExsizeHashMap.put(1, day1Excersizes);
 
     }
@@ -121,6 +161,6 @@ public class ExcersizesFullBodyConstants {
         if (mDayToExsizeHashMap.containsKey(day)) {
             return mDayToExsizeHashMap.get(day);
         }
-        return new Excesizes(excersizes_defults_title, excersizes_defults_gif_icons, excersize_defult_times, excersizes_defult_detail, getExcersize_view_type_defult);
+        return new Excesizes(excersizes_defults_title, excersizes_defults_gif_icons, excersize_defult_times, excersizes_defult_detail, getExcersize_view_type_defult,excersize_defult_calrious,excersizes_defult_couch_tips);
     }
 }

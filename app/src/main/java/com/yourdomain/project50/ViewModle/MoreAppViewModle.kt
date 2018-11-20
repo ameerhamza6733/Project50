@@ -19,7 +19,11 @@ class MoreAppViewModle :ViewModel(){
             mutableLiveData= MutableLiveData();
             arrayList= ArrayList();
 
-            arrayList?.add(MoreApps("Kick the Buddy","https://play.google.com/store/apps/details?id=com.playgendary.kickthebuddy","https://apkmody.co/wp-content/uploads/2018/07/cover-kick-the-buddy.jpg"))
+            arrayList?.add(MoreApps("Kick the Buddy","https://play.google.com/store/apps/details?id=com.playgendary.kickthebuddy","https://apkmody.co/wp-content/uploads/2018/07/cover-kick-the-buddy.jpg",MoreApps.VIEW_TYPE_APP,4.8))
+            arrayList?.add(MoreApps("Kick the Buddy","https://play.google.com/store/apps/details?id=com.playgendary.kickthebuddy","https://apkmody.co/wp-content/uploads/2018/07/cover-kick-the-buddy.jpg",MoreApps.VIEW_TYPE_APP,4.3))
+            arrayList?.add(MoreApps("Kick the Buddy","https://play.google.com/store/apps/details?id=com.playgendary.kickthebuddy","https://apkmody.co/wp-content/uploads/2018/07/cover-kick-the-buddy.jpg",MoreApps.VIEW_TYPE_APP,4.4))
+            arrayList?.add(MoreApps("Kick the Buddy","https://play.google.com/store/apps/details?id=com.playgendary.kickthebuddy","https://apkmody.co/wp-content/uploads/2018/07/cover-kick-the-buddy.jpg",MoreApps.VIEW_TYPE_APP,4.1))
+
             mutableLiveData?.value=arrayList
         }
         return mutableLiveData!!

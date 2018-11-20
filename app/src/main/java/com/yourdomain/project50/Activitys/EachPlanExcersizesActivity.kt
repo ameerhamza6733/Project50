@@ -1,5 +1,6 @@
 package com.yourdomain.project50.Activitys
 
+import android.content.Intent
 import android.os.Bundle
 import android.os.Handler
 import android.support.design.widget.BottomNavigationView
@@ -26,6 +27,7 @@ import com.yourdomain.project50.Fragments.FullBodyPlanDayFragment
 import com.yourdomain.project50.Model.ExcersizePlans
 import com.yourdomain.project50.R
 import com.yourdomain.project50.ViewModle.ExcersizePlansViewModle
+import kotlinx.android.synthetic.main.activity_days_excersizes.*
 
 
 class EachPlanExcersizesActivity : AppCompatActivity() {
@@ -44,6 +46,7 @@ class EachPlanExcersizesActivity : AppCompatActivity() {
                 return@OnNavigationItemSelectedListener true
             }
             R.id.navigation_notifications -> {
+                startActivity(Intent(this@EachPlanExcersizesActivity,SettingsActivity::class.java))
                 return@OnNavigationItemSelectedListener true
             }
         }
@@ -67,10 +70,10 @@ class EachPlanExcersizesActivity : AppCompatActivity() {
         intiDataSet()
         val pagerAdapter = ScreenSlidePagerAdapter(supportFragmentManager)
         //     val fadeOutTransformation = FadeOutTransformation()
-        //  mPager.setPageTransformer(true, fadeOutTransformation);
+         // mPager.setPageTransformer(true, fadeOutTransformation);
 
         mPager.adapter = pagerAdapter
-        //  navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener)
+          navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener)
     }
 
     private fun intiDataSet() {

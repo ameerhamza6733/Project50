@@ -4,9 +4,7 @@ import android.app.Application
 import android.content.Context
 import android.util.Log
 import com.google.gson.Gson
-import com.yourdomain.project50.Model.ExcersizeDays
-import com.yourdomain.project50.Model.Person
-import com.yourdomain.project50.Model.PersonAppearance
+import com.yourdomain.project50.Model.*
 import java.util.ArrayList
 import java.util.HashMap
 import java.util.HashSet
@@ -24,6 +22,8 @@ class MY_Shared_PREF{
         private val SHARE_PREF_SEETINGS="SHARE_PREF_SEETINGS";
         private val SHARE_PREFF_PERSON="share pref person"
         private val SHARE_PREFF_PERSON_KEY="SHARE_PREFF_PERSON_KEY"
+        private val SHARED_PREF_APP_SETTINGS="SHARED_PREF_APP_SETTINGS";
+        private val SHARED_PREF_APP_SETTINGS_KEY="SHARED_PREF_APP_SETTINGS_KEY";
 
          private val  gson=Gson()
 
@@ -88,6 +88,19 @@ class MY_Shared_PREF{
             }else{
                 Person();
             }
+        }
+
+        fun saveAppSettings(application: Application,settings: Settings){
+            val sharePref=application.applicationContext.getSharedPreferences(SHARE_PREF_SEETINGS,0)
+            val editer = sharePref.edit()
+            editer.putString(SHARED_PREF_APP_SETTINGS_KEY,gson.toJson(settings)).apply()
+        }
+
+        fun getAppSettings(application: Application):Settings{
+            val sharePref=application.applicationContext.getSharedPreferences(SHARE_PREF_SEETINGS,0)
+            if(!sharePref.contains(SHARED_PREF_APP_SETTINGS_KEY))
+                return Settings(WorkoutSettings());
+            return gson.fromJson(sharePref.getString(SHARED_PREF_APP_SETTINGS_KEY,""),Settings::class.java)
         }
 
     }

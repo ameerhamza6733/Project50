@@ -23,32 +23,14 @@ class WatingToStartExcersizeFragment : DialogFragment() {
     private var mParamThisExcersizeTotalTime: String = ""
     private var mParamDiscription: String? = null
     private var mListener: OnFragmentInteractionListener? = null
+    private var watingTime:Int=30
 
     private lateinit var mtvDiscription: TextView
     private lateinit var mThisExsersizeTotalTime: TextView
     private lateinit var mExsersizseTotalTime: TextView
     private lateinit var mSkipButton: TextView
     private lateinit var mbtBack:TextView
-    private var countDownTimer: CountDownTimer = object : CountDownTimer(15 * 1000, 1000) {
-
-        override fun onTick(millisUntilFinished: Long) {
-           var sconds_= (millisUntilFinished / 1000).toInt()
-            mPrograssBar.progress = sconds_
-            if (sconds_<4){
-                sendTTSBroadCast(sconds_.toString())
-            }
-        }
-
-        override fun onFinish() {
-            mListener?.onCountDownDonw()
-           try {
-               dismiss()
-           }catch (e:Exception){
-               e.printStackTrace()
-           }
-
-        }
-    }
+    private var countDownTimer: CountDownTimer? =null
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
         return super.onCreateDialog(savedInstanceState)
@@ -61,6 +43,7 @@ class WatingToStartExcersizeFragment : DialogFragment() {
             mParamALlExcersizeTotalTime = arguments!!.getString(mParamALlExcersizeTotalTime_KEY)
             mParamThisExcersizeTotalTime = arguments!!.getString(mParamThisExcersizeTotalTime_KEY)
             mParamDiscription = arguments!!.getString(mParamDiscription_KEY)
+            watingTime=arguments!!.getInt(mParamWatingTime,30)
 
 
         }
@@ -89,8 +72,28 @@ class WatingToStartExcersizeFragment : DialogFragment() {
         mPrograssBar = view.findViewById<ProgressBar>(R.id.progressBar)
 
         updateUI()
-        countDownTimer.start()
-        mSkipButton.setOnClickListener { countDownTimer.onFinish() }
+      countDownTimer=  object : CountDownTimer(watingTime.toLong() * 1000, 1000) {
+
+            override fun onTick(millisUntilFinished: Long) {
+                var sconds_= (millisUntilFinished / 1000).toInt()
+                mPrograssBar.progress = sconds_
+                if (sconds_<4){
+                    sendTTSBroadCast(sconds_.toString())
+                }
+            }
+
+            override fun onFinish() {
+                mListener?.onCountDownDonw()
+                try {
+                    dismiss()
+                }catch (e:Exception){
+                    e.printStackTrace()
+                }
+
+            }
+        }
+        countDownTimer?.start()
+        mSkipButton.setOnClickListener { countDownTimer?.onFinish() }
         mbtBack.setOnClickListener { activity?.finish() }
 
         return view
@@ -114,7 +117,7 @@ class WatingToStartExcersizeFragment : DialogFragment() {
     }
 
     override fun onDetach() {
-        countDownTimer.cancel()
+        countDownTimer?.cancel()
         super.onDetach()
         mListener = null
     }
@@ -127,14 +130,16 @@ class WatingToStartExcersizeFragment : DialogFragment() {
         private val mParamALlExcersizeTotalTime_KEY = "mParamALlExcersizeTotalTime"
         private val mParamThisExcersizeTotalTime_KEY = "mParamThisExcersizeTotalTime"
         private val mParamDiscription_KEY = "mParamDiscription_KEY";
+        private val mParamWatingTime="mParamWatingTime"
 
 
-        fun newInstance(totaleTime: String, totaleTimeForThis: String, discription: String): WatingToStartExcersizeFragment {
+        fun newInstance(totaleTime: String, totaleTimeForThis: String, discription: String,watingTime:Int): WatingToStartExcersizeFragment {
             val fragment = WatingToStartExcersizeFragment()
             val args = Bundle()
             args.putString(mParamALlExcersizeTotalTime_KEY, totaleTime)
             args.putString(mParamThisExcersizeTotalTime_KEY, totaleTimeForThis)
             args.putString(mParamDiscription_KEY, discription)
+            args.putInt(mParamWatingTime,watingTime)
             fragment.arguments = args
             return fragment
         }

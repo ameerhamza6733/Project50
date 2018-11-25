@@ -18,16 +18,17 @@ import com.bumptech.glide.Glide
 import com.yourdomain.project50.*
 import com.yourdomain.project50.Fragments.PauseExcersizeFragment
 import com.yourdomain.project50.Fragments.QuitFragment
-import com.yourdomain.project50.Fragments.WatingForNextFragment
+import com.yourdomain.project50.Fragments.RestFragment
 import com.yourdomain.project50.Fragments.WatingToStartExcersizeFragment
 import com.yourdomain.project50.Model.ExcersizeDays
 import com.yourdomain.project50.Model.Excesizes
 import com.yourdomain.project50.Utils.CountTotalTime
 import com.yourdomain.project50.ViewModle.ExcersizesByDayandTypeViewModle
 import java.util.concurrent.TimeUnit
+import com.yourdomain.project50.Model.Settings
 
 
-class ExcersizeActivity : AppCompatActivity(), WatingToStartExcersizeFragment.OnFragmentInteractionListener, PauseExcersizeFragment.OnResumeListener, QuitFragment.OnQuitListener, WatingForNextFragment.OnNextExcersizeDemoFragmentListener {
+class ExcersizeActivity : AppCompatActivity(), WatingToStartExcersizeFragment.OnFragmentInteractionListener, PauseExcersizeFragment.OnResumeListener, QuitFragment.OnQuitListener, RestFragment.OnNextExcersizeDemoFragmentListener {
     override fun onSkip() {
         if (counter + 1 < excesizes?.icons?.size!!) {
             onNext(true);
@@ -116,7 +117,13 @@ class ExcersizeActivity : AppCompatActivity(), WatingToStartExcersizeFragment.On
     private var TAG = "ExcersizeActivity";
 
     private var totleTime = ""
+    private lateinit var settings: Settings
 
+    override fun onStart() {
+        super.onStart()
+        settings = MY_Shared_PREF.getAppSettings(application)
+
+    }
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.each_full_screen_excersize)
@@ -147,11 +154,12 @@ class ExcersizeActivity : AppCompatActivity(), WatingToStartExcersizeFragment.On
                 } else if (it.viewType[counter + 1] == Excesizes.VIEW_TYPE_UN_LIMTED_EXCERSIZE) {
                     string = "x" + it.seconds[counter + 1].toString()
                 }
+
                 sendTTSBroadCast(getString(R.string.ready_to_go))
                 sendTTSBroadCast(getString(R.string.next))
                 sendTTSBroadCast(it.title[counter + 1])
                 totleTime = CountTotalTime(it.viewType, it.seconds)
-                val fragmet = WatingToStartExcersizeFragment.newInstance(totleTime, string, it.detail[counter + 1])
+                val fragmet = WatingToStartExcersizeFragment.newInstance(totleTime, string, it.detail[counter + 1],settings.workoutSettings.watingCoutDownTime)
                 fragmet.setStyle(DialogFragment.STYLE_NORMAL, android.R.style.Theme_Black_NoTitleBar_Fullscreen);
                 fragmet.show(supportFragmentManager, "WatingToStartExcersizeFragment")
             }
@@ -249,9 +257,10 @@ class ExcersizeActivity : AppCompatActivity(), WatingToStartExcersizeFragment.On
             handle = Handler()
             runable = Runnable {
                 try {
-                    Log.d(TAG, "cuch tips " + getString(excesizes?.couchTips!![counter]))
-
-                    sendTTSBroadCast(getString(excesizes?.couchTips!![counter]!!))
+                    if (settings.workoutSettings.CoachTips){
+                        Log.d(TAG, "cuch tips " + getString(excesizes?.couchTips!![counter]))
+                        sendTTSBroadCast(getString(excesizes?.couchTips!![counter]!!))
+                    }
 
                 } catch (e: Exception) {
                     e.printStackTrace()
@@ -275,7 +284,7 @@ class ExcersizeActivity : AppCompatActivity(), WatingToStartExcersizeFragment.On
                 temp = temp + "x " + excesizes?.seconds!![counter + 1].toString()
             }
             Log.d(TAG, "showing data for wating fragment: " + temp)
-            val watingForNextFragment = WatingForNextFragment.newInstance(excesizes?.title!![counter + 1], temp, "NEXT " + (counter + 1).toString() + "/" + (excesizes!!.icons.size).toString(), excesizes?.icons!![counter + 1])
+            val watingForNextFragment = RestFragment.newInstance(excesizes?.title!![counter + 1], temp, "NEXT " + (counter + 1).toString() + "/" + (excesizes!!.icons.size).toString(), excesizes?.icons!![counter + 1],settings.workoutSettings.restTimeInSeconds)
             watingForNextFragment.setStyle(DialogFragment.STYLE_NORMAL, android.R.style.Theme_Black_NoTitleBar_Fullscreen);
             watingForNextFragment.show(supportFragmentManager, "watingForNextFragment")
 
@@ -378,11 +387,11 @@ class ExcersizeActivity : AppCompatActivity(), WatingToStartExcersizeFragment.On
 
     private fun sendTTSBroadCast(text: String) {
 
-        val intent = Intent(TTSHelperService.ACTION_TTS)
-        intent.putExtra("TTStext", text)
-
-        LocalBroadcastManager.getInstance(this@ExcersizeActivity.applicationContext!!).sendBroadcast(intent)
-
+        if (!settings.workoutSettings.mute) {
+            val intent = Intent(TTSHelperService.ACTION_TTS)
+            intent.putExtra("TTStext", text)
+            LocalBroadcastManager.getInstance(this@ExcersizeActivity.applicationContext!!).sendBroadcast(intent)
+        }
     }
 
 

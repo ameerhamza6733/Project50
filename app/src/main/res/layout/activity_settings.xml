@@ -10,6 +10,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
+
         <LinearLayout
             android:id="@+id/linear_layout_work_out"
             android:layout_width="match_parent"
@@ -246,6 +247,74 @@
                 android:drawableStart="@drawable/ic_file_download_pink_24dp"
                 android:text="Download more TTS language data"
                 android:textColor="#000000" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/linearlayoutSupportUs"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginEnd="8dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="8dp"
+            android:orientation="vertical"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/linear_layout_tts">
+            <TextView
+
+                android:textSize="16sp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Support Us" />
+
+            <TextView
+
+                android:id="@+id/btRateUs"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="16dp"
+                android:drawablePadding="16dp"
+                android:drawableStart="@drawable/ic_thumb_up_pink_24dp"
+                android:text="Rate us"
+                android:textColor="#000000"
+                android:textSize="16sp" />
+
+            <TextView
+
+                android:id="@+id/btShare"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="16dp"
+                android:drawablePadding="16dp"
+                android:drawableStart="@drawable/ic_share_pink_24dp"
+                android:text="Share with friends"
+                android:textColor="#000000"
+                android:textSize="16sp" />
+
+            <TextView
+
+                android:id="@+id/btFeedback"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="16dp"
+                android:drawablePadding="16dp"
+                android:drawableStart="@drawable/ic_feedback_pink_24dp"
+                android:text="Feedback"
+                android:textColor="#000000"
+                android:textSize="16sp" />
+
+            <TextView
+
+                android:id="@+id/btPrivacyPolicy"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="16dp"
+                android:drawablePadding="16dp"
+                android:drawableStart="@drawable/ic_info_outline_pink_24dp"
+                android:text="Privacy policy"
+                android:textColor="#000000"
+                android:textSize="16sp" />
+
         </LinearLayout>
 
     </android.support.constraint.ConstraintLayout>

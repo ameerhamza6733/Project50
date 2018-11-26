@@ -35,6 +35,7 @@ class SpalishActivity : AppCompatActivity() {
             override fun run() {
                 startService(Intent(this@SpalishActivity, TTSHelperService::class.java))
                 startActivity(Intent(this@SpalishActivity,MainActivity::class.java))
+                finish()
             }
 
         },3000)

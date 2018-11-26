@@ -6,6 +6,7 @@ import android.content.Context
 import android.os.Build
 import android.os.Bundle
 import android.support.design.widget.Snackbar
+import android.support.v4.app.DialogFragment
 import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
@@ -18,6 +19,9 @@ import android.widget.ImageView
 import android.widget.ProgressBar
 import android.widget.TextView
 import com.bumptech.glide.Glide
+import com.bumptech.glide.load.engine.DiskCacheStrategy
+import com.bumptech.glide.request.RequestOptions
+import com.yourdomain.project50.Fragments.RateUsFragment
 import com.yourdomain.project50.Model.MoreApps
 import com.yourdomain.project50.R
 import com.yourdomain.project50.Utils
@@ -58,7 +62,10 @@ class CongragulationActivity : AppCompatActivity() {
         tvTotleExcersize.text = df.format(intent?.getDoubleExtra(EXTRA_EXCERSIZES, 0.0))
         tvDuration.text = df.format(intent?.getDoubleExtra(EXTRA_DURACTION,0.0))
         tvDayComleted.text=intent?.getIntExtra(EXTRA_DAY,0).toString()
-        Glide.with(this).load(R.drawable.congragulation_cup).into(ivCongragulation)
+        Glide.with(this)
+                .load(R.drawable.congragulation_cup)
+                .apply(RequestOptions().diskCacheStrategy(DiskCacheStrategy.ALL))
+                .into(ivCongragulation)
 
 
         val viewModle = ViewModelProviders.of(this).get(MoreAppViewModle::class.java)
@@ -82,6 +89,12 @@ class CongragulationActivity : AppCompatActivity() {
         progressBar = findViewById(R.id.progressBar)
         btClose = findViewById(R.id.btClose)
         btShare = findViewById(R.id.btShare)
+
+        if(intent?.getIntExtra(EXTRA_DAY,0)==1 || intent?.getIntExtra(EXTRA_DAY,0)==30 ){
+            val rateUsFragment = RateUsFragment()
+            rateUsFragment.setStyle(DialogFragment.STYLE_NORMAL, R.style.dialog);
+            rateUsFragment.show(supportFragmentManager, "rateUsFragment")
+        }
 
         btClose.setOnClickListener { finish() }
         btShare.setOnClickListener { Utils.shareTextExtra(application,"I have just completed "+tvDayComleted.text+" of (app name). Join me "+application.packageName) }

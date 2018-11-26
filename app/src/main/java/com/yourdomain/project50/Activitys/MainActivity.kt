@@ -10,8 +10,12 @@ import android.support.v7.app.ActionBarDrawerToggle
 import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
-import android.view.*
+import android.view.LayoutInflater
+import android.view.MenuItem
+import android.view.View
+import android.view.ViewGroup
 import android.widget.ImageView
+import android.widget.ProgressBar
 import android.widget.TextView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
@@ -20,15 +24,13 @@ import com.yourdomain.project50.R
 import com.yourdomain.project50.ViewModle.ExcersizePlansViewModle
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.app_bar_main.*
-import android.support.v4.os.HandlerCompat.postDelayed
-import android.widget.ProgressBar
 
 
 class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener {
 
     private lateinit var recyclerView: RecyclerView
-    private lateinit var progressBar:ProgressBar
-    private var currentExcersizePlan=-1
+    private lateinit var progressBar: ProgressBar
+    private var currentExcersizePlan = -1
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -48,7 +50,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         nav_view.setNavigationItemSelectedListener(this)
 
         recyclerView = findViewById(R.id.recylerview)
-        progressBar=findViewById(R.id.progressBar)
+        progressBar = findViewById(R.id.progressBar)
         val handler = Handler()
 
         handler.postDelayed({
@@ -111,7 +113,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         val model = ExcersizePlansViewModle(application)
         var list = model.getExcersizePlans();
         if (list.size > 0) {
-            progressBar.visibility=View.INVISIBLE
+            progressBar.visibility = View.INVISIBLE
             var excersizeAdupter = ExcersizeAdupter(list);
             recyclerView.layoutManager = LinearLayoutManager(this)
             recyclerView.adapter = excersizeAdupter
@@ -119,7 +121,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
 
     }
 
-    private class ExcersizeAdupter(val excersizePlans: MutableList<ExcersizePlans>) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+    private inner class ExcersizeAdupter(val excersizePlans: MutableList<ExcersizePlans>) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
         override fun onCreateViewHolder(p0: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
             return when (viewType) {
@@ -143,7 +145,8 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         override fun getItemCount(): Int {
             return excersizePlans.size
         }
-        val requestOptions =  RequestOptions();
+
+        val requestOptions = RequestOptions();
 
         override fun onBindViewHolder(p0: RecyclerView.ViewHolder, p1: Int) {
 
@@ -166,14 +169,17 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
             var tvtitle: TextView
             var image: ImageView
             var tvTotalDays: TextView
-            var imScrem:ImageView
+            var imScrem: ImageView
 
             init {
-                itemView.setOnClickListener { itemView.context.startActivity(Intent(itemView.context, EachPlanExcersizesActivity::class.java)) }
+                itemView.setOnClickListener {
+                    itemView.context.startActivity(Intent(itemView.context, EachPlanExcersizesActivity::class.java))
+                    finish()
+                }
                 tvtitle = itemView.findViewById(R.id.excersizeTitle)
                 image = itemView.findViewById(R.id.image)
                 tvTotalDays = itemView.findViewById(R.id.tvTotalDays)
-                imScrem=itemView.findViewById(R.id.imageViewScream);
+                imScrem = itemView.findViewById(R.id.imageViewScream);
             }
         }
 

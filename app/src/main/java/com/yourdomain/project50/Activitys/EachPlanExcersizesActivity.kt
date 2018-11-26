@@ -4,6 +4,7 @@ import android.content.Intent
 import android.os.Bundle
 import android.os.Handler
 import android.support.design.widget.BottomNavigationView
+import android.support.v4.app.DialogFragment
 import android.support.v4.app.Fragment
 import android.support.v4.app.FragmentManager
 import android.support.v4.app.FragmentStatePagerAdapter
@@ -24,6 +25,7 @@ import com.bumptech.glide.Glide
 import com.yourdomain.project50.Fragments.ABSPlanDayFragment
 import com.yourdomain.project50.Fragments.ButtPlanDayFragment
 import com.yourdomain.project50.Fragments.FullBodyPlanDayFragment
+import com.yourdomain.project50.Fragments.RateUsFragment
 import com.yourdomain.project50.Model.ExcersizePlans
 import com.yourdomain.project50.R
 import com.yourdomain.project50.ViewModle.ExcersizePlansViewModle
@@ -92,6 +94,11 @@ class EachPlanExcersizesActivity : AppCompatActivity() {
 
     }
 
+    override fun onBackPressed() {
+        val rateUsFragment = RateUsFragment()
+        rateUsFragment.setStyle(DialogFragment.STYLE_NORMAL, R.style.dialog);
+        rateUsFragment.show(supportFragmentManager, "rateUsFragment")
+    }
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
         // Inflate the menu; this adds items to the action bar if it is present.
         menuInflater.inflate(R.menu.main, menu)
@@ -118,6 +125,8 @@ class EachPlanExcersizesActivity : AppCompatActivity() {
 
 
         }
+
+
 
         override fun getItemCount(): Int {
             return excersizePlans.size

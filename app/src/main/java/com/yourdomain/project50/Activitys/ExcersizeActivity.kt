@@ -16,19 +16,21 @@ import android.view.WindowManager
 import android.widget.*
 import com.bumptech.glide.Glide
 import com.yourdomain.project50.*
-import com.yourdomain.project50.Fragments.PauseExcersizeFragment
-import com.yourdomain.project50.Fragments.QuitFragment
-import com.yourdomain.project50.Fragments.RestFragment
-import com.yourdomain.project50.Fragments.WatingToStartExcersizeFragment
+import com.yourdomain.project50.Fragments.*
 import com.yourdomain.project50.Model.ExcersizeDays
 import com.yourdomain.project50.Model.Excesizes
+import com.yourdomain.project50.Model.Settings
 import com.yourdomain.project50.Utils.CountTotalTime
 import com.yourdomain.project50.ViewModle.ExcersizesByDayandTypeViewModle
 import java.util.concurrent.TimeUnit
-import com.yourdomain.project50.Model.Settings
 
 
-class ExcersizeActivity : AppCompatActivity(), WatingToStartExcersizeFragment.OnFragmentInteractionListener, PauseExcersizeFragment.OnResumeListener, QuitFragment.OnQuitListener, RestFragment.OnNextExcersizeDemoFragmentListener {
+class ExcersizeActivity : AppCompatActivity(), WatingToStartExcersizeFragment.OnFragmentInteractionListener, PauseExcersizeFragment.OnResumeListener, QuitFragment.OnQuitListener, RestFragment.OnNextExcersizeDemoFragmentListener, SettingsVoiceControlFragment.OnVoicecontrolChangeListener {
+    override fun onVoiceSettingUpdate(updateSettings: Settings) {
+        Log.d(TAG, "new settings" + this@ExcersizeActivity.settings.workoutSettings.mute)
+        this@ExcersizeActivity.settings = updateSettings;
+    }
+
     override fun onSkip() {
         if (counter + 1 < excesizes?.icons?.size!!) {
             onNext(true);
@@ -124,6 +126,7 @@ class ExcersizeActivity : AppCompatActivity(), WatingToStartExcersizeFragment.On
         settings = MY_Shared_PREF.getAppSettings(application)
 
     }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.each_full_screen_excersize)
@@ -155,11 +158,13 @@ class ExcersizeActivity : AppCompatActivity(), WatingToStartExcersizeFragment.On
                     string = "x" + it.seconds[counter + 1].toString()
                 }
 
-                sendTTSBroadCast(getString(R.string.ready_to_go))
-                sendTTSBroadCast(getString(R.string.next))
-                sendTTSBroadCast(it.title[counter + 1])
+                if (settings.workoutSettings.voiceGuide) {
+                    sendTTSBroadCast(getString(R.string.ready_to_go))
+                    sendTTSBroadCast(getString(R.string.next))
+                    sendTTSBroadCast(it.title[counter + 1])
+                }
                 totleTime = CountTotalTime(it.viewType, it.seconds)
-                val fragmet = WatingToStartExcersizeFragment.newInstance(totleTime, string, it.detail[counter + 1],settings.workoutSettings.watingCoutDownTime)
+                val fragmet = WatingToStartExcersizeFragment.newInstance(totleTime, string, it.detail[counter + 1], settings.workoutSettings.watingCoutDownTime)
                 fragmet.setStyle(DialogFragment.STYLE_NORMAL, android.R.style.Theme_Black_NoTitleBar_Fullscreen);
                 fragmet.show(supportFragmentManager, "WatingToStartExcersizeFragment")
             }
@@ -210,6 +215,11 @@ class ExcersizeActivity : AppCompatActivity(), WatingToStartExcersizeFragment.On
                 E.printStackTrace()
             }
         }
+        mbtSpeaker.setOnClickListener {
+            val settingsVoiceControlFragment = SettingsVoiceControlFragment()
+            settingsVoiceControlFragment.setStyle(DialogFragment.STYLE_NORMAL, R.style.dialog);
+            settingsVoiceControlFragment.show(supportFragmentManager, "settingsVoiceControlFragment")
+        }
     }
 
     private fun onPauseExcersize() {
@@ -257,7 +267,7 @@ class ExcersizeActivity : AppCompatActivity(), WatingToStartExcersizeFragment.On
             handle = Handler()
             runable = Runnable {
                 try {
-                    if (settings.workoutSettings.CoachTips){
+                    if (settings.workoutSettings.CoachTips) {
                         Log.d(TAG, "cuch tips " + getString(excesizes?.couchTips!![counter]))
                         sendTTSBroadCast(getString(excesizes?.couchTips!![counter]!!))
                     }
@@ -284,7 +294,7 @@ class ExcersizeActivity : AppCompatActivity(), WatingToStartExcersizeFragment.On
                 temp = temp + "x " + excesizes?.seconds!![counter + 1].toString()
             }
             Log.d(TAG, "showing data for wating fragment: " + temp)
-            val watingForNextFragment = RestFragment.newInstance(excesizes?.title!![counter + 1], temp, "NEXT " + (counter + 1).toString() + "/" + (excesizes!!.icons.size).toString(), excesizes?.icons!![counter + 1],settings.workoutSettings.restTimeInSeconds)
+            val watingForNextFragment = RestFragment.newInstance(excesizes?.title!![counter + 1], temp, "NEXT " + (counter + 1).toString() + "/" + (excesizes!!.icons.size).toString(), excesizes?.icons!![counter + 1], settings.workoutSettings.restTimeInSeconds)
             watingForNextFragment.setStyle(DialogFragment.STYLE_NORMAL, android.R.style.Theme_Black_NoTitleBar_Fullscreen);
             watingForNextFragment.show(supportFragmentManager, "watingForNextFragment")
 
@@ -342,11 +352,17 @@ class ExcersizeActivity : AppCompatActivity(), WatingToStartExcersizeFragment.On
 
 
                 if (temseconds == halftime) {
-                    runOnUiThread { sendTTSBroadCast(getString(R.string.half_the_time)) }
+                    runOnUiThread {
+                        if (settings.workoutSettings.voiceGuide) {
+                            sendTTSBroadCast(getString(R.string.half_the_time))
+                        }
+                    }
                 }
 
                 if (temseconds < 4) {
-                    sendTTSBroadCast(temseconds.toString())
+                    if (settings.workoutSettings.voiceGuide) {
+                        sendTTSBroadCast(temseconds.toString())
+                    }
                 }
 
             }
@@ -378,14 +394,16 @@ class ExcersizeActivity : AppCompatActivity(), WatingToStartExcersizeFragment.On
 
     override fun onBackPressed() {
         countDown?.pause()
-        sendTTSBroadCast(getString(R.string.dont_quit_keep_going))
+        if (settings.workoutSettings.voiceGuide) {
+            sendTTSBroadCast(getString(R.string.dont_quit_keep_going))
+        }
         val quitFragment = QuitFragment()
         quitFragment.setStyle(DialogFragment.STYLE_NORMAL, R.style.dialog);
         quitFragment.show(supportFragmentManager, "quitFragment")
 
     }
 
-    private fun sendTTSBroadCast(text: String) {
+    fun sendTTSBroadCast(text: String) {
 
         if (!settings.workoutSettings.mute) {
             val intent = Intent(TTSHelperService.ACTION_TTS)

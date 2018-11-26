@@ -11,6 +11,7 @@
         android:layout_height="wrap_content">
 
         <LinearLayout
+            android:id="@+id/linear_layout_work_out"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_marginEnd="8dp"
@@ -35,7 +36,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_margin="16dp"
-                android:drawablePadding="8dp"
+                android:drawablePadding="16dp"
                 android:drawableStart="@drawable/ic_volume_mute_black_24dp"
                 android:text="Mute"
                 android:textColor="#000000" />
@@ -46,7 +47,7 @@
                 android:layout_height="wrap_content"
                 android:layout_margin="16dp"
                 android:checked="true"
-                android:drawablePadding="8dp"
+                android:drawablePadding="16dp"
                 android:drawableStart="@drawable/ic_volume_up_black2_24dp"
                 android:text="Voice guide"
                 android:textColor="#000000" />
@@ -57,7 +58,7 @@
                 android:layout_height="wrap_content"
                 android:layout_margin="16dp"
                 android:checked="true"
-                android:drawablePadding="8dp"
+                android:drawablePadding="16dp"
                 android:drawableStart="@drawable/ic_record_voice_over_black_24dp"
                 android:text="Coutch tips"
                 android:textColor="#000000" />
@@ -68,7 +69,7 @@
                 android:layout_height="wrap_content"
                 android:layout_margin="16dp"
 
-                android:drawablePadding="8dp"
+                android:drawablePadding="16dp"
                 android:drawableStart="@drawable/ic_notifications_black_24dp"
                 android:gravity="center_vertical"
                 android:text="Remind me workout evry day "
@@ -83,7 +84,7 @@
                     android:id="@+id/btRest"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:drawablePadding="8dp"
+                    android:drawablePadding="16dp"
                     android:drawableStart="@drawable/ic_airline_seat_recline_extra_black_24dp"
                     android:gravity="center_vertical"
                     android:text="Reset"
@@ -99,7 +100,7 @@
                     android:layout_height="wrap_content"
                     android:drawableEnd="@drawable/ic_arrow_drop_down_black_24dp"
 
-                    android:drawablePadding="8dp"
+                    android:drawablePadding="16dp"
                     android:gravity="center_vertical"
                     android:text="30 sec"
                     android:textColor="@color/colorAccent"
@@ -116,7 +117,7 @@
                     android:id="@+id/btCountDown"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:drawablePadding="8dp"
+                    android:drawablePadding="16dp"
                     android:drawableStart="@drawable/ic_timer_black_24dp"
                     android:gravity="center_vertical"
                     android:text="Count down Time"
@@ -132,7 +133,7 @@
                     android:layout_height="wrap_content"
                     android:drawableEnd="@drawable/ic_arrow_drop_down_black_24dp"
 
-                    android:drawablePadding="8dp"
+                    android:drawablePadding="16dp"
                     android:gravity="center_vertical"
                     android:text="30 sec"
                     android:textColor="@color/colorAccent"
@@ -147,7 +148,7 @@
                 android:layout_height="wrap_content"
                 android:layout_margin="16dp"
 
-                android:drawablePadding="8dp"
+                android:drawablePadding="16dp"
                 android:drawableStart="@drawable/ic_history_black_24dp"
                 android:gravity="center_vertical"
                 android:text="Restart progress"
@@ -155,6 +156,96 @@
                 android:textSize="16sp" />
 
 
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/linear_layout_tts"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginEnd="8dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="8dp"
+            android:orientation="vertical"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/linear_layout_work_out">
+
+            <TextView
+
+                android:textSize="16sp"
+                android:id="@+id/textView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Voice Options(TTS)" />
+
+            <TextView
+                android:id="@+id/btTestVoice"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_margin="16dp"
+                android:drawablePadding="16dp"
+                android:drawableStart="@drawable/ic_record_voice_over_black_24dp"
+                android:text="Test Voice"
+                android:textColor="#000000"
+                android:textSize="16sp" />
+
+            <TextView
+
+                android:id="@+id/btSetectTTS"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="16dp"
+                android:drawablePadding="16dp"
+                android:drawableStart="@drawable/ic_navigation_pink_24dp"
+                android:text="Select TTS Engine"
+                android:textColor="#000000"
+                android:textSize="16sp" />
+
+            <TextView
+                android:id="@+id/btDownloadTTSEngine"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="16dp"
+                android:drawablePadding="16dp"
+                android:drawableStart="@drawable/ic_file_download_pink_24dp"
+                android:text="Download TTS Engine"
+                android:textColor="#000000"
+                android:textSize="16sp" />
+
+            <TextView
+                android:id="@+id/btDeviceTTSSettings"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="16dp"
+                android:drawablePadding="16dp"
+                android:drawableStart="@drawable/ic_tune_pink_24dp"
+                android:text="Device TTS Settings"
+                android:textColor="#000000"
+                android:textSize="16sp" />
+
+            <TextView
+                android:id="@+id/btVoicelanguage"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="16dp"
+                android:drawablePadding="16dp"
+                android:drawableStart="@drawable/ic_mic_pink_24dp"
+                android:text="Voice language"
+                android:textColor="#000000"
+                android:textSize="16sp" />
+
+            <TextView
+                android:visibility="gone"
+                android:textSize="16sp"
+                android:id="@+id/btDownloadmoreTTSLanguageData"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="16dp"
+                android:drawablePadding="16dp"
+                android:drawableStart="@drawable/ic_file_download_pink_24dp"
+                android:text="Download more TTS language data"
+                android:textColor="#000000" />
         </LinearLayout>
 
     </android.support.constraint.ConstraintLayout>

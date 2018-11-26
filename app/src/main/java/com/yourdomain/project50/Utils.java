@@ -1,13 +1,18 @@
 package com.yourdomain.project50;
 
 import android.app.Application;
+import android.content.Context;
 import android.content.Intent;
 import android.media.MediaPlayer;
+import android.speech.tts.TextToSpeech;
 import android.util.Log;
 
 import com.yourdomain.project50.Model.Excesizes;
 
 import java.text.DecimalFormat;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Locale;
 
 /**
  * Created by apple on 11/5/18.
@@ -56,6 +61,13 @@ public class Utils {
         intent2.setType("text/plain");
         intent2.putExtra(Intent.EXTRA_TEXT, text);
         application. startActivity(Intent.createChooser(intent2, "Share via"));
+    }
+
+    public static void startTTSScreen(Context context){
+        Intent intent = new Intent();
+        intent.setAction("com.android.settings.TTS_SETTINGS");
+        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        context.startActivity(intent);
     }
 
 

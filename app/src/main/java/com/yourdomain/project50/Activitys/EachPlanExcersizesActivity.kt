@@ -236,4 +236,6 @@ class EachPlanExcersizesActivity : AppCompatActivity() {
         }
     }
 
+
+
 }

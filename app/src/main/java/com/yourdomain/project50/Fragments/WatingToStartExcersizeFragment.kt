@@ -2,17 +2,19 @@ package com.yourdomain.project50.Fragments
 
 import android.app.Dialog
 import android.content.Context
+import android.content.Intent
 import android.os.Bundle
 import android.os.CountDownTimer
 import android.support.v4.app.DialogFragment
+import android.support.v4.content.LocalBroadcastManager
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageButton
 import android.widget.ProgressBar
 import android.widget.TextView
+import com.yourdomain.project50.Activitys.ExcersizeActivity
 import com.yourdomain.project50.R
-import android.support.v4.content.LocalBroadcastManager
-import android.content.Intent
 import com.yourdomain.project50.TTSHelperService
 
 
@@ -23,14 +25,16 @@ class WatingToStartExcersizeFragment : DialogFragment() {
     private var mParamThisExcersizeTotalTime: String = ""
     private var mParamDiscription: String? = null
     private var mListener: OnFragmentInteractionListener? = null
-    private var watingTime:Int=30
+    private var watingTime: Int = 30
 
     private lateinit var mtvDiscription: TextView
     private lateinit var mThisExsersizeTotalTime: TextView
     private lateinit var mExsersizseTotalTime: TextView
     private lateinit var mSkipButton: TextView
-    private lateinit var mbtBack:TextView
-    private var countDownTimer: CountDownTimer? =null
+    private lateinit var mbtBack: TextView
+    private lateinit var mBtSpeaker:ImageButton
+    private var countDownTimer: CountDownTimer? = null
+
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
         return super.onCreateDialog(savedInstanceState)
@@ -43,18 +47,38 @@ class WatingToStartExcersizeFragment : DialogFragment() {
             mParamALlExcersizeTotalTime = arguments!!.getString(mParamALlExcersizeTotalTime_KEY)
             mParamThisExcersizeTotalTime = arguments!!.getString(mParamThisExcersizeTotalTime_KEY)
             mParamDiscription = arguments!!.getString(mParamDiscription_KEY)
-            watingTime=arguments!!.getInt(mParamWatingTime,30)
+            watingTime = arguments!!.getInt(mParamWatingTime, 30)
+            countDownTimer = object : CountDownTimer(watingTime.toLong() * 1000, 1000) {
 
+                override fun onTick(millisUntilFinished: Long) {
+                    var sconds_ = (millisUntilFinished / 1000).toInt()
+                    mPrograssBar.progress = sconds_
+                    if (sconds_ < 4) {
+                        sendTTSBroadCast(sconds_.toString())
+                    }
+                }
+
+                override fun onFinish() {
+                    mListener?.onCountDownDonw()
+                    try {
+                        dismiss()
+                    } catch (e: Exception) {
+                        e.printStackTrace()
+                    }
+
+                }
+            }
 
         }
     }
+
     private fun sendTTSBroadCast(text: String) {
 
-        val intent = Intent(TTSHelperService.ACTION_TTS)
-        intent.putExtra("TTStext", text)
-
-        LocalBroadcastManager.getInstance(activity?.applicationContext!!).sendBroadcast(intent)
-
+       try {
+           (activity as ExcersizeActivity).sendTTSBroadCast(text)
+       }catch (E:Exception){
+           E.printStackTrace()
+       }
     }
 
 
@@ -67,38 +91,25 @@ class WatingToStartExcersizeFragment : DialogFragment() {
         mExsersizseTotalTime = view.findViewById(R.id.tvTotalTime)
         mThisExsersizeTotalTime = view.findViewById(R.id.tvThisTotalTimeForNextExcersize)
         mSkipButton = view.findViewById(R.id.btSkip)
-        mbtBack=view.findViewById(R.id.btBack)
+        mbtBack = view.findViewById(R.id.btBack)
+        mBtSpeaker=view.findViewById<ImageButton>(R.id.btSpeaker)
         mtvDiscription = view.findViewById(R.id.tvDiscription)
         mPrograssBar = view.findViewById<ProgressBar>(R.id.progressBar)
 
         updateUI()
-      countDownTimer=  object : CountDownTimer(watingTime.toLong() * 1000, 1000) {
 
-            override fun onTick(millisUntilFinished: Long) {
-                var sconds_= (millisUntilFinished / 1000).toInt()
-                mPrograssBar.progress = sconds_
-                if (sconds_<4){
-                    sendTTSBroadCast(sconds_.toString())
-                }
-            }
-
-            override fun onFinish() {
-                mListener?.onCountDownDonw()
-                try {
-                    dismiss()
-                }catch (e:Exception){
-                    e.printStackTrace()
-                }
-
-            }
-        }
         countDownTimer?.start()
         mSkipButton.setOnClickListener { countDownTimer?.onFinish() }
         mbtBack.setOnClickListener { activity?.finish() }
+        mBtSpeaker.setOnClickListener {
+            val settingsVoiceControlFragment = SettingsVoiceControlFragment()
+            settingsVoiceControlFragment.setStyle(DialogFragment.STYLE_NORMAL, R.style.dialog);
+            settingsVoiceControlFragment.show(activity?.supportFragmentManager, "settingsVoiceControlFragment")
+
+        }
 
         return view
     }
-
 
 
     override fun onAttach(context: Context?) {
@@ -113,7 +124,8 @@ class WatingToStartExcersizeFragment : DialogFragment() {
     fun updateUI() {
         mtvDiscription.text = mParamDiscription
         mExsersizseTotalTime.text = mParamALlExcersizeTotalTime.toString()
-        mThisExsersizeTotalTime.text = mParamThisExcersizeTotalTime.toString()
+        mThisExsersizeTotalTime.text = mParamThisExcersizeTotalTime
+        mPrograssBar.max = watingTime
     }
 
     override fun onDetach() {
@@ -130,16 +142,16 @@ class WatingToStartExcersizeFragment : DialogFragment() {
         private val mParamALlExcersizeTotalTime_KEY = "mParamALlExcersizeTotalTime"
         private val mParamThisExcersizeTotalTime_KEY = "mParamThisExcersizeTotalTime"
         private val mParamDiscription_KEY = "mParamDiscription_KEY";
-        private val mParamWatingTime="mParamWatingTime"
+        private val mParamWatingTime = "mParamWatingTime"
 
 
-        fun newInstance(totaleTime: String, totaleTimeForThis: String, discription: String,watingTime:Int): WatingToStartExcersizeFragment {
+        fun newInstance(totaleTime: String, totaleTimeForThis: String, discription: String, watingTime: Int): WatingToStartExcersizeFragment {
             val fragment = WatingToStartExcersizeFragment()
             val args = Bundle()
             args.putString(mParamALlExcersizeTotalTime_KEY, totaleTime)
             args.putString(mParamThisExcersizeTotalTime_KEY, totaleTimeForThis)
             args.putString(mParamDiscription_KEY, discription)
-            args.putInt(mParamWatingTime,watingTime)
+            args.putInt(mParamWatingTime, watingTime)
             fragment.arguments = args
             return fragment
         }

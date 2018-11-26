@@ -99,7 +99,7 @@ class MY_Shared_PREF{
         fun getAppSettings(application: Application):Settings{
             val sharePref=application.applicationContext.getSharedPreferences(SHARE_PREF_SEETINGS,0)
             if(!sharePref.contains(SHARED_PREF_APP_SETTINGS_KEY))
-                return Settings(WorkoutSettings());
+                return Settings(TTSSettings(),WorkoutSettings());
             return gson.fromJson(sharePref.getString(SHARED_PREF_APP_SETTINGS_KEY,""),Settings::class.java)
         }
 

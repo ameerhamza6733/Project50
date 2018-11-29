@@ -105,8 +105,8 @@ val TAG="SpalishActivityTAG"
     }
 
     private fun showPersonalizedAds() {
-       // startService(Intent(this@SpalishActivity, TTSHelperService::class.java))
-        startActivity(Intent(this@SpalishActivity, ScaleActivity::class.java))
+        startService(Intent(this@SpalishActivity, TTSHelperService::class.java))
+        startActivity(Intent(this@SpalishActivity, MainActivity::class.java))
 
         finish()
     }

@@ -160,6 +160,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
                 p0.daysProgressBar.progress=excersizePlans[p0.adapterPosition].completedDays
                 p0.tvTotalDaysLeft.text="Days left "+daysComplted
                 p0.tvtitle.text = excersizePlans[p0.adapterPosition].name
+                Glide.with(p0.itemView.context).load(R.drawable.body_plan_background_screm).into(p0.imScrem)
                 Glide.with(p0.tvtitle.context).load(excersizePlans[p0.adapterPosition].image).apply(requestOptions).into(p0.image)
 
             } else if (ExcersizePlan.TYPE_AD == p0.itemViewType) {

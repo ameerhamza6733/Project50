@@ -34,6 +34,7 @@ import com.yourdomain.project50.Model.AppAdmobDataFromFirebase
 import com.yourdomain.project50.Model.MoreApps
 import com.yourdomain.project50.R
 import com.yourdomain.project50.Utils
+import com.yourdomain.project50.ViewModle.CustomAdsViewModle
 import com.yourdomain.project50.ViewModle.MoreAppViewModle
 import java.text.DecimalFormat
 import java.util.*
@@ -81,14 +82,14 @@ class CongragulationActivity : AppCompatActivity() {
                 .into(ivCongragulation)
 
 
-        val viewModle = ViewModelProviders.of(this).get(MoreAppViewModle::class.java)
-        viewModle.getApps().observe(this, Observer {
-            if (it != null) {
-                progressBar.visibility = View.INVISIBLE
-                val llm = LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false);
-                recyclerView.layoutManager = llm
-                recyclerView.adapter = MoreAppsAdupter(it)
-            }
+        val viewModle = ViewModelProviders.of(this).get(CustomAdsViewModle::class.java)
+        viewModle.getMoreApps()?.observe(this, Observer {
+           it?.let {
+               progressBar.visibility = View.INVISIBLE
+               val llm = LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false);
+               recyclerView.layoutManager = llm
+               recyclerView.adapter = MoreAppsAdupter(it)
+           }
         })
 
         mSetingsFromFirebase = MY_Shared_PREF.getFirebaseAppSettings(application)
@@ -174,9 +175,9 @@ class CongragulationActivity : AppCompatActivity() {
         override fun onBindViewHolder(p0: RecyclerView.ViewHolder, p1: Int) {
             if (MoreApps.VIEW_TYPE_APP == p0.itemViewType) {
                 p0 as MoreAppViewHolder
-                p0.tvtitle.text = moreApps.get(p0.adapterPosition).appName
+                p0.tvtitle.text = moreApps.get(p0.adapterPosition).title
                 p0.rating.text=moreApps.get(p0.adapterPosition).rating.toString()
-                Glide.with(p0.context).load(moreApps.get(p0.adapterPosition).appIcon).into(p0.icon)
+                Glide.with(p0.context).load(moreApps.get(p0.adapterPosition).icon).into(p0.icon)
             } else if (MoreApps.VIEW_TYPE_AD == p0.itemViewType) {
                 p0 as AdViewHolderViewHolder
 

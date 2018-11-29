@@ -1,0 +1,16 @@
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.yourdomain.project50.Fragments.ReportsFragment">
+
+   <android.support.constraint.ConstraintLayout
+       android:layout_width="match_parent"
+       android:layout_height="wrap_content">
+       <com.github.mikephil.charting.charts.BarChart
+           android:id="@+id/chart"
+           android:layout_width="match_parent"
+           android:layout_height="match_parent" />
+   </android.support.constraint.ConstraintLayout>
+
+</ScrollView>

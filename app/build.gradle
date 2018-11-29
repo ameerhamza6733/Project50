@@ -42,8 +42,10 @@ dependencies {
 
     //noinspection GradleCompatible
     implementation 'com.google.firebase:firebase-core:16.0.5'
-    implementation 'com.google.firebase:firebase-ads:17.1.1'
+    implementation 'com.google.firebase:firebase-ads:16.+'
     implementation 'com.google.firebase:firebase-database:16.0.5'
+    implementation 'com.google.android.ads.consent:consent-library:1.0.6'
+
 
 }
 apply plugin: 'com.google.gms.google-services'

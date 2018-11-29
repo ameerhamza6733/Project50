@@ -22,11 +22,24 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
 import com.bumptech.glide.Glide
+import com.bumptech.glide.load.engine.DiskCacheStrategy
+import com.bumptech.glide.request.RequestOptions
+import com.google.ads.consent.ConsentInformation
+import com.google.ads.consent.ConsentStatus
+import com.google.ads.mediation.admob.AdMobAdapter
+import com.google.android.gms.ads.AdRequest
+import com.google.android.gms.ads.MobileAds
+import com.google.android.gms.ads.reward.RewardItem
+import com.google.android.gms.ads.reward.RewardedVideoAd
+import com.google.android.gms.ads.reward.RewardedVideoAdListener
 import com.yourdomain.project50.Fragments.ABSPlanDayFragment
 import com.yourdomain.project50.Fragments.ButtPlanDayFragment
 import com.yourdomain.project50.Fragments.FullBodyPlanDayFragment
 import com.yourdomain.project50.Fragments.RateUsFragment
-import com.yourdomain.project50.Model.ExcersizePlans
+import com.yourdomain.project50.MY_Shared_PREF
+import com.yourdomain.project50.Model.Admob
+import com.yourdomain.project50.Model.AppAdmobDataFromFirebase
+import com.yourdomain.project50.Model.ExcersizePlan
 import com.yourdomain.project50.R
 import com.yourdomain.project50.ViewModle.ExcersizePlansViewModle
 import kotlinx.android.synthetic.main.activity_days_excersizes.*
@@ -34,9 +47,11 @@ import kotlinx.android.synthetic.main.activity_days_excersizes.*
 
 class EachPlanExcersizesActivity : AppCompatActivity() {
     companion object {
-
+        protected val TAG = "ExcersizesActivity";
+        public val EXTRA_PLAN = "EXTRA_PLAN";
         private val MIN_SCALE = 0.65f
         private val MIN_ALPHA = 0.3f
+        var mRewardedVideoAd:RewardedVideoAd?=null
     }
 
     private val mOnNavigationItemSelectedListener = BottomNavigationView.OnNavigationItemSelectedListener { item ->
@@ -48,17 +63,20 @@ class EachPlanExcersizesActivity : AppCompatActivity() {
                 return@OnNavigationItemSelectedListener true
             }
             R.id.navigation_notifications -> {
-                startActivity(Intent(this@EachPlanExcersizesActivity,SettingsActivity::class.java))
+                startActivity(Intent(this@EachPlanExcersizesActivity, SettingsActivity::class.java))
                 return@OnNavigationItemSelectedListener true
             }
         }
         false
     }
-    protected val TAG = "ExcersizesActivity";
+
+
     private lateinit var recyclerView: RecyclerView
     private lateinit var mPager: com.yourdomain.project50.Adupters.MYViewPager
-    private var currentExcersizePlan=ExcersizePlans.PLAN_FULL_BODY
+    private var currentExcersizePlan = ExcersizePlan.PLAN_FULL_BODY
+    private var mSetingsFromFirebase: AppAdmobDataFromFirebase? = null
     private val NUM_PAGES = 3
+    private var extraPlan = 0;
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -66,29 +84,71 @@ class EachPlanExcersizesActivity : AppCompatActivity() {
         setContentView(R.layout.activity_days_excersizes)
         val mToolbar = findViewById<Toolbar>(R.id.toolbar)
         setSupportActionBar(mToolbar)
+
+        extraPlan = intent?.getIntExtra(EXTRA_PLAN, 0)!!
         recyclerView = findViewById(R.id.excersizeType)
         recyclerView.setHasFixedSize(true)
         mPager = findViewById(R.id.viewpager)
         intiDataSet()
         val pagerAdapter = ScreenSlidePagerAdapter(supportFragmentManager)
         //     val fadeOutTransformation = FadeOutTransformation()
-         // mPager.setPageTransformer(true, fadeOutTransformation);
+        // mPager.setPageTransformer(true, fadeOutTransformation);
 
         mPager.adapter = pagerAdapter
-          navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener)
+        navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener)
+        mRewardedVideoAd = MobileAds.getRewardedVideoAdInstance(this);
+        mSetingsFromFirebase = MY_Shared_PREF.getFirebaseAppSettings(application)
+        if (ConsentInformation.getInstance(this).consentStatus == ConsentStatus.PERSONALIZED) {
+            showNonPersonalizedAds()
+        } else if (ConsentInformation.getInstance(this).consentStatus == ConsentStatus.NON_PERSONALIZED) {
+            showNonPersonalizedAds()
+        } else {
+            showPersonalizedAds()
+        }
+
     }
 
+    private fun showPersonalizedAds() {
+        var adId:String=Admob.REWADEDR_VIDEO_AD_ID
+        mSetingsFromFirebase?.admobAds?.videoAds?.id?.let {
+            adId=it
+        }
+        mRewardedVideoAd?.loadAd(adId,
+                AdRequest.Builder().build())
+
+    }
+
+    private fun showNonPersonalizedAds() {
+        var adId:String=Admob.REWADEDR_VIDEO_AD_ID
+        mSetingsFromFirebase?.admobAds?.videoAds?.id?.let {
+            adId=it
+        }
+        mRewardedVideoAd?.loadAd(adId,
+                AdRequest.Builder()
+                        .addNetworkExtrasBundle(AdMobAdapter::class.java, getNonPersonalizedAdsBundle())
+                        .build())
+
+    }
+
+    fun getNonPersonalizedAdsBundle(): Bundle {
+        val extras = Bundle()
+        extras.putString("npa", "1")
+
+        return extras
+    }
     private fun intiDataSet() {
         val model = ExcersizePlansViewModle(application)
         var list = model.getExcersizePlans();
         if (list.size > 0) {
-            list.add(0, ExcersizePlans("native ad", 0, 0, "native ad id", ExcersizePlans.TYPE_AD))
+            list.add(0, ExcersizePlan("native ad", 0, 0, "native ad id", ExcersizePlan.TYPE_AD))
+
             var excersizeAdupter = ExcersizePlansAdupter(list);
             val llm = LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false);
 
             recyclerView.layoutManager = llm
             recyclerView.addOnChildAttachStateChangeListener(ChildAttachListener(llm))
             recyclerView.adapter = excersizeAdupter
+            recyclerView.scrollToPosition(extraPlan + 1)
         }
 
 
@@ -99,27 +159,28 @@ class EachPlanExcersizesActivity : AppCompatActivity() {
         rateUsFragment.setStyle(DialogFragment.STYLE_NORMAL, R.style.dialog);
         rateUsFragment.show(supportFragmentManager, "rateUsFragment")
     }
+
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
         // Inflate the menu; this adds items to the action bar if it is present.
         menuInflater.inflate(R.menu.main, menu)
         return true
     }
 
-    inner class ExcersizePlansAdupter(val excersizePlans: MutableList<ExcersizePlans>) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+    inner class ExcersizePlansAdupter(val excersizePlans: MutableList<ExcersizePlan>) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
         override fun onCreateViewHolder(p0: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
             return when (viewType) {
-                ExcersizePlans.TYPE_EXCERSISE -> {
+                ExcersizePlan.TYPE_EXCERSISE -> {
                     ExcersizeViewHolder(LayoutInflater.from(p0.context)
                             .inflate(R.layout.each_excersize_plan_horizental_row, p0, false));
                 }
-                ExcersizePlans.TYPE_AD -> {
+                ExcersizePlan.TYPE_AD -> {
                     AdViewHolderViewHolder(LayoutInflater.from(p0.context)
                             .inflate(R.layout.emptyview, p0, false));
                 }
                 else -> {
                     ExcersizeViewHolder(LayoutInflater.from(p0.context)
-                            .inflate(R.layout.each_excersize_plan, p0, false));
+                            .inflate(R.layout.emptyview, p0, false));
                 }
             }
 
@@ -127,18 +188,17 @@ class EachPlanExcersizesActivity : AppCompatActivity() {
         }
 
 
-
         override fun getItemCount(): Int {
             return excersizePlans.size
         }
 
         override fun onBindViewHolder(p0: RecyclerView.ViewHolder, p1: Int) {
-            if (ExcersizePlans.TYPE_EXCERSISE == p0.itemViewType) {
+            if (ExcersizePlan.TYPE_EXCERSISE == p0.itemViewType) {
                 p0 as ExcersizeViewHolder
                 p0.tvtitle.text = excersizePlans[p0.adapterPosition].name
-                Glide.with(p0.tvtitle.context).load(excersizePlans[p0.adapterPosition].image).into(p0.image)
+                Glide.with(p0.tvtitle.context).load(excersizePlans[p0.adapterPosition].image).apply(RequestOptions().diskCacheStrategy(DiskCacheStrategy.RESOURCE)).into(p0.image)
                 //  Log.d(TAG,"onBind"+p1 +" "+p0.adapterPosition);
-            } else if (ExcersizePlans.TYPE_AD == p0.itemViewType) {
+            } else if (ExcersizePlan.TYPE_AD == p0.itemViewType) {
                 p0 as AdViewHolderViewHolder
 
             }
@@ -189,16 +249,16 @@ class EachPlanExcersizesActivity : AppCompatActivity() {
             handler.post(Runnable {
                 Log.d(TAG, "onChildViewAttachedToWindow" + llm.findFirstCompletelyVisibleItemPosition())
                 when (llm.findFirstCompletelyVisibleItemPosition()) {
-                    0 -> {
-                        currentExcersizePlan=ExcersizePlans.PLAN_FULL_BODY
+                    1 -> {
+                        currentExcersizePlan = ExcersizePlan.PLAN_FULL_BODY
                         mPager.setCurrentItem(0)
                     }
                     2 -> {
-                        currentExcersizePlan=ExcersizePlans.PLAN_ABS
+                        currentExcersizePlan = ExcersizePlan.PLAN_ABS
                         mPager.setCurrentItem(1)
                     }
                     3 -> {
-                        currentExcersizePlan=ExcersizePlans.PLAN_BUTT
+                        currentExcersizePlan = ExcersizePlan.PLAN_BUTT
                         mPager.setCurrentItem(2)
                     }
                 }
@@ -244,7 +304,6 @@ class EachPlanExcersizesActivity : AppCompatActivity() {
 
         }
     }
-
 
 
 }

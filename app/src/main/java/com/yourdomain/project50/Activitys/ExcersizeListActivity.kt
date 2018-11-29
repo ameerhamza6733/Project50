@@ -12,13 +12,19 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Button
-import android.widget.ImageView
-import android.widget.ProgressBar
-import android.widget.TextView
+import android.widget.*
 import com.bumptech.glide.Glide
+import com.google.ads.consent.ConsentInformation
+import com.google.ads.consent.ConsentStatus
+import com.google.ads.mediation.admob.AdMobAdapter
+import com.google.android.gms.ads.AdRequest
+import com.google.android.gms.ads.AdSize
+import com.google.android.gms.ads.AdView
+import com.google.android.gms.ads.InterstitialAd
 import com.yourdomain.project50.MY_Shared_PREF
-import com.yourdomain.project50.Model.ExcersizeDays
+import com.yourdomain.project50.Model.Admob
+import com.yourdomain.project50.Model.AppAdmobDataFromFirebase
+import com.yourdomain.project50.Model.ExcersizeDay
 import com.yourdomain.project50.Model.Excesizes
 import com.yourdomain.project50.R
 import com.yourdomain.project50.TTSHelperService
@@ -33,7 +39,7 @@ class ExcersizeListActivity : AppCompatActivity() {
         val TAG = "ExcersizeListActivity";
     }
 
-   private var currentDay: ExcersizeDays? = null
+   private var currentDay: ExcersizeDay? = null
     private var currentDayKey:Int=-2
     private var excersizeDone=-2
     private var currentExcesizesPlan=""
@@ -42,6 +48,12 @@ class ExcersizeListActivity : AppCompatActivity() {
 
     private lateinit var recyclerView: RecyclerView
     private lateinit var progressBar:ProgressBar
+    private lateinit var adViewContaner:RelativeLayout
+
+    private  var mSetingsFromFirebase: AppAdmobDataFromFirebase?=null
+
+    private var adRequest: AdRequest?=null
+    private val mInterstitialAd: InterstitialAd? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -51,12 +63,13 @@ class ExcersizeListActivity : AppCompatActivity() {
         Log.d(TAG,"excersize done: "+excersizeDone);
         currentExcesizesPlan=intent.getStringExtra(EXTRA_PLAN)
         if (currentDayKey != -2){
-            currentDay = MY_Shared_PREF.getCurrentDay(application, currentExcesizesPlan+currentDayKey.toString())
+            currentDay = MY_Shared_PREF.getDayByKey(application, currentExcesizesPlan+currentDayKey.toString())
 
         }
 
          recyclerView = findViewById<RecyclerView>(R.id.recylerview)
         progressBar=findViewById(R.id.progressBar)
+        adViewContaner=findViewById(R.id.ad_contaniner)
         btStart=findViewById(R.id.btStart)
 
         btStart.setOnClickListener {
@@ -68,6 +81,9 @@ class ExcersizeListActivity : AppCompatActivity() {
             internt.putExtra(ExcersizeActivity.EXTRA_PLAN,currentExcesizesPlan)
             internt.putExtra(ExcersizeActivity.EXTRA_DAY,currentDayKey)
             startActivity(internt)
+            if (mInterstitialAd?.isLoaded==true){
+                mInterstitialAd?.show()
+            }
         }
 
         val handler = Handler()
@@ -77,8 +93,50 @@ class ExcersizeListActivity : AppCompatActivity() {
             }
 
         },1000)
+        mSetingsFromFirebase = MY_Shared_PREF.getFirebaseAppSettings(application)
+
+
+        adRequest = if (ConsentInformation.getInstance(this).consentStatus == ConsentStatus.NON_PERSONALIZED) {
+            AdRequest.Builder()
+                    .addNetworkExtrasBundle(AdMobAdapter::class.java,getNonPersonalizedAdsBundle() )
+                    .build()
+        } else {
+            AdRequest.Builder()
+                    .build()
+        }
+        loadBannerAds()
+        loadInterstial()
     }
 
+
+
+    private fun loadInterstial() {
+
+        if (mSetingsFromFirebase?.admobAds?.interstitialAds?.id==null){
+            mInterstitialAd?.adUnitId=Admob.INTERSTITIAL_AD_ID
+        }else {
+            mInterstitialAd?.adUnitId = mSetingsFromFirebase?.admobAds?.interstitialAds?.id
+        }
+        mInterstitialAd?.loadAd(adRequest)
+
+    }
+    private fun loadBannerAds(){
+        val adView = AdView(this)
+        adView.adSize = AdSize.BANNER
+        var adId=Admob.BANNER_AD_ID
+        mSetingsFromFirebase?.admobAds?.bannerAds?.id?.let {
+            adId=it
+        }
+        adView.adUnitId =adId
+        adViewContaner .addView(adView)
+        adView.loadAd(adRequest)
+    }
+    fun getNonPersonalizedAdsBundle(): Bundle {
+        val extras = Bundle()
+        extras.putString("npa", "1")
+
+        return extras
+    }
     private fun intiDataSet(){
         val modle = ViewModelProviders.of(this)[ExcersizesByDayandTypeViewModle::class.java]
         modle.getExcersizs(currentDayKey,currentExcesizesPlan)?.observe(this, Observer {
@@ -90,6 +148,8 @@ class ExcersizeListActivity : AppCompatActivity() {
             }
         })
     }
+
+
 
     inner class ExcersizeAdupter(val excesizes: Excesizes) : RecyclerView.Adapter<ExcersizeAdupter.ExcersizeViewHolder>() {
 

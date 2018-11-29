@@ -5,9 +5,7 @@ import android.content.Context
 import android.util.Log
 import com.google.gson.Gson
 import com.yourdomain.project50.Model.*
-import java.util.ArrayList
 import java.util.HashMap
-import java.util.HashSet
 
 
 /**
@@ -18,12 +16,14 @@ class MY_Shared_PREF{
     companion object {
 
         private val SHARE_PREF_FILE=this.javaClass.`package`.name+"SHARE_PREF_FILE"
-        private val SHARED_PREF_FULL_BODY_FILE=this.javaClass.`package`.name+"SHARED_PREF_FULL_BODY_FILE"
+        private val SHARED_PREF_ALL_DAYS_FILE=this.javaClass.`package`.name+"SHARED_PREF_ALL_DAYS_FILE"
         private val SHARE_PREF_SEETINGS="SHARE_PREF_SEETINGS";
         private val SHARE_PREFF_PERSON="share pref person"
         private val SHARE_PREFF_PERSON_KEY="SHARE_PREFF_PERSON_KEY"
         private val SHARED_PREF_APP_SETTINGS="SHARED_PREF_APP_SETTINGS";
         private val SHARED_PREF_APP_SETTINGS_KEY="SHARED_PREF_APP_SETTINGS_KEY";
+        private val SHARE_PREF_SETTINGS_FROM_FIREBAW_FILE="SHARE_PREF_SETTINGS_FROM_FIREBAW_FILE"
+        private val SHARE_PREF_SETTINGS_FROM_FIREBAW_KEY="SHARE_PREF_SETTINGS_FROM_FIREBAW_key"
 
          private val  gson=Gson()
 
@@ -44,27 +44,27 @@ class MY_Shared_PREF{
 
 
 
-        fun saveCurrentDay(application: Application,key:String,days: ExcersizeDays){
-            val sharedPreferences=application.applicationContext.getSharedPreferences(SHARED_PREF_FULL_BODY_FILE,0)
+        fun saveDayByKey(application: Application, key:String, day: ExcersizeDay){
+            val sharedPreferences=application.applicationContext.getSharedPreferences(SHARED_PREF_ALL_DAYS_FILE,0)
             val editer = sharedPreferences.edit()
-            editer.putString(key, gson.toJson(days)).apply()
+            editer.putString(key, gson.toJson(day)).apply()
 
         }
 
-        fun getCurrentDay(application: Application,key:String) :ExcersizeDays?{
-            val sharedPreferences=application.applicationContext.getSharedPreferences(SHARED_PREF_FULL_BODY_FILE,0)
+        fun getDayByKey(application: Application, key:String) :ExcersizeDay?{
+            val sharedPreferences=application.applicationContext.getSharedPreferences(SHARED_PREF_ALL_DAYS_FILE,0)
             if (!sharedPreferences.contains(key))
                 return null
-            return gson.fromJson(sharedPreferences.getString(key,null),ExcersizeDays::class.java)
+            return gson.fromJson(sharedPreferences.getString(key,null),ExcersizeDay::class.java)
         }
 
-        fun getAllFullBodyPlanDays(application: Application):HashMap<String,ExcersizeDays>{
-           val list = HashMap<String,ExcersizeDays>()
-            val sharedPreferences=application.applicationContext.getSharedPreferences(SHARED_PREF_FULL_BODY_FILE,0)
+        fun getAllCompletedorInprogressDays(application: Application):HashMap<String,ExcersizeDay>{
+           val list = HashMap<String,ExcersizeDay>()
+            val sharedPreferences=application.applicationContext.getSharedPreferences(SHARED_PREF_ALL_DAYS_FILE,0)
             val keys = sharedPreferences.all
             for (entry in keys.entries) {
-                list.put(entry.key,gson.fromJson(entry.value.toString(),ExcersizeDays::class.java))
-                Log.d("map values", entry.key + ": " + entry.value.toString())
+                list.put(entry.key,gson.fromJson(entry.value.toString(),ExcersizeDay::class.java))
+                Log.d("key ", entry.key + " value: " + entry.value.toString())
             }
             return list
         }
@@ -101,6 +101,22 @@ class MY_Shared_PREF{
             if(!sharePref.contains(SHARED_PREF_APP_SETTINGS_KEY))
                 return Settings(TTSSettings(),WorkoutSettings());
             return gson.fromJson(sharePref.getString(SHARED_PREF_APP_SETTINGS_KEY,""),Settings::class.java)
+        }
+
+        fun saveFireBaseAppSetting(application: Application,appSettingFromFirebase: AppAdmobDataFromFirebase){
+            val share_Pref=application.getSharedPreferences(SHARE_PREF_SETTINGS_FROM_FIREBAW_FILE,0)
+            val editer = share_Pref.edit()
+            editer.putString(SHARE_PREF_SETTINGS_FROM_FIREBAW_KEY, gson.toJson(appSettingFromFirebase)).apply()
+        }
+
+        fun getFirebaseAppSettings(application: Application):AppAdmobDataFromFirebase{
+            val share_pref=application.getSharedPreferences(SHARE_PREF_SETTINGS_FROM_FIREBAW_FILE,0)
+            if (share_pref.contains(SHARE_PREF_SETTINGS_FROM_FIREBAW_KEY)){
+                return gson.fromJson(share_pref.getString(SHARE_PREF_SETTINGS_FROM_FIREBAW_KEY,""),AppAdmobDataFromFirebase::class.java)
+            }else{
+
+                return  AppAdmobDataFromFirebase()
+            }
         }
 
     }

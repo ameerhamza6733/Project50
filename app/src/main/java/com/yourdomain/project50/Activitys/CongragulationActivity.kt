@@ -21,7 +21,16 @@ import android.widget.TextView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.bumptech.glide.request.RequestOptions
+import com.google.ads.consent.ConsentInformation
+import com.google.ads.consent.ConsentStatus
+import com.google.ads.mediation.admob.AdMobAdapter
+import com.google.android.gms.ads.AdRequest
+import com.google.android.gms.ads.MobileAds
+import com.google.android.gms.ads.reward.RewardedVideoAd
 import com.yourdomain.project50.Fragments.RateUsFragment
+import com.yourdomain.project50.MY_Shared_PREF
+import com.yourdomain.project50.Model.Admob
+import com.yourdomain.project50.Model.AppAdmobDataFromFirebase
 import com.yourdomain.project50.Model.MoreApps
 import com.yourdomain.project50.R
 import com.yourdomain.project50.Utils
@@ -40,6 +49,10 @@ class CongragulationActivity : AppCompatActivity() {
     private lateinit var progressBar: ProgressBar
     private lateinit var btClose: ImageButton
     private lateinit var btShare: ImageButton
+
+    private var mSetingsFromFirebase: AppAdmobDataFromFirebase? = null
+    private var mRewardedVideoAd: RewardedVideoAd?=null
+    private var adRequest: AdRequest? = null
 
     internal var df = DecimalFormat("##.##")
     companion object {
@@ -77,8 +90,34 @@ class CongragulationActivity : AppCompatActivity() {
                 recyclerView.adapter = MoreAppsAdupter(it)
             }
         })
-    }
 
+        mSetingsFromFirebase = MY_Shared_PREF.getFirebaseAppSettings(application)
+        adRequest = if (ConsentInformation.getInstance(this).consentStatus == ConsentStatus.NON_PERSONALIZED) {
+            AdRequest.Builder()
+                    .addNetworkExtrasBundle(AdMobAdapter::class.java, getNonPersonalizedAdsBundle())
+                    .build()
+        } else {
+            AdRequest.Builder()
+                    .build()
+        }
+        loadVideoAd()
+
+    }
+    private fun loadVideoAd(){
+        mRewardedVideoAd = MobileAds.getRewardedVideoAdInstance(this);
+        var adID= Admob.REWADEDR_VIDEO_AD_ID
+        mSetingsFromFirebase?.admobAds?.videoAds?.id?.let {
+            adID = it
+        }
+        mRewardedVideoAd?.loadAd(adID,adRequest)
+
+    }
+    fun getNonPersonalizedAdsBundle(): Bundle {
+        val extras = Bundle()
+        extras.putString("npa", "1")
+
+        return extras
+    }
     private fun findVIews() {
         tvCalriesBurn = findViewById(R.id.tvTotaleCalresBurn)
         tvDayComleted = findViewById(R.id.tvDaysCompelted)
@@ -99,6 +138,12 @@ class CongragulationActivity : AppCompatActivity() {
         btClose.setOnClickListener { finish() }
         btShare.setOnClickListener { Utils.shareTextExtra(application,"I have just completed "+tvDayComleted.text+" of (app name). Join me "+application.packageName) }
 
+    }
+
+    override fun onBackPressed() {
+        if (mRewardedVideoAd?.isLoaded==true)
+        mRewardedVideoAd?.show()
+        finish()
     }
 
     inner class MoreAppsAdupter(val moreApps: ArrayList<MoreApps>) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {

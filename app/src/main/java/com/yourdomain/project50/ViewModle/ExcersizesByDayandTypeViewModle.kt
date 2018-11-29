@@ -6,7 +6,7 @@ import android.arch.lifecycle.ViewModel
 import com.yourdomain.project50.ExcersizesABSPlanConstants
 import com.yourdomain.project50.ExcersizesBUTTPlanConstants
 import com.yourdomain.project50.ExcersizesFullBodyConstants
-import com.yourdomain.project50.Model.ExcersizePlans
+import com.yourdomain.project50.Model.ExcersizePlan
 import com.yourdomain.project50.Model.Excesizes
 
 /**
@@ -22,11 +22,11 @@ class ExcersizesByDayandTypeViewModle : ViewModel() {
         if (mutableLiveData == null) {
             mutableLiveData = MutableLiveData()
             when (plan) {
-                ExcersizePlans.PLAN_FULL_BODY -> {
+                ExcersizePlan.PLAN_FULL_BODY -> {
                     val ids = ExcersizesFullBodyConstants.getDay1ExcersizeKeys(day + 1)
                     mutableLiveData?.value = ids
                 }
-                ExcersizePlans.PLAN_ABS -> {
+                ExcersizePlan.PLAN_ABS -> {
                     val ids = ExcersizesABSPlanConstants.getDay1ExcersizeKeys(day + 1)
                     mutableLiveData?.value = ids
                 }

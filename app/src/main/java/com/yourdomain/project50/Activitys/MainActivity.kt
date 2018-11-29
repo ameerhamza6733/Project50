@@ -1,5 +1,6 @@
 package com.yourdomain.project50.Activitys
 
+import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.os.Handler
@@ -18,12 +19,14 @@ import android.widget.ImageView
 import android.widget.ProgressBar
 import android.widget.TextView
 import com.bumptech.glide.Glide
+import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.bumptech.glide.request.RequestOptions
-import com.yourdomain.project50.Model.ExcersizePlans
+import com.yourdomain.project50.Model.ExcersizePlan
 import com.yourdomain.project50.R
 import com.yourdomain.project50.ViewModle.ExcersizePlansViewModle
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.app_bar_main.*
+import com.google.android.gms.ads.NativeExpressAdView
 
 
 class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener {
@@ -31,6 +34,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
     private lateinit var recyclerView: RecyclerView
     private lateinit var progressBar: ProgressBar
     private var currentExcersizePlan = -1
+    private val mNativeExpressAdView: NativeExpressAdView? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -121,15 +125,15 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
 
     }
 
-    private inner class ExcersizeAdupter(val excersizePlans: MutableList<ExcersizePlans>) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+    private inner class ExcersizeAdupter(val excersizePlans: MutableList<ExcersizePlan>) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
         override fun onCreateViewHolder(p0: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
             return when (viewType) {
-                ExcersizePlans.TYPE_EXCERSISE -> {
+                ExcersizePlan.TYPE_EXCERSISE -> {
                     ExcersizeViewHolder(LayoutInflater.from(p0.context)
                             .inflate(R.layout.each_excersize_plan, p0, false));
                 }
-                ExcersizePlans.TYPE_AD -> {
+                ExcersizePlan.TYPE_AD -> {
                     AdViewHolderViewHolder(LayoutInflater.from(p0.context)
                             .inflate(R.layout.native_adview, p0, false));
                 }
@@ -146,17 +150,21 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
             return excersizePlans.size
         }
 
-        val requestOptions = RequestOptions();
+        val requestOptions = RequestOptions().diskCacheStrategy(DiskCacheStrategy.ALL);
 
         override fun onBindViewHolder(p0: RecyclerView.ViewHolder, p1: Int) {
 
-            if (ExcersizePlans.TYPE_EXCERSISE == p0.itemViewType) {
+            if (ExcersizePlan.TYPE_EXCERSISE == p0.itemViewType) {
                 p0 as ExcersizeViewHolder
+              var daysComplted=  (excersizePlans[p0.adapterPosition].totalDays - excersizePlans[p0.adapterPosition].completedDays)
+                p0.daysProgressBar.progress=excersizePlans[p0.adapterPosition].completedDays
+                p0.tvTotalDaysLeft.text="Days left "+daysComplted
                 p0.tvtitle.text = excersizePlans[p0.adapterPosition].name
-                Glide.with(p0.tvtitle.context).load(excersizePlans[p0.adapterPosition].image).into(p0.image)
+                Glide.with(p0.tvtitle.context).load(excersizePlans[p0.adapterPosition].image).apply(requestOptions).into(p0.image)
 
-            } else if (ExcersizePlans.TYPE_AD == p0.itemViewType) {
+            } else if (ExcersizePlan.TYPE_AD == p0.itemViewType) {
                 p0 as AdViewHolderViewHolder
+
             }
 
         }
@@ -168,28 +176,33 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         inner class ExcersizeViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
             var tvtitle: TextView
             var image: ImageView
-            var tvTotalDays: TextView
+            var tvTotalDaysLeft: TextView
             var imScrem: ImageView
+            var daysProgressBar:ProgressBar
 
             init {
                 itemView.setOnClickListener {
-                    itemView.context.startActivity(Intent(itemView.context, EachPlanExcersizesActivity::class.java))
+                   val intent= Intent(itemView.context, EachPlanExcersizesActivity::class.java)
+                    intent.putExtra(EachPlanExcersizesActivity.EXTRA_PLAN,adapterPosition)
+                    itemView.context.startActivity(intent)
                     finish()
                 }
                 tvtitle = itemView.findViewById(R.id.excersizeTitle)
                 image = itemView.findViewById(R.id.image)
-                tvTotalDays = itemView.findViewById(R.id.tvTotalDays)
+                tvTotalDaysLeft = itemView.findViewById(R.id.tvDaysLift)
                 imScrem = itemView.findViewById(R.id.imageViewScream);
+                daysProgressBar=itemView.findViewById(R.id.progressBar)
             }
         }
 
 
         inner class AdViewHolderViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
             var nativeAd: TextView
+            var context:Context
 
             init {
-
-                nativeAd = itemView.findViewById(R.id.nativeAd)
+                context=itemView.context
+                nativeAd = itemView.findViewById(R.id.native_Adview)
             }
         }
     }

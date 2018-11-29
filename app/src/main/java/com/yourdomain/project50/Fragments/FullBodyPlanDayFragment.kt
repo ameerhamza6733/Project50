@@ -14,9 +14,11 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ProgressBar
 import android.widget.TextView
+import com.yourdomain.project50.Activitys.EachPlanExcersizesActivity
 import com.yourdomain.project50.Activitys.ExcersizeListActivity
-import com.yourdomain.project50.Model.ExcersizeDays
-import com.yourdomain.project50.Model.ExcersizePlans
+import com.yourdomain.project50.Activitys.MainActivity
+import com.yourdomain.project50.Model.ExcersizeDay
+import com.yourdomain.project50.Model.ExcersizePlan
 
 import com.yourdomain.project50.R
 import com.yourdomain.project50.ViewModle.FragmentFullBodyPlanViewModle
@@ -40,15 +42,15 @@ class FullBodyPlanDayFragment : Fragment() {
         return view
     }
 
-    private class EachExcersizeDayAdupter(val excersizeList: MutableList<ExcersizeDays>) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+    private class EachExcersizeDayAdupter(val excersizeList: MutableList<ExcersizeDay>) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
         override fun onCreateViewHolder(p0: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
             return when (viewType) {
-                ExcersizeDays.VIEW_TYPE_DAY -> {
+                ExcersizeDay.VIEW_TYPE_DAY -> {
                     ExcersizeDAYViewHolder(LayoutInflater.from(p0.context)
                             .inflate(R.layout.each_excersize_day, p0, false));
 
                 }
-                ExcersizePlans.TYPE_AD -> {
+                ExcersizePlan.TYPE_AD -> {
                     AdViewHolderViewHolder(LayoutInflater.from(p0.context)
                             .inflate(R.layout.native_adview, p0, false));
                 }
@@ -67,7 +69,7 @@ class FullBodyPlanDayFragment : Fragment() {
 
         override fun onBindViewHolder(p0: RecyclerView.ViewHolder, p1: Int) {
 
-            if (ExcersizeDays.VIEW_TYPE_DAY == p0.itemViewType) {
+            if (ExcersizeDay.VIEW_TYPE_DAY == p0.itemViewType) {
                 p0 as ExcersizeDAYViewHolder
                 if (excersizeList[p0.adapterPosition].totaleExcersizes>0){
                     p0.progressBar.max=excersizeList[p0.adapterPosition].totaleExcersizes.toInt()
@@ -77,7 +79,7 @@ class FullBodyPlanDayFragment : Fragment() {
                     p0.tvProgress.setText(excersizeList[p0.adapterPosition].progress)
                 }
                 p0.tvDay.text = "Day " + excersizeList[p0.adapterPosition].day.toString()
-            } else if (ExcersizeDays.VIEW_TYPE_AD == p0.itemViewType) {
+            } else if (ExcersizeDay.VIEW_TYPE_AD == p0.itemViewType) {
                 p0 as AdViewHolderViewHolder
             }
 
@@ -99,9 +101,12 @@ class FullBodyPlanDayFragment : Fragment() {
                     Log.d(TAG,""+excersizeList[adapterPosition].toString())
                     val intent = Intent(itemView.context, ExcersizeListActivity::class.java)
                     intent.putExtra(ExcersizeListActivity.EXTRA_EXCERSIZES_DONE,excersizeList[adapterPosition].doneExcersises.toInt())
-                    intent.putExtra(ExcersizeListActivity.EXTRA_PLAN,ExcersizePlans.PLAN_FULL_BODY)
+                    intent.putExtra(ExcersizeListActivity.EXTRA_PLAN,ExcersizePlan.PLAN_FULL_BODY)
                     intent.putExtra(ExcersizeListActivity.EXTRA_DAY, adapterPosition)
                     itemView.context.startActivity(intent)
+                    if (EachPlanExcersizesActivity.mRewardedVideoAd?.isLoaded==true){
+                        EachPlanExcersizesActivity.mRewardedVideoAd?.show()
+                    }
                 }
                 tvDay = itemView.findViewById(R.id.tvDay)
                 tvProgress=itemView.findViewById(R.id.tvProgress)
@@ -115,7 +120,7 @@ class FullBodyPlanDayFragment : Fragment() {
 
             init {
 
-                nativeAd = itemView.findViewById(R.id.nativeAd)
+                nativeAd = itemView.findViewById(R.id.native_Adview)
             }
         }
     }

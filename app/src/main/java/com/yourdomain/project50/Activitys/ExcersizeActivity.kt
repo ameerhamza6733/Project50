@@ -15,11 +15,17 @@ import android.view.View
 import android.view.WindowManager
 import android.widget.*
 import com.bumptech.glide.Glide
+import com.google.ads.consent.ConsentInformation
+import com.google.ads.consent.ConsentStatus
+import com.google.ads.mediation.admob.AdMobAdapter
+import com.google.android.gms.ads.AdRequest
+import com.google.android.gms.ads.AdSize
+import com.google.android.gms.ads.AdView
+import com.google.android.gms.ads.MobileAds
+import com.google.android.gms.ads.reward.RewardedVideoAd
 import com.yourdomain.project50.*
 import com.yourdomain.project50.Fragments.*
-import com.yourdomain.project50.Model.ExcersizeDays
-import com.yourdomain.project50.Model.Excesizes
-import com.yourdomain.project50.Model.Settings
+import com.yourdomain.project50.Model.*
 import com.yourdomain.project50.Utils.CountTotalTime
 import com.yourdomain.project50.ViewModle.ExcersizesByDayandTypeViewModle
 import java.util.concurrent.TimeUnit
@@ -107,7 +113,7 @@ class ExcersizeActivity : AppCompatActivity(), WatingToStartExcersizeFragment.On
     private lateinit var mbtBack: ImageButton
     private lateinit var mbtdone: ImageButton
 
-    private var currentDay: ExcersizeDays? = null
+    private var currentDay: ExcersizeDay? = null
     private var excesizes: Excesizes? = null
     private var counter = -1
     private var countDown: CustomCountDownTimer? = null
@@ -127,6 +133,11 @@ class ExcersizeActivity : AppCompatActivity(), WatingToStartExcersizeFragment.On
 
     }
 
+    private var adRequest: AdRequest? = null
+    private lateinit var adContainer: RelativeLayout
+    private var mSetingsFromFirebase: AppAdmobDataFromFirebase? = null
+    private var mRewardedVideoAd:RewardedVideoAd?=null
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.each_full_screen_excersize)
@@ -141,7 +152,7 @@ class ExcersizeActivity : AppCompatActivity(), WatingToStartExcersizeFragment.On
         excersizeDone = intent.getIntExtra(EXTRA_EXCERSIZES_DONE, -2)
         currentPlan = intent.getStringExtra(EXTRA_PLAN)
         if (currentDayKey != -2) {
-            currentDay = MY_Shared_PREF.getCurrentDay(application, currentPlan + currentDayKey.toString())
+            currentDay = MY_Shared_PREF.getDayByKey(application, currentPlan + currentDayKey.toString())
 
         }
         if (excersizeDone != -2) {
@@ -169,8 +180,47 @@ class ExcersizeActivity : AppCompatActivity(), WatingToStartExcersizeFragment.On
                 fragmet.show(supportFragmentManager, "WatingToStartExcersizeFragment")
             }
         })
+        mSetingsFromFirebase = MY_Shared_PREF.getFirebaseAppSettings(application)
+        adRequest = if (ConsentInformation.getInstance(this).consentStatus == ConsentStatus.NON_PERSONALIZED) {
+            AdRequest.Builder()
+                    .addNetworkExtrasBundle(AdMobAdapter::class.java, getNonPersonalizedAdsBundle())
+                    .build()
+        } else {
+            AdRequest.Builder()
+                    .build()
+        }
 
+        loadBannerAds()
+        loadVideoAd()
+    }
 
+    private fun loadBannerAds() {
+        val adView = AdView(this)
+        adView.adSize = AdSize.BANNER
+        var adId = Admob.BANNER_AD_ID
+        mSetingsFromFirebase?.admobAds?.bannerAds?.id?.let {
+            adId = it
+        }
+        adView.adUnitId = adId
+        adContainer.addView(adView)
+        adView.loadAd(adRequest)
+
+    }
+
+    private fun loadVideoAd(){
+        mRewardedVideoAd = MobileAds.getRewardedVideoAdInstance(this);
+        var adID= Admob.REWADEDR_VIDEO_AD_ID
+        mSetingsFromFirebase?.admobAds?.videoAds?.id?.let {
+            adID = it
+        }
+        mRewardedVideoAd?.loadAd(adID,adRequest)
+
+    }
+    fun getNonPersonalizedAdsBundle(): Bundle {
+        val extras = Bundle()
+        extras.putString("npa", "1")
+
+        return extras
     }
 
     private fun findViews() {
@@ -187,6 +237,7 @@ class ExcersizeActivity : AppCompatActivity(), WatingToStartExcersizeFragment.On
         mbtBack = findViewById(R.id.btBack)
         mbtdone = findViewById(R.id.btDone)
         mLayout = findViewById(R.id.type_unlimted)
+        adContainer = findViewById(R.id.adContanir)
 
 
         mbtdone.setOnClickListener {
@@ -311,6 +362,8 @@ class ExcersizeActivity : AppCompatActivity(), WatingToStartExcersizeFragment.On
         }
     }
 
+
+
     private fun updateUIWithCountDown() {
         mLayout.visibility = View.INVISIBLE
         mCurrentProgressBar.visibility = View.VISIBLE
@@ -375,7 +428,7 @@ class ExcersizeActivity : AppCompatActivity(), WatingToStartExcersizeFragment.On
         Log.d(TAG, "Saving currnet day in shared pref: " + Utils.toPersentage(counter + 1, excesizes?.title?.size!!))
         if (currentDayKey == -3) return
 
-        MY_Shared_PREF.saveCurrentDay(application, (currentPlan) + (currentDayKey + 1).toString(), ExcersizeDays(currentDayKey + 1, ExcersizeDays.VIEW_TYPE_DAY, excesizes?.title?.size?.toLong()!!, counter.toLong(), Utils.toPersentage(counter + 1, excesizes?.title?.size!!)))
+        MY_Shared_PREF.saveDayByKey(application, (currentPlan) + (currentDayKey + 1).toString(), ExcersizeDay(currentDayKey + 1, ExcersizeDay.VIEW_TYPE_DAY, excesizes?.title?.size?.toLong()!!, counter.toLong(), Utils.toPersentage(counter + 1, excesizes?.title?.size!!)))
     }
 
     override fun onPause() {
@@ -389,6 +442,8 @@ class ExcersizeActivity : AppCompatActivity(), WatingToStartExcersizeFragment.On
         handle?.removeCallbacks(runable)
         mediaPlayer?.stop()
         mediaPlayer?.release()
+        if (mRewardedVideoAd?.isLoaded==true)
+            mRewardedVideoAd?.show()
         super.onDestroy()
     }
 

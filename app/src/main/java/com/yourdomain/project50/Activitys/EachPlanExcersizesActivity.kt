@@ -142,7 +142,7 @@ class EachPlanExcersizesActivity : AppCompatActivity() {
         val model = ExcersizePlansViewModle(application)
         var list = model.getExcersizePlans();
         if (list.size > 0) {
-            list.add(0, ExcersizePlan("native ad", 0, 0, "native ad id", ExcersizePlan.TYPE_AD))
+            list.add(0, ExcersizePlan("native ad", 0, 0, -1, ExcersizePlan.TYPE_AD))
 
             var excersizeAdupter = ExcersizePlansAdupter(list);
             val llm = LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false);

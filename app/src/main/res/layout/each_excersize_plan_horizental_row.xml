@@ -9,12 +9,13 @@
     xmlns:tools="http://schemas.android.com/tools"
 
     >
+
     <ImageView
-        android:src="@drawable/page4_back_ground_screm"
         android:id="@+id/imageViewScream"
-        android:layout_width="match_parent"
+        android:layout_width="300dp"
         android:layout_height="match_parent"
-        android:scaleType="fitXY"/>
+        android:scaleType="fitXY"
+        android:src="@drawable/page4_back_ground_screm" />
 
     <android.support.constraint.ConstraintLayout
         android:layout_margin="8dp"

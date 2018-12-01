@@ -21,18 +21,18 @@ class ExcersizePlansViewModle(application: Application) : AndroidViewModel(appli
         excersizePlanList = ArrayList();
 
         val excersizesTypes = getApplication<Application>().resources.getStringArray(R.array.excersize_type)
-        val excersizeTypeImages = getApplication<Application>().resources.getStringArray(R.array.excersize_type_icon)
+        val excersizeTypeImages = getApplication<Application>().resources.obtainTypedArray(R.array.excersize_type_icon)
         val excersizeTypeTotalDays = getApplication<Application>().resources.getStringArray(R.array.excersize_type_total_days)
         val daysComplted = MY_Shared_PREF.getAllCompletedorInprogressDays(getApplication())
 
         for (i in 0 until excersizesTypes.size) {
           var fillterMapByExcersizeType= daysComplted.filterKeys { it.contains(excersizesTypes[i],true) }
           var filterMapByProgress= fillterMapByExcersizeType.filter<String, ExcersizeDay> { it.value.progress.contains("100%") }
-            var excersize = ExcersizePlan(excersizesTypes[i], excersizeTypeTotalDays[i].toInt(), filterMapByProgress.size, excersizeTypeImages[i], ExcersizePlan.TYPE_EXCERSISE)
+            var excersize = ExcersizePlan(excersizesTypes[i], excersizeTypeTotalDays[i].toInt(), filterMapByProgress.size, excersizeTypeImages.getResourceId(i,-1), ExcersizePlan.TYPE_EXCERSISE)
             excersizePlanList?.add(excersize)
 
         }
-        var excersize = ExcersizePlan("native ad", 0, 0, "native ad id", ExcersizePlan.TYPE_AD)
+        var excersize = ExcersizePlan("native ad", 0, 0, -1, ExcersizePlan.TYPE_AD)
         excersizePlanList?.add(excersize)
         return excersizePlanList!!;
     }

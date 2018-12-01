@@ -88,19 +88,19 @@ public class Utils {
         application.startActivity(openUrlIntent);
     }
 
-    public String CMtoFeet(double cm) {
+    public static String CMtoFeet(double cm) {
         return df.format(Math.round((cm / 30.48) * 100D) / 100D);
     }
 
-    public String FeettoCM(double inch) {
+    public static String FeettoCM(double inch) {
         return df.format(Math.round((inch * 30.48) * 100D) / 100D);
     }
 
-    public String KGtoLBS(double kg) {
+    public static String KGtoLBS(double kg) {
         return df.format(Math.round((kg * 2.20) * 100D) / 100D);
     }
 
-    public String LBStoKG(double lbs) {
+    public static String LBStoKG(double lbs) {
         return df.format(Math.round((lbs / 2.20) * 100D) / 100D);
     }
 

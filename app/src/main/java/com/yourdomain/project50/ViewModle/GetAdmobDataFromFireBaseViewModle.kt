@@ -13,7 +13,7 @@ import com.yourdomain.project50.Model.AppAdmobDataFromFirebase
 /**
  * Created by hamza rafiq on 11/26/18.
  */
-class GetDataFromFireBaseViewModle : ViewModel() {
+class GetAdmobDataFromFireBaseViewModle : ViewModel() {
     private var mutableLiveData: MutableLiveData<AppAdmobDataFromFirebase>? = null
     var database = FirebaseDatabase.getInstance()
     private val TAG="GetDataFromFireBase";

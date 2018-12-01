@@ -21,7 +21,7 @@ class CustomAdsViewModle : ViewModel(){
     public fun getMoreApps():LiveData<ArrayList<MoreApps>>?{
        if (mutableLiveData==null){
            mutableLiveData=MutableLiveData()
-           database = FirebaseDatabase.getInstance().reference.child("moreApps")
+           database = FirebaseDatabase.getInstance().reference.child("ads").child("moreApps")
            database.addListenerForSingleValueEvent(object :ValueEventListener{
                override fun onDataChange(p0: DataSnapshot) {
                    p0.children.forEach { it.getValue(MoreApps::class.java)?.let { moreAppList.add(it) }

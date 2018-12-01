@@ -2,6 +2,7 @@ package com.yourdomain.project50.Fragments
 
 import android.content.Context
 import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
 import android.support.v4.app.Fragment
 import android.support.v7.widget.AppCompatCheckBox
@@ -13,19 +14,17 @@ import android.widget.Button
 import android.widget.TextView
 import android.widget.Toast
 import com.yourdomain.project50.Activitys.MainActivity
+import com.yourdomain.project50.Model.PersonAppearance
 import com.yourdomain.project50.R
-import com.yourdomain.project50.Scale.view.DecimalScaleRulerView
 import com.yourdomain.project50.Scale.view.ScaleRulerView
+import com.yourdomain.project50.Utils
 
 
-class CMandKGscaleFragment : Fragment(), View.OnClickListener {
+open class CMandKGscaleFragment : Fragment(), View.OnClickListener {
 
 
     override fun onClick(v: View?) {
         when (v?.id) {
-            R.id.radioCentimenter -> {
-
-            }
             R.id.radioInch -> {
                 mListener?.onINCandLBSRadioClick()
             }
@@ -36,43 +35,53 @@ class CMandKGscaleFragment : Fragment(), View.OnClickListener {
                 if (agreeToPrivicyPolicy) {
                     val intent = Intent(activity,MainActivity::class.java)
                     activity?.startActivity(intent)
-                    mListener?.onCMandKGNext()
+                    val personAppearance=PersonAppearance(mScaleType,tvHight.text.toString(),tvWaight.text.toString())
+                    mListener?.onNext(personAppearance)
                 } else {
                     Toast.makeText(activity, "Agree to privacy policy ", Toast.LENGTH_LONG).show()
                 }
             }
+            R.id.tvAgreeToPrivacyPolicy->{
+                var url=getString(R.string.privacy_policy_url)
+                if (!url.startsWith("https://") && !url.startsWith("http://")) {
+                    url = "http://$url"
+                }
+                val openUrlIntent = Intent(Intent.ACTION_VIEW, Uri.parse(url))
+                startActivity(openUrlIntent)
+            }
         }
     }
 
-    private var mParam1: String? = null
-    private var mParam2: String? = null
+    protected var mParam1: String? = null
+    protected var mParam2: String? = null
 
-    private var mListener: OnINCandLBSRadioListener? = null
-
-
-    private lateinit var checkBoxPrivacyPolicy: AppCompatCheckBox
-    private lateinit var radioCentimenter: AppCompatRadioButton
-    private lateinit var mHeightWheelView: ScaleRulerView
-    private lateinit var mWeightWheelView: ScaleRulerView
-    private lateinit var radioInch: AppCompatRadioButton
-    private lateinit var btNext: Button
-
-    private lateinit var tvHight: TextView
-    private lateinit var tvWaight: TextView
-    private lateinit var tvHightType: TextView
-    private lateinit var tvWaightType: TextView
-
-    private var mHeight = 170f
-    private val mMaxHeight = 220f
-    private val mMinHeight = 100f
+    protected var mListener: OnINCandLBSRadioListener? = null
 
 
-    private var mWeight = 60.0f
-    private val mMaxWeight = 200f
-    private val mMinWeight = 25f
+    protected lateinit var checkBoxPrivacyPolicy: AppCompatCheckBox
+    protected lateinit var radioCentimenter: AppCompatRadioButton
+    protected lateinit var mHeightWheelView: ScaleRulerView
+    protected lateinit var mWeightWheelView: ScaleRulerView
+    protected lateinit var radioInch: AppCompatRadioButton
+    protected lateinit var btNext: Button
+    protected lateinit var tvAgreToPolicyPrivacy:TextView
 
-    private var mCM_MODE = 1
-    private var agreeToPrivicyPolicy = false
+    protected lateinit var tvHight: TextView
+    protected lateinit var tvWaight: TextView
+    protected lateinit var tvHightType: TextView
+    protected lateinit var tvWaightType: TextView
+
+    protected var mHeight = 170f
+    protected val mMaxHeight = 220f
+    protected val mMinHeight = 100f
+
+
+    protected var mWeight = 60.0f
+    protected val mMaxWeight = 200f
+    protected val mMinWeight = 25f
+
+    protected var mScaleType = -1
+    protected var agreeToPrivicyPolicy = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -91,6 +100,7 @@ class CMandKGscaleFragment : Fragment(), View.OnClickListener {
         checkBoxPrivacyPolicy = rootView.findViewById(R.id.PrivacyPolicyCheckBox)
         mWeightWheelView = rootView.findViewById(R.id.scaleWheelView_weight)
         radioCentimenter = rootView.findViewById(R.id.radioCentimenter)
+        tvAgreToPolicyPrivacy=rootView.findViewById(R.id.tvAgreeToPrivacyPolicy)
         tvHight = rootView.findViewById(R.id.tv_user_height_value)
         tvWaight = rootView.findViewById(R.id.tv_user_weight_value)
         tvWaightType = rootView.findViewById(R.id.tv_waight_type)
@@ -99,12 +109,12 @@ class CMandKGscaleFragment : Fragment(), View.OnClickListener {
         btNext = rootView.findViewById(R.id.btNext)
 
         radioCentimenter.isChecked=true
-        radioCentimenter.isEnabled=false
+
 
         btNext.setOnClickListener(this)
         radioInch.setOnClickListener(this)
-        radioCentimenter.setOnClickListener(this)
         checkBoxPrivacyPolicy.setOnClickListener(this)
+        tvAgreToPolicyPrivacy.setOnClickListener(this)
 
         tvHight.text = mHeight.toString()
         mHeightWheelView.initViewParam(mHeight, mMaxHeight, mMinHeight)
@@ -117,7 +127,7 @@ class CMandKGscaleFragment : Fragment(), View.OnClickListener {
             mWeight = it
             tvWaight.text = it.toString()
         })
-
+mScaleType=PersonAppearance.TYPE_CM_KG
         return rootView;
     }
 
@@ -137,9 +147,10 @@ class CMandKGscaleFragment : Fragment(), View.OnClickListener {
 
 
     interface OnINCandLBSRadioListener {
-
+        fun onCMandKGadioClick()
+        fun onNext( personAppearance: PersonAppearance);
         fun onINCandLBSRadioClick()
-        fun onCMandKGNext();
+
 
     }
 

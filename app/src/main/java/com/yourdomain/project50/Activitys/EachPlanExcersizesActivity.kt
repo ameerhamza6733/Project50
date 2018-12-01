@@ -60,7 +60,7 @@ class EachPlanExcersizesActivity : AppCompatActivity() {
                 return@OnNavigationItemSelectedListener true
             }
             R.id.navigation_dashboard -> {
-                startActivity(Intent(this@EachPlanExcersizesActivity, BarChartActivity::class.java))
+                startActivity(Intent(this@EachPlanExcersizesActivity, PreviewColumnChartActivity::class.java))
 
                 return@OnNavigationItemSelectedListener true
             }

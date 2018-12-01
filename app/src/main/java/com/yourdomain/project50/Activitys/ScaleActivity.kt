@@ -12,24 +12,38 @@ import com.google.android.gms.ads.AdListener
 import com.google.android.gms.ads.AdRequest
 import com.google.android.gms.ads.InterstitialAd
 import com.yourdomain.project50.Fragments.CMandKGscaleFragment
+import com.yourdomain.project50.Fragments.INCandLBSscaleFragment
 import com.yourdomain.project50.MY_Shared_PREF
 import com.yourdomain.project50.Model.Admob
 import com.yourdomain.project50.Model.AppAdmobDataFromFirebase
+import com.yourdomain.project50.Model.Person
+import com.yourdomain.project50.Model.PersonAppearance
 import com.yourdomain.project50.R
 
 
-class ScaleActivity : AppCompatActivity(),CMandKGscaleFragment.OnINCandLBSRadioListener {
-    override fun onCMandKGNext() {
-        if (mInterstitialAd?.isLoaded==true){
+class ScaleActivity : AppCompatActivity(), CMandKGscaleFragment.OnINCandLBSRadioListener{
+
+
+    override fun onCMandKGadioClick() {
+        showCMandKGscaleFragment()
+    }
+
+    override fun onNext(personAppearance: PersonAppearance) {
+        if (mInterstitialAd?.isLoaded == true) {
             mInterstitialAd?.show()
+            Log.d(TAG,personAppearance.toString())
+            val person=Person()
+            person.personAppearance=personAppearance
+            MY_Shared_PREF.savePerson(application,person)
             finish()
         }
     }
 
     override fun onINCandLBSRadioClick() {
-
+        showINCandLBSscaleFragment()
     }
 
+    private val TAG="ScaleActivity"
 
     private var mInterstitialAd: InterstitialAd? = null
     private var mSetingsFromFirebase: AppAdmobDataFromFirebase? = null
@@ -40,15 +54,15 @@ class ScaleActivity : AppCompatActivity(),CMandKGscaleFragment.OnINCandLBSRadioL
 
         mSetingsFromFirebase = MY_Shared_PREF.getFirebaseAppSettings(application)
         mInterstitialAd = InterstitialAd(this);
-        mInterstitialAd?.adListener=object :AdListener(){
+        mInterstitialAd?.adListener = object : AdListener() {
             override fun onAdLoaded() {
                 super.onAdLoaded()
-                Log.d("ScaleActivity","onAdLoaded")
+                Log.d(TAG, "onAdLoaded")
             }
 
             override fun onAdFailedToLoad(p0: Int) {
                 super.onAdFailedToLoad(p0)
-                Log.d("onAdFailedToLoad",""+p0)
+                Log.d("onAdFailedToLoad", "" + p0)
             }
         }
         if (ConsentInformation.getInstance(this).consentStatus == ConsentStatus.PERSONALIZED) {
@@ -72,12 +86,21 @@ class ScaleActivity : AppCompatActivity(),CMandKGscaleFragment.OnINCandLBSRadioL
                 .commitAllowingStateLoss()
     }
 
+    private fun showINCandLBSscaleFragment() {
+        val inCandLBSscaleFragment = INCandLBSscaleFragment()
+        val fm = supportFragmentManager
+        fm.beginTransaction()
+                .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
+                .replace(R.id.container, inCandLBSscaleFragment)
+                .commitAllowingStateLoss()
+    }
+
     private fun showPersonalizedAds() {
 
 
-        if (mSetingsFromFirebase?.admobAds?.interstitialAds?.id==null){
-            mInterstitialAd?.adUnitId=Admob.INTERSTITIAL_AD_ID
-        }else {
+        if (mSetingsFromFirebase?.admobAds?.interstitialAds?.id == null) {
+            mInterstitialAd?.adUnitId = Admob.INTERSTITIAL_AD_ID
+        } else {
             mInterstitialAd?.adUnitId = mSetingsFromFirebase?.admobAds?.interstitialAds?.id
         }
         mInterstitialAd?.loadAd(AdRequest.Builder().build());
@@ -87,10 +110,9 @@ class ScaleActivity : AppCompatActivity(),CMandKGscaleFragment.OnINCandLBSRadioL
     private fun showNonPersonalizedAds() {
 
 
-
-        if (mSetingsFromFirebase?.admobAds?.interstitialAds?.id==null){
-            mInterstitialAd?.adUnitId=Admob.INTERSTITIAL_AD_ID
-        }else {
+        if (mSetingsFromFirebase?.admobAds?.interstitialAds?.id == null) {
+            mInterstitialAd?.adUnitId = Admob.INTERSTITIAL_AD_ID
+        } else {
             mInterstitialAd?.adUnitId = mSetingsFromFirebase?.admobAds?.interstitialAds?.id
         }
         val adRequest = AdRequest.Builder()

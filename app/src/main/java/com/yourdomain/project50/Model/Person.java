@@ -12,11 +12,13 @@ public class Person {
     private double totleEXERCISES;
     private double totleKCalBurn;
     private double totleMintsDuration;
+    private PersonAppearance personAppearance;
 
     public Person() {
         totleEXERCISES=0;
         totleKCalBurn=0;
         totleMintsDuration=0;
+        personAppearance=null;
     }
 
     public double getTotleEXERCISES() {
@@ -37,6 +39,14 @@ public class Person {
 
     public double getTotleMintsDuration() {
         return totleMintsDuration;
+    }
+
+    public PersonAppearance getPersonAppearance() {
+        return personAppearance;
+    }
+
+    public void setPersonAppearance(PersonAppearance personAppearance) {
+        this.personAppearance = personAppearance;
     }
 
     public void setTotleMintsDuration(double totleMintsDuration) {

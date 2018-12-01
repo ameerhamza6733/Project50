@@ -15,7 +15,7 @@ import com.bumptech.glide.Glide
 import com.google.android.gms.ads.MobileAds
 import com.yourdomain.project50.R
 import com.yourdomain.project50.TTSHelperService
-import com.yourdomain.project50.ViewModle.GetDataFromFireBaseViewModle
+import com.yourdomain.project50.ViewModle.GetAdmobDataFromFireBaseViewModle
 import com.google.ads.consent.ConsentStatus
 import com.google.ads.consent.ConsentInformation
 import com.google.ads.consent.ConsentFormListener
@@ -48,8 +48,8 @@ val TAG="SpalishActivityTAG"
 
         tvSpalishTitle.startAnimation(AnimationUtils.loadAnimation(this, R.anim.animation_text_view));
         Glide.with(this).load(R.drawable.spalish4).into(image)
-
-     ViewModelProviders.of(this).get(GetDataFromFireBaseViewModle::class.java).getAppSettingFromFireBase()?.observe(this, Observer {
+        MobileAds.initialize(this, Admob.APP_ID);
+     ViewModelProviders.of(this).get(GetAdmobDataFromFireBaseViewModle::class.java).getAppSettingFromFireBase()?.observe(this, Observer {
             if (it != null) {
                 var appID=Admob.APP_ID
 
@@ -99,14 +99,14 @@ val TAG="SpalishActivityTAG"
 
     private fun showNonPersonalizedAds() {
         startService(Intent(this@SpalishActivity, TTSHelperService::class.java))
-        startActivity(Intent(this@SpalishActivity, MainActivity::class.java))
+        startActivity(Intent(this@SpalishActivity, ScaleActivity::class.java))
 
         finish()
     }
 
     private fun showPersonalizedAds() {
         startService(Intent(this@SpalishActivity, TTSHelperService::class.java))
-        startActivity(Intent(this@SpalishActivity, MainActivity::class.java))
+        startActivity(Intent(this@SpalishActivity, ScaleActivity::class.java))
 
         finish()
     }

@@ -62,7 +62,7 @@ public class TTSHelperService extends Service implements TextToSpeech.OnInitList
     @Override
     public void onCreate() {
         settings = MY_Shared_PREF.Companion.getAppSettings(getApplication());
-        if(myTTS==null) return;
+
         locale=settings.getTtsSettings().getLocale();
         IntentFilter filter = new IntentFilter();
         filter.addAction(ACTION_TTS);

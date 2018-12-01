@@ -5,6 +5,7 @@ import android.content.Context
 import android.util.Log
 import com.google.gson.Gson
 import com.yourdomain.project50.Model.*
+import java.util.ArrayList
 import java.util.HashMap
 
 
@@ -24,6 +25,8 @@ class MY_Shared_PREF{
         private val SHARED_PREF_APP_SETTINGS_KEY="SHARED_PREF_APP_SETTINGS_KEY";
         private val SHARE_PREF_SETTINGS_FROM_FIREBAW_FILE="SHARE_PREF_SETTINGS_FROM_FIREBAW_FILE"
         private val SHARE_PREF_SETTINGS_FROM_FIREBAW_KEY="SHARE_PREF_SETTINGS_FROM_FIREBAW_key"
+        private val SHARE_PREF_GRAPHS_FILE="SHARE_PREF_GRAPHS_FILE"
+
 
          private val  gson=Gson()
 
@@ -118,6 +121,16 @@ class MY_Shared_PREF{
                 return  AppAdmobDataFromFirebase()
             }
         }
+
+        fun saveGraphCalvsDays(application: Application,graphCalvsDays: GraphCalvsDays){
+            val share_pref=application.getSharedPreferences(SHARE_PREF_GRAPHS_FILE,0)
+            val editer=share_pref.edit()
+            editer.putString(graphCalvsDays.day.toString(),gson.toJson(graphCalvsDays))
+            editer.apply()
+
+        }
+
+
 
     }
 

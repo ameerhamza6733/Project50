@@ -177,8 +177,8 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         inner class ExcersizeViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
             var tvtitle: TextView
             var image: ImageView
-            var tvTotalDaysLeft: TextView
             var imScrem: ImageView
+            var tvTotalDaysLeft: TextView
             var daysProgressBar:ProgressBar
 
             init {
@@ -190,8 +190,8 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
                 }
                 tvtitle = itemView.findViewById(R.id.excersizeTitle)
                 image = itemView.findViewById(R.id.image)
-                tvTotalDaysLeft = itemView.findViewById(R.id.tvDaysLift)
                 imScrem = itemView.findViewById(R.id.imageViewScream);
+                tvTotalDaysLeft = itemView.findViewById(R.id.tvDaysLift)
                 daysProgressBar=itemView.findViewById(R.id.progressBar)
             }
         }

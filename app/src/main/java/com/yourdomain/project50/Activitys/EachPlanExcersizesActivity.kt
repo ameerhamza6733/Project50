@@ -20,6 +20,7 @@ import android.view.Menu
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
+import android.widget.ProgressBar
 import android.widget.TextView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.engine.DiskCacheStrategy
@@ -197,9 +198,14 @@ class EachPlanExcersizesActivity : AppCompatActivity() {
         override fun onBindViewHolder(p0: RecyclerView.ViewHolder, p1: Int) {
             if (ExcersizePlan.TYPE_EXCERSISE == p0.itemViewType) {
                 p0 as ExcersizeViewHolder
+                var daysComplted=  (excersizePlans[p0.adapterPosition].totalDays - excersizePlans[p0.adapterPosition].completedDays)
                 p0.tvtitle.text = excersizePlans[p0.adapterPosition].name
                 Glide.with(p0.tvtitle.context).load(excersizePlans[p0.adapterPosition].image).apply(RequestOptions().diskCacheStrategy(DiskCacheStrategy.RESOURCE)).into(p0.image)
+                p0.daysProgressBar.progress=excersizePlans[p0.adapterPosition].completedDays
+                p0.tvTotalDaysLeft.text="Days left "+daysComplted
+
                 //  Log.d(TAG,"onBind"+p1 +" "+p0.adapterPosition);
+                Log.d(TAG,"totale day completed by user "+excersizePlans[p0.adapterPosition].completedDays)
             } else if (ExcersizePlan.TYPE_AD == p0.itemViewType) {
                 p0 as AdViewHolderViewHolder
 
@@ -214,13 +220,15 @@ class EachPlanExcersizesActivity : AppCompatActivity() {
         inner class ExcersizeViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
             var tvtitle: TextView
             var image: ImageView
-            var tvTotalDays: TextView
+            var tvTotalDaysLeft: TextView
+            var daysProgressBar: ProgressBar
 
             init {
                 itemView.isFocusableInTouchMode = true
                 tvtitle = itemView.findViewById(R.id.excersizeTitle)
                 image = itemView.findViewById(R.id.image)
-                tvTotalDays = itemView.findViewById(R.id.tvTotalDays)
+                tvTotalDaysLeft = itemView.findViewById(R.id.tvDaysLift)
+                daysProgressBar=itemView.findViewById(R.id.progressBar)
                 itemView.setOnFocusChangeListener { v, hasFocus ->
                     //  Log.d(TAG, "focus: $hasFocus  $adapterPosition")
                 }

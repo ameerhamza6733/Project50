@@ -29,7 +29,6 @@ class GetAdmobDataFromFireBaseViewModle : ViewModel() {
                 }
 
                 override fun onDataChange(p0: DataSnapshot) {
-                    Log.d(TAG,""+p0.getValue(Admob::class.java)?.interstitialAds?.id)
                    val appAdmobDataFromFirebase=AppAdmobDataFromFirebase(p0.getValue(Admob::class.java))
                     mutableLiveData?.value=appAdmobDataFromFirebase
 //                    p0.children.forEach {

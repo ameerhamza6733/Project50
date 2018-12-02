@@ -41,10 +41,10 @@ class SpalishActivity : AppCompatActivity() {
 
         tvSpalishTitle.startAnimation(AnimationUtils.loadAnimation(this, R.anim.animation_text_view));
         Glide.with(this).load(R.drawable.spalish4).into(image)
-        MobileAds.initialize(this, Admob.APP_ID);
+        MobileAds.initialize(this, getString(R.string.admob_app_id));
         ViewModelProviders.of(this).get(GetAdmobDataFromFireBaseViewModle::class.java).getAppSettingFromFireBase()?.observe(this, Observer {
             if (it != null) {
-                var appID = Admob.APP_ID
+
 
                 MY_Shared_PREF.saveFireBaseAppAdmobSetting(application, it)
                 checkForConsent(it)

@@ -21,7 +21,7 @@ import com.yourdomain.project50.Model.PersonAppearance
 import com.yourdomain.project50.R
 
 
-class ScaleActivity : AppCompatActivity(), CMandKGscaleFragment.OnINCandLBSRadioListener{
+class ScaleActivity : AppCompatActivity(), CMandKGscaleFragment.OnINCandLBSRadioListener {
 
 
     override fun onCMandKGadioClick() {
@@ -31,10 +31,10 @@ class ScaleActivity : AppCompatActivity(), CMandKGscaleFragment.OnINCandLBSRadio
     override fun onNext(personAppearance: PersonAppearance) {
         if (mInterstitialAd?.isLoaded == true) {
             mInterstitialAd?.show()
-            Log.d(TAG,personAppearance.toString())
-            val person=Person()
-            person.personAppearance=personAppearance
-            MY_Shared_PREF.savePerson(application,person)
+            Log.d(TAG, personAppearance.toString())
+            val person = Person()
+            person.personAppearance = personAppearance
+            MY_Shared_PREF.savePerson(application, person)
             finish()
         }
     }
@@ -43,7 +43,7 @@ class ScaleActivity : AppCompatActivity(), CMandKGscaleFragment.OnINCandLBSRadio
         showINCandLBSscaleFragment()
     }
 
-    private val TAG="ScaleActivity"
+    private val TAG = "ScaleActivity"
 
     private var mInterstitialAd: InterstitialAd? = null
     private var mSetingsFromFirebase: AppAdmobDataFromFirebase? = null
@@ -53,7 +53,8 @@ class ScaleActivity : AppCompatActivity(), CMandKGscaleFragment.OnINCandLBSRadio
         setContentView(R.layout.activity_scale)
 
         mSetingsFromFirebase = MY_Shared_PREF.getFirebaseAdmobAppSettings(application)
-        mInterstitialAd = InterstitialAd(this);
+        if (mSetingsFromFirebase?.admobAds?.interstitialAds2?.enable == true)
+            mInterstitialAd = InterstitialAd(this);
         mInterstitialAd?.adListener = object : AdListener() {
             override fun onAdLoaded() {
                 super.onAdLoaded()
@@ -98,10 +99,10 @@ class ScaleActivity : AppCompatActivity(), CMandKGscaleFragment.OnINCandLBSRadio
     private fun showPersonalizedAds() {
 
 
-        if (mSetingsFromFirebase?.admobAds?.interstitialAds?.id == null) {
+        if (mSetingsFromFirebase?.admobAds?.interstitialAds2?.id == null) {
             mInterstitialAd?.adUnitId = Admob.INTERSTITIAL_AD_ID
         } else {
-            mInterstitialAd?.adUnitId = mSetingsFromFirebase?.admobAds?.interstitialAds?.id
+            mInterstitialAd?.adUnitId = mSetingsFromFirebase?.admobAds?.interstitialAds2?.id
         }
         mInterstitialAd?.loadAd(AdRequest.Builder().build());
 
@@ -110,10 +111,10 @@ class ScaleActivity : AppCompatActivity(), CMandKGscaleFragment.OnINCandLBSRadio
     private fun showNonPersonalizedAds() {
 
 
-        if (mSetingsFromFirebase?.admobAds?.interstitialAds?.id == null) {
+        if (mSetingsFromFirebase?.admobAds?.interstitialAds2?.id == null) {
             mInterstitialAd?.adUnitId = Admob.INTERSTITIAL_AD_ID
         } else {
-            mInterstitialAd?.adUnitId = mSetingsFromFirebase?.admobAds?.interstitialAds?.id
+            mInterstitialAd?.adUnitId = mSetingsFromFirebase?.admobAds?.interstitialAds2?.id
         }
         val adRequest = AdRequest.Builder()
                 .addNetworkExtrasBundle(AdMobAdapter::class.java, getNonPersonalizedAdsBundle())

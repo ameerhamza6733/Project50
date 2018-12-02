@@ -112,10 +112,10 @@ class ExcersizeListActivity : AppCompatActivity() {
 
     private fun loadInterstial() {
 
-        if (mSetingsFromFirebase?.admobAds?.interstitialAds?.id==null){
+        if (mSetingsFromFirebase?.admobAds?.interstitialAds5?.id==null){
             mInterstitialAd?.adUnitId=Admob.INTERSTITIAL_AD_ID
         }else {
-            mInterstitialAd?.adUnitId = mSetingsFromFirebase?.admobAds?.interstitialAds?.id
+            mInterstitialAd?.adUnitId = mSetingsFromFirebase?.admobAds?.interstitialAds5?.id
         }
         mInterstitialAd?.loadAd(adRequest)
 
@@ -124,7 +124,7 @@ class ExcersizeListActivity : AppCompatActivity() {
         val adView = AdView(this)
         adView.adSize = AdSize.BANNER
         var adId=Admob.BANNER_AD_ID
-        mSetingsFromFirebase?.admobAds?.bannerAds?.id?.let {
+        mSetingsFromFirebase?.admobAds?.bannerAds5?.id?.let {
             adId=it
         }
         adView.adUnitId =adId

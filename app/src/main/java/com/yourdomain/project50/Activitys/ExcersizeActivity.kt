@@ -136,7 +136,7 @@ class ExcersizeActivity : AppCompatActivity(), WatingToStartExcersizeFragment.On
     private var adRequest: AdRequest? = null
     private lateinit var adContainer: RelativeLayout
     private var mSetingsFromFirebase: AppAdmobDataFromFirebase? = null
-    private var mRewardedVideoAd:RewardedVideoAd?=null
+    private var mRewardedVideoAd: RewardedVideoAd? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -189,8 +189,8 @@ class ExcersizeActivity : AppCompatActivity(), WatingToStartExcersizeFragment.On
             AdRequest.Builder()
                     .build()
         }
-
-        loadBannerAds()
+        if (mSetingsFromFirebase?.admobAds?.bannerAds7?.enable == true)
+            loadBannerAds()
         loadVideoAd()
     }
 
@@ -198,7 +198,7 @@ class ExcersizeActivity : AppCompatActivity(), WatingToStartExcersizeFragment.On
         val adView = AdView(this)
         adView.adSize = AdSize.BANNER
         var adId = Admob.BANNER_AD_ID
-        mSetingsFromFirebase?.admobAds?.bannerAds?.id?.let {
+        mSetingsFromFirebase?.admobAds?.bannerAds7?.id?.let {
             adId = it
         }
         adView.adUnitId = adId
@@ -207,15 +207,16 @@ class ExcersizeActivity : AppCompatActivity(), WatingToStartExcersizeFragment.On
 
     }
 
-    private fun loadVideoAd(){
+    private fun loadVideoAd() {
         mRewardedVideoAd = MobileAds.getRewardedVideoAdInstance(this);
-        var adID= Admob.REWADEDR_VIDEO_AD_ID
-        mSetingsFromFirebase?.admobAds?.videoAds?.id?.let {
+        var adID = Admob.REWADEDR_VIDEO_AD_ID
+        mSetingsFromFirebase?.admobAds?.videoAds10?.id?.let {
             adID = it
         }
-        mRewardedVideoAd?.loadAd(adID,adRequest)
+        mRewardedVideoAd?.loadAd(adID, adRequest)
 
     }
+
     fun getNonPersonalizedAdsBundle(): Bundle {
         val extras = Bundle()
         extras.putString("npa", "1")
@@ -363,7 +364,6 @@ class ExcersizeActivity : AppCompatActivity(), WatingToStartExcersizeFragment.On
     }
 
 
-
     private fun updateUIWithCountDown() {
         mLayout.visibility = View.INVISIBLE
         mCurrentProgressBar.visibility = View.VISIBLE
@@ -442,7 +442,7 @@ class ExcersizeActivity : AppCompatActivity(), WatingToStartExcersizeFragment.On
         handle?.removeCallbacks(runable)
         mediaPlayer?.stop()
         mediaPlayer?.release()
-        if (mRewardedVideoAd?.isLoaded==true)
+        if (mRewardedVideoAd?.isLoaded == true)
             mRewardedVideoAd?.show()
         super.onDestroy()
     }

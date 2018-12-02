@@ -139,7 +139,7 @@ class EachPlanExcersizesActivity : AppCompatActivity() {
 
     private fun showPersonalizedAds() {
         var adId: String = Admob.REWADEDR_VIDEO_AD_ID
-        mAdmobSetingsFromFirebase?.admobAds?.videoAds?.id?.let {
+        mAdmobSetingsFromFirebase?.admobAds?.videoAds4?.id?.let {
             adId = it
         }
         mRewardedVideoAd?.loadAd(adId,
@@ -149,7 +149,7 @@ class EachPlanExcersizesActivity : AppCompatActivity() {
 
     private fun showNonPersonalizedAds() {
         var adId: String = Admob.REWADEDR_VIDEO_AD_ID
-        mAdmobSetingsFromFirebase?.admobAds?.videoAds?.id?.let {
+        mAdmobSetingsFromFirebase?.admobAds?.videoAds4?.id?.let {
             adId = it
         }
         mRewardedVideoAd?.loadAd(adId,

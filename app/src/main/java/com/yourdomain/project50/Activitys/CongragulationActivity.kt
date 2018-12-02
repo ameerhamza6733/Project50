@@ -107,7 +107,7 @@ class CongragulationActivity : AppCompatActivity() {
     private fun loadVideoAd() {
         mRewardedVideoAd = MobileAds.getRewardedVideoAdInstance(this);
         var adID = Admob.REWADEDR_VIDEO_AD_ID
-        mSetingsFromFirebase?.admobAds?.videoAds?.id?.let {
+        mSetingsFromFirebase?.admobAds?.videoAds12?.id?.let {
             adID = it
         }
         mRewardedVideoAd?.loadAd(adID, adRequest)

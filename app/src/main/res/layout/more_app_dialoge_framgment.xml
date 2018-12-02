@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <ImageView
+        android:id="@+id/imageViewMoreApps"
+        android:layout_width="0dp"
+        android:layout_height="250dp"
+        android:src="@drawable/more_apps_message"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/btLatter"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="8dp"
+        android:layout_marginStart="8dp"
+
+        android:paddingEnd="50dp"
+        android:paddingStart="50dp"
+        android:paddingTop="50dp"
+        app:layout_constraintBottom_toBottomOf="@+id/imageViewMoreApps"
+        app:layout_constraintEnd_toStartOf="@+id/btYasNow"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <TextView
+        android:id="@+id/btYasNow"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="12dp"
+        android:paddingEnd="50dp"
+        android:paddingStart="50dp"
+        android:paddingTop="50dp"
+        app:layout_constraintBottom_toBottomOf="@+id/imageViewMoreApps"
+
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@id/btLatter" />
+
+</android.support.constraint.ConstraintLayout>

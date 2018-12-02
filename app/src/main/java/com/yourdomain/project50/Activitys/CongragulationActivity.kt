@@ -5,7 +5,6 @@ import android.arch.lifecycle.ViewModelProviders
 import android.content.Context
 import android.os.Build
 import android.os.Bundle
-import android.support.design.widget.Snackbar
 import android.support.v4.app.DialogFragment
 import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.LinearLayoutManager
@@ -35,7 +34,6 @@ import com.yourdomain.project50.Model.MoreApps
 import com.yourdomain.project50.R
 import com.yourdomain.project50.Utils
 import com.yourdomain.project50.ViewModle.CustomAdsViewModle
-import com.yourdomain.project50.ViewModle.MoreAppViewModle
 import java.text.DecimalFormat
 import java.util.*
 
@@ -52,15 +50,16 @@ class CongragulationActivity : AppCompatActivity() {
     private lateinit var btShare: ImageButton
 
     private var mSetingsFromFirebase: AppAdmobDataFromFirebase? = null
-    private var mRewardedVideoAd: RewardedVideoAd?=null
+    private var mRewardedVideoAd: RewardedVideoAd? = null
     private var adRequest: AdRequest? = null
 
     internal var df = DecimalFormat("##.##")
+
     companion object {
         val EXTRA_EXCERSIZES = "CongragulationActivity.extraday";
         val EXTRA_DURACTION = "CongragulationActivity.EXTRA_DURACTION"
         val EXTRA_CAL = "CongragulationActivity.extra_cal"
-        val EXTRA_DAY="CongragulationActivity.EXTRA_DAY"
+        val EXTRA_DAY = "CongragulationActivity.EXTRA_DAY"
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -72,10 +71,10 @@ class CongragulationActivity : AppCompatActivity() {
                     WindowManager.LayoutParams.FLAG_FULLSCREEN)
         }
         findVIews()
-        tvCalriesBurn.text =df.format( intent?.getDoubleExtra(EXTRA_CAL,0.0))
+        tvCalriesBurn.text = df.format(intent?.getDoubleExtra(EXTRA_CAL, 0.0))
         tvTotleExcersize.text = df.format(intent?.getDoubleExtra(EXTRA_EXCERSIZES, 0.0))
-        tvDuration.text = df.format(intent?.getDoubleExtra(EXTRA_DURACTION,0.0))
-        tvDayComleted.text=intent?.getIntExtra(EXTRA_DAY,0).toString()
+        tvDuration.text = df.format(intent?.getDoubleExtra(EXTRA_DURACTION, 0.0))
+        tvDayComleted.text = intent?.getIntExtra(EXTRA_DAY, 0).toString()
         Glide.with(this)
                 .load(R.drawable.congragulation_cup)
                 .apply(RequestOptions().diskCacheStrategy(DiskCacheStrategy.ALL))
@@ -84,15 +83,15 @@ class CongragulationActivity : AppCompatActivity() {
 
         val viewModle = ViewModelProviders.of(this).get(CustomAdsViewModle::class.java)
         viewModle.getMoreApps()?.observe(this, Observer {
-           it?.let {
-               progressBar.visibility = View.INVISIBLE
-               val llm = LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false);
-               recyclerView.layoutManager = llm
-               recyclerView.adapter = MoreAppsAdupter(it)
-           }
+            it?.let {
+                progressBar.visibility = View.INVISIBLE
+                val llm = LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false);
+                recyclerView.layoutManager = llm
+                recyclerView.adapter = MoreAppsAdupter(it)
+            }
         })
 
-        mSetingsFromFirebase = MY_Shared_PREF.getFirebaseAppSettings(application)
+        mSetingsFromFirebase = MY_Shared_PREF.getFirebaseAdmobAppSettings(application)
         adRequest = if (ConsentInformation.getInstance(this).consentStatus == ConsentStatus.NON_PERSONALIZED) {
             AdRequest.Builder()
                     .addNetworkExtrasBundle(AdMobAdapter::class.java, getNonPersonalizedAdsBundle())
@@ -104,21 +103,24 @@ class CongragulationActivity : AppCompatActivity() {
         loadVideoAd()
 
     }
-    private fun loadVideoAd(){
+
+    private fun loadVideoAd() {
         mRewardedVideoAd = MobileAds.getRewardedVideoAdInstance(this);
-        var adID= Admob.REWADEDR_VIDEO_AD_ID
+        var adID = Admob.REWADEDR_VIDEO_AD_ID
         mSetingsFromFirebase?.admobAds?.videoAds?.id?.let {
             adID = it
         }
-        mRewardedVideoAd?.loadAd(adID,adRequest)
+        mRewardedVideoAd?.loadAd(adID, adRequest)
 
     }
+
     fun getNonPersonalizedAdsBundle(): Bundle {
         val extras = Bundle()
         extras.putString("npa", "1")
 
         return extras
     }
+
     private fun findVIews() {
         tvCalriesBurn = findViewById(R.id.tvTotaleCalresBurn)
         tvDayComleted = findViewById(R.id.tvDaysCompelted)
@@ -130,20 +132,20 @@ class CongragulationActivity : AppCompatActivity() {
         btClose = findViewById(R.id.btClose)
         btShare = findViewById(R.id.btShare)
 
-        if(intent?.getIntExtra(EXTRA_DAY,0)==1 || intent?.getIntExtra(EXTRA_DAY,0)==30 ){
+        if (intent?.getIntExtra(EXTRA_DAY, 0) == 1 || intent?.getIntExtra(EXTRA_DAY, 0) == 30) {
             val rateUsFragment = RateUsFragment()
             rateUsFragment.setStyle(DialogFragment.STYLE_NORMAL, R.style.dialog);
             rateUsFragment.show(supportFragmentManager, "rateUsFragment")
         }
 
         btClose.setOnClickListener { finish() }
-        btShare.setOnClickListener { Utils.shareTextExtra(application,"I have just completed "+tvDayComleted.text+" of (app name). Join me "+application.packageName) }
+        btShare.setOnClickListener { Utils.shareTextExtra(application, "I have just completed " + tvDayComleted.text + " of (app name). Join me " + application.packageName) }
 
     }
 
     override fun onBackPressed() {
-        if (mRewardedVideoAd?.isLoaded==true)
-        mRewardedVideoAd?.show()
+        if (mRewardedVideoAd?.isLoaded == true)
+            mRewardedVideoAd?.show()
         finish()
     }
 
@@ -176,7 +178,7 @@ class CongragulationActivity : AppCompatActivity() {
             if (MoreApps.VIEW_TYPE_APP == p0.itemViewType) {
                 p0 as MoreAppViewHolder
                 p0.tvtitle.text = moreApps.get(p0.adapterPosition).title
-                p0.rating.text=moreApps.get(p0.adapterPosition).rating.toString()
+                p0.rating.text = moreApps.get(p0.adapterPosition).rating.toString()
                 Glide.with(p0.context).load(moreApps.get(p0.adapterPosition).icon).into(p0.icon)
             } else if (MoreApps.VIEW_TYPE_AD == p0.itemViewType) {
                 p0 as AdViewHolderViewHolder
@@ -192,7 +194,7 @@ class CongragulationActivity : AppCompatActivity() {
         inner class MoreAppViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
             var tvtitle: TextView
             var icon: ImageView
-            var rating:TextView
+            var rating: TextView
             var context: Context
 
             init {
@@ -200,8 +202,10 @@ class CongragulationActivity : AppCompatActivity() {
                 tvtitle = itemView.findViewById(R.id.appTitle)
                 icon = itemView.findViewById(R.id.appIcon)
                 context = itemView.context
-                rating=itemView.findViewById(R.id.apprating)
-
+                rating = itemView.findViewById(R.id.apprating)
+                itemView.setOnClickListener {
+                    Utils.openBrowser(application, moreApps.get(adapterPosition).downloadingUrl)
+                }
 
             }
 

@@ -85,6 +85,7 @@ public class Utils {
             url = "http://" + url;
         }
         Intent openUrlIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
+        openUrlIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         application.startActivity(openUrlIntent);
     }
 

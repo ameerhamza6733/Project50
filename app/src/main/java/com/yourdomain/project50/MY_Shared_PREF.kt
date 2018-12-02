@@ -19,13 +19,20 @@ class MY_Shared_PREF{
         private val SHARE_PREF_FILE=this.javaClass.`package`.name+"SHARE_PREF_FILE"
         private val SHARED_PREF_ALL_DAYS_FILE=this.javaClass.`package`.name+"SHARED_PREF_ALL_DAYS_FILE"
         private val SHARE_PREF_SEETINGS="SHARE_PREF_SEETINGS";
+
         private val SHARE_PREFF_PERSON="share pref person"
         private val SHARE_PREFF_PERSON_KEY="SHARE_PREFF_PERSON_KEY"
+
         private val SHARED_PREF_APP_SETTINGS="SHARED_PREF_APP_SETTINGS";
         private val SHARED_PREF_APP_SETTINGS_KEY="SHARED_PREF_APP_SETTINGS_KEY";
-        private val SHARE_PREF_SETTINGS_FROM_FIREBAW_FILE="SHARE_PREF_SETTINGS_FROM_FIREBAW_FILE"
-        private val SHARE_PREF_SETTINGS_FROM_FIREBAW_KEY="SHARE_PREF_SETTINGS_FROM_FIREBAW_key"
+
+        private val SHARE_PREF_ADMOB_SETTINGS_FROM_FIREBAW_FILE="SHARE_PREF_ADMOB_SETTINGS_FROM_FIREBAW_FILE"
+        private val SHARE_PREF_ADMOB_SETTINGS_FROM_FIREBAW_KEY="SHARE_PREF_ADMOB_SETTINGS_FROM_FIREBAW_KEY"
+
         private val SHARE_PREF_GRAPHS_FILE="SHARE_PREF_GRAPHS_FILE"
+
+        private val SHARE_PREF_SETTING_FROM_FIREBASE_FILE="SHARE_PREF_SETTING_FROM_FIREBASE_FILE"
+        private val SHARE_PREF_SETTTINGS_FROM_FIREBASE_KEY="SHARE_PREF_SETTTINGS_FROM_FIREBASE_KEY"
 
 
          private val  gson=Gson()
@@ -106,16 +113,16 @@ class MY_Shared_PREF{
             return gson.fromJson(sharePref.getString(SHARED_PREF_APP_SETTINGS_KEY,""),Settings::class.java)
         }
 
-        fun saveFireBaseAppSetting(application: Application,appSettingFromFirebase: AppAdmobDataFromFirebase){
-            val share_Pref=application.getSharedPreferences(SHARE_PREF_SETTINGS_FROM_FIREBAW_FILE,0)
+        fun saveFireBaseAppAdmobSetting(application: Application, appSettingFromFirebase: AppAdmobDataFromFirebase){
+            val share_Pref=application.getSharedPreferences(SHARE_PREF_ADMOB_SETTINGS_FROM_FIREBAW_FILE,0)
             val editer = share_Pref.edit()
-            editer.putString(SHARE_PREF_SETTINGS_FROM_FIREBAW_KEY, gson.toJson(appSettingFromFirebase)).apply()
+            editer.putString(SHARE_PREF_ADMOB_SETTINGS_FROM_FIREBAW_KEY, gson.toJson(appSettingFromFirebase)).apply()
         }
 
-        fun getFirebaseAppSettings(application: Application):AppAdmobDataFromFirebase{
-            val share_pref=application.getSharedPreferences(SHARE_PREF_SETTINGS_FROM_FIREBAW_FILE,0)
-            if (share_pref.contains(SHARE_PREF_SETTINGS_FROM_FIREBAW_KEY)){
-                return gson.fromJson(share_pref.getString(SHARE_PREF_SETTINGS_FROM_FIREBAW_KEY,""),AppAdmobDataFromFirebase::class.java)
+        fun getFirebaseAdmobAppSettings(application: Application):AppAdmobDataFromFirebase{
+            val share_pref=application.getSharedPreferences(SHARE_PREF_ADMOB_SETTINGS_FROM_FIREBAW_FILE,0)
+            if (share_pref.contains(SHARE_PREF_ADMOB_SETTINGS_FROM_FIREBAW_KEY)){
+                return gson.fromJson(share_pref.getString(SHARE_PREF_ADMOB_SETTINGS_FROM_FIREBAW_KEY,""),AppAdmobDataFromFirebase::class.java)
             }else{
 
                 return  AppAdmobDataFromFirebase()
@@ -130,7 +137,11 @@ class MY_Shared_PREF{
 
         }
 
-
+        fun saveAppsSettingFromFireBase(application: Application,appSettingFromFirebase: AppSettingsFromFireBase){
+            val sharePref=application.getSharedPreferences(SHARE_PREF_SETTING_FROM_FIREBASE_FILE,0)
+            val edit=sharePref.edit()
+            edit.putString(SHARE_PREF_SETTTINGS_FROM_FIREBASE_KEY,gson.toJson(appSettingFromFirebase)).apply()
+        }
 
     }
 

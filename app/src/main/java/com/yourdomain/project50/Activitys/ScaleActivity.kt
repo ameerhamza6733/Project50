@@ -52,7 +52,7 @@ class ScaleActivity : AppCompatActivity(), CMandKGscaleFragment.OnINCandLBSRadio
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_scale)
 
-        mSetingsFromFirebase = MY_Shared_PREF.getFirebaseAppSettings(application)
+        mSetingsFromFirebase = MY_Shared_PREF.getFirebaseAdmobAppSettings(application)
         mInterstitialAd = InterstitialAd(this);
         mInterstitialAd?.adListener = object : AdListener() {
             override fun onAdLoaded() {

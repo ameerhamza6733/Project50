@@ -180,7 +180,7 @@ class ExcersizeActivity : AppCompatActivity(), WatingToStartExcersizeFragment.On
                 fragmet.show(supportFragmentManager, "WatingToStartExcersizeFragment")
             }
         })
-        mSetingsFromFirebase = MY_Shared_PREF.getFirebaseAppSettings(application)
+        mSetingsFromFirebase = MY_Shared_PREF.getFirebaseAdmobAppSettings(application)
         adRequest = if (ConsentInformation.getInstance(this).consentStatus == ConsentStatus.NON_PERSONALIZED) {
             AdRequest.Builder()
                     .addNetworkExtrasBundle(AdMobAdapter::class.java, getNonPersonalizedAdsBundle())

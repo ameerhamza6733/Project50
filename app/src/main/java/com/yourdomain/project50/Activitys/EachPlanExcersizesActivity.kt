@@ -1,5 +1,7 @@
 package com.yourdomain.project50.Activitys
 
+import android.arch.lifecycle.Observer
+import android.arch.lifecycle.ViewModelProviders
 import android.content.Intent
 import android.os.Bundle
 import android.os.Handler
@@ -22,6 +24,7 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.ProgressBar
 import android.widget.TextView
+import android.widget.Toast
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.bumptech.glide.request.RequestOptions
@@ -30,9 +33,7 @@ import com.google.ads.consent.ConsentStatus
 import com.google.ads.mediation.admob.AdMobAdapter
 import com.google.android.gms.ads.AdRequest
 import com.google.android.gms.ads.MobileAds
-import com.google.android.gms.ads.reward.RewardItem
 import com.google.android.gms.ads.reward.RewardedVideoAd
-import com.google.android.gms.ads.reward.RewardedVideoAdListener
 import com.yourdomain.project50.Fragments.ABSPlanDayFragment
 import com.yourdomain.project50.Fragments.ButtPlanDayFragment
 import com.yourdomain.project50.Fragments.FullBodyPlanDayFragment
@@ -40,8 +41,10 @@ import com.yourdomain.project50.Fragments.RateUsFragment
 import com.yourdomain.project50.MY_Shared_PREF
 import com.yourdomain.project50.Model.Admob
 import com.yourdomain.project50.Model.AppAdmobDataFromFirebase
+import com.yourdomain.project50.Model.AppSettingsFromFireBase
 import com.yourdomain.project50.Model.ExcersizePlan
 import com.yourdomain.project50.R
+import com.yourdomain.project50.ViewModle.AppSettingsFromFirebaseViewModle
 import com.yourdomain.project50.ViewModle.ExcersizePlansViewModle
 import kotlinx.android.synthetic.main.activity_days_excersizes.*
 
@@ -52,7 +55,7 @@ class EachPlanExcersizesActivity : AppCompatActivity() {
         public val EXTRA_PLAN = "EXTRA_PLAN";
         private val MIN_SCALE = 0.65f
         private val MIN_ALPHA = 0.3f
-        var mRewardedVideoAd:RewardedVideoAd?=null
+        var mRewardedVideoAd: RewardedVideoAd? = null
     }
 
     private val mOnNavigationItemSelectedListener = BottomNavigationView.OnNavigationItemSelectedListener { item ->
@@ -75,9 +78,13 @@ class EachPlanExcersizesActivity : AppCompatActivity() {
 
 
     private lateinit var recyclerView: RecyclerView
+    private lateinit var blubGifView:ImageView
+    private lateinit var boxTick:ImageView
     private lateinit var mPager: com.yourdomain.project50.Adupters.MYViewPager
     private var currentExcersizePlan = ExcersizePlan.PLAN_FULL_BODY
-    private var mSetingsFromFirebase: AppAdmobDataFromFirebase? = null
+    private var mAdmobSetingsFromFirebase: AppAdmobDataFromFirebase? = null
+
+
     private val NUM_PAGES = 3
     private var extraPlan = 0;
 
@@ -90,6 +97,9 @@ class EachPlanExcersizesActivity : AppCompatActivity() {
 
         extraPlan = intent?.getIntExtra(EXTRA_PLAN, 0)!!
         recyclerView = findViewById(R.id.excersizeType)
+        blubGifView=findViewById(R.id.blubGifView)
+        boxTick=findViewById(R.id.tickBox)
+
         recyclerView.setHasFixedSize(true)
         mPager = findViewById(R.id.viewpager)
         intiDataSet()
@@ -100,7 +110,7 @@ class EachPlanExcersizesActivity : AppCompatActivity() {
         mPager.adapter = pagerAdapter
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener)
         mRewardedVideoAd = MobileAds.getRewardedVideoAdInstance(this);
-        mSetingsFromFirebase = MY_Shared_PREF.getFirebaseAppSettings(application)
+        mAdmobSetingsFromFirebase = MY_Shared_PREF.getFirebaseAdmobAppSettings(application)
         if (ConsentInformation.getInstance(this).consentStatus == ConsentStatus.PERSONALIZED) {
             showNonPersonalizedAds()
         } else if (ConsentInformation.getInstance(this).consentStatus == ConsentStatus.NON_PERSONALIZED) {
@@ -109,12 +119,28 @@ class EachPlanExcersizesActivity : AppCompatActivity() {
             showPersonalizedAds()
         }
 
+        Glide.with(this).asGif().load(R.drawable.blubgif).into(blubGifView)
+        Glide.with(this).asBitmap().load(R.drawable.ic_tick_white_24dp).into(boxTick)
+
+        blubGifView.setOnClickListener {
+            if (mRewardedVideoAd?.isLoaded==true){
+                mRewardedVideoAd?.show()
+            }else{
+                Toast.makeText(this,"Ad not loaded",Toast.LENGTH_LONG).show()
+            }
+        }
+        boxTick.setOnClickListener {
+            val intent = Intent(this@EachPlanExcersizesActivity,MainActivity::class.java)
+            startActivity(intent)
+        }
     }
 
+
+
     private fun showPersonalizedAds() {
-        var adId:String=Admob.REWADEDR_VIDEO_AD_ID
-        mSetingsFromFirebase?.admobAds?.videoAds?.id?.let {
-            adId=it
+        var adId: String = Admob.REWADEDR_VIDEO_AD_ID
+        mAdmobSetingsFromFirebase?.admobAds?.videoAds?.id?.let {
+            adId = it
         }
         mRewardedVideoAd?.loadAd(adId,
                 AdRequest.Builder().build())
@@ -122,9 +148,9 @@ class EachPlanExcersizesActivity : AppCompatActivity() {
     }
 
     private fun showNonPersonalizedAds() {
-        var adId:String=Admob.REWADEDR_VIDEO_AD_ID
-        mSetingsFromFirebase?.admobAds?.videoAds?.id?.let {
-            adId=it
+        var adId: String = Admob.REWADEDR_VIDEO_AD_ID
+        mAdmobSetingsFromFirebase?.admobAds?.videoAds?.id?.let {
+            adId = it
         }
         mRewardedVideoAd?.loadAd(adId,
                 AdRequest.Builder()
@@ -139,6 +165,7 @@ class EachPlanExcersizesActivity : AppCompatActivity() {
 
         return extras
     }
+
     private fun intiDataSet() {
         val model = ExcersizePlansViewModle(application)
         var list = model.getExcersizePlans();
@@ -163,11 +190,7 @@ class EachPlanExcersizesActivity : AppCompatActivity() {
         rateUsFragment.show(supportFragmentManager, "rateUsFragment")
     }
 
-    override fun onCreateOptionsMenu(menu: Menu): Boolean {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        menuInflater.inflate(R.menu.main, menu)
-        return true
-    }
+
 
     inner class ExcersizePlansAdupter(val excersizePlans: MutableList<ExcersizePlan>) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
@@ -198,14 +221,14 @@ class EachPlanExcersizesActivity : AppCompatActivity() {
         override fun onBindViewHolder(p0: RecyclerView.ViewHolder, p1: Int) {
             if (ExcersizePlan.TYPE_EXCERSISE == p0.itemViewType) {
                 p0 as ExcersizeViewHolder
-                var daysComplted=  (excersizePlans[p0.adapterPosition].totalDays - excersizePlans[p0.adapterPosition].completedDays)
+                var daysComplted = (excersizePlans[p0.adapterPosition].totalDays - excersizePlans[p0.adapterPosition].completedDays)
                 p0.tvtitle.text = excersizePlans[p0.adapterPosition].name
                 Glide.with(p0.tvtitle.context).load(excersizePlans[p0.adapterPosition].image).apply(RequestOptions().diskCacheStrategy(DiskCacheStrategy.RESOURCE)).into(p0.image)
-                p0.daysProgressBar.progress=excersizePlans[p0.adapterPosition].completedDays
-                p0.tvTotalDaysLeft.text="Days left "+daysComplted
+                p0.daysProgressBar.progress = excersizePlans[p0.adapterPosition].completedDays
+                p0.tvTotalDaysLeft.text = "Days left " + daysComplted
 
                 //  Log.d(TAG,"onBind"+p1 +" "+p0.adapterPosition);
-                Log.d(TAG,"totale day completed by user "+excersizePlans[p0.adapterPosition].completedDays)
+                Log.d(TAG, "totale day completed by user " + excersizePlans[p0.adapterPosition].completedDays)
             } else if (ExcersizePlan.TYPE_AD == p0.itemViewType) {
                 p0 as AdViewHolderViewHolder
 
@@ -228,7 +251,7 @@ class EachPlanExcersizesActivity : AppCompatActivity() {
                 tvtitle = itemView.findViewById(R.id.excersizeTitle)
                 image = itemView.findViewById(R.id.image)
                 tvTotalDaysLeft = itemView.findViewById(R.id.tvDaysLift)
-                daysProgressBar=itemView.findViewById(R.id.progressBar)
+                daysProgressBar = itemView.findViewById(R.id.progressBar)
                 itemView.setOnFocusChangeListener { v, hasFocus ->
                     //  Log.d(TAG, "focus: $hasFocus  $adapterPosition")
                 }

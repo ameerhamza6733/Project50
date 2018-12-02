@@ -1,5 +1,6 @@
 package com.yourdomain.project50.Activitys
 
+
 import android.arch.lifecycle.Observer
 import android.arch.lifecycle.ViewModelProviders
 import android.content.Intent
@@ -12,28 +13,20 @@ import android.view.animation.AnimationUtils
 import android.widget.ImageView
 import android.widget.TextView
 import com.bumptech.glide.Glide
+import com.google.ads.consent.*
 import com.google.android.gms.ads.MobileAds
-import com.yourdomain.project50.R
-import com.yourdomain.project50.TTSHelperService
-import com.yourdomain.project50.ViewModle.GetAdmobDataFromFireBaseViewModle
-import com.google.ads.consent.ConsentStatus
-import com.google.ads.consent.ConsentInformation
-import com.google.ads.consent.ConsentFormListener
-import com.google.ads.consent.ConsentForm
-import com.google.ads.consent.ConsentInfoUpdateListener
-
-
-
-import java.net.MalformedURLException
-import java.net.URL
-
 import com.yourdomain.project50.MY_Shared_PREF
 import com.yourdomain.project50.Model.Admob
 import com.yourdomain.project50.Model.AppAdmobDataFromFirebase
+import com.yourdomain.project50.R
+import com.yourdomain.project50.TTSHelperService
+import com.yourdomain.project50.ViewModle.GetAdmobDataFromFireBaseViewModle
+import java.net.MalformedURLException
+import java.net.URL
 
 
 class SpalishActivity : AppCompatActivity() {
-val TAG="SpalishActivityTAG"
+    val TAG = "SpalishActivityTAG"
     private var form: ConsentForm? = null
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -49,13 +42,12 @@ val TAG="SpalishActivityTAG"
         tvSpalishTitle.startAnimation(AnimationUtils.loadAnimation(this, R.anim.animation_text_view));
         Glide.with(this).load(R.drawable.spalish4).into(image)
         MobileAds.initialize(this, Admob.APP_ID);
-     ViewModelProviders.of(this).get(GetAdmobDataFromFireBaseViewModle::class.java).getAppSettingFromFireBase()?.observe(this, Observer {
+        ViewModelProviders.of(this).get(GetAdmobDataFromFireBaseViewModle::class.java).getAppSettingFromFireBase()?.observe(this, Observer {
             if (it != null) {
-                var appID=Admob.APP_ID
+                var appID = Admob.APP_ID
 
-                MobileAds.initialize(this, appID);
-                MY_Shared_PREF.saveFireBaseAppSetting(application,it)
-               checkForConsent(it)
+                MY_Shared_PREF.saveFireBaseAppAdmobSetting(application, it)
+                checkForConsent(it)
             }
         })
 

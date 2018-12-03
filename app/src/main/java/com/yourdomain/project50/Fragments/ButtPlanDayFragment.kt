@@ -11,6 +11,7 @@ import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.FrameLayout
 import android.widget.ProgressBar
 import android.widget.TextView
 import com.yourdomain.project50.Activitys.ExcersizeListActivity
@@ -100,11 +101,11 @@ class ButtPlanDayFragment : Fragment() {
 
 
         inner class AdViewHolderViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-            var nativeAd: TextView
+            var nativeAd: FrameLayout
 
             init {
 
-                nativeAd = itemView.findViewById(R.id.native_Adview)
+                nativeAd = itemView.findViewById(R.id.adPlaceholder)
             }
         }
     }

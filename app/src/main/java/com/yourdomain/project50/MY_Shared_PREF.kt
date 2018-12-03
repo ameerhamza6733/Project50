@@ -47,7 +47,7 @@ class MY_Shared_PREF{
 
         fun getPersonAppearance(context: Context):Person{
             val sharedPreferences=context.applicationContext.getSharedPreferences(SHARE_PREF_FILE,0)
-             val personKey=this.javaClass.`package`.name+"personkey"
+             val personKey="MY_SHAREED_PREF"+"personkey"
 
             return gson.fromJson(sharedPreferences.getString(personKey,""),Person::class.java)
         }

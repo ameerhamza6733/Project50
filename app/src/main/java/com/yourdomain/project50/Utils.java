@@ -28,7 +28,7 @@ public class Utils {
         }
         String mints = String.valueOf(total / 60);
         Log.d(TAG, "total seconds for currnet excersize" + mints.substring(0, mints.lastIndexOf(".") + 2));
-        return mints.substring(0, mints.lastIndexOf(".") + 2)+"m";
+        return mints.substring(0, mints.lastIndexOf(".") + 2);
     }
 
     public static String toPersentage(int done, int totle) {

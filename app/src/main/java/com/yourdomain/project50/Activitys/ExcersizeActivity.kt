@@ -282,7 +282,11 @@ class ExcersizeActivity : AppCompatActivity(), WatingToStartExcersizeFragment.On
             seconds = "x" + excesizes?.seconds?.get(counter)?.toString()
 
         }
-        val pauseExcersizeFragment = PauseExcersizeFragment.newInstance(excesizes?.title!![counter], seconds, excesizes?.icons!![counter])
+        var nativeAdId=Admob.NATIVE_AD_ID
+        mSetingsFromFirebase?.admobAds?.nativeAds9?.id?.let {
+            nativeAdId=it
+        }
+        val pauseExcersizeFragment = PauseExcersizeFragment.newInstance(excesizes?.title!![counter], seconds, excesizes?.icons!![counter],nativeAdId)
         pauseExcersizeFragment.setStyle(DialogFragment.STYLE_NORMAL, android.R.style.Theme_Black_NoTitleBar_Fullscreen);
         pauseExcersizeFragment.show(supportFragmentManager, "pauseExcersizeFragment")
 
@@ -346,7 +350,11 @@ class ExcersizeActivity : AppCompatActivity(), WatingToStartExcersizeFragment.On
                 temp = temp + "x " + excesizes?.seconds!![counter + 1].toString()
             }
             Log.d(TAG, "showing data for wating fragment: " + temp)
-            val watingForNextFragment = RestFragment.newInstance(excesizes?.title!![counter + 1], temp, "NEXT " + (counter + 1).toString() + "/" + (excesizes!!.icons.size).toString(), excesizes?.icons!![counter + 1], settings.workoutSettings.restTimeInSeconds)
+            var nativeAdId=Admob.NATIVE_AD_ID
+            mSetingsFromFirebase?.admobAds?.nativeAds11?.id?.let {
+                nativeAdId=it
+            }
+            val watingForNextFragment = RestFragment.newInstance(excesizes?.title!![counter + 1], temp, "NEXT " + (counter + 1).toString() + "/" + (excesizes!!.icons.size).toString(), excesizes?.icons!![counter + 1], settings.workoutSettings.restTimeInSeconds,nativeAdId)
             watingForNextFragment.setStyle(DialogFragment.STYLE_NORMAL, android.R.style.Theme_Black_NoTitleBar_Fullscreen);
             watingForNextFragment.show(supportFragmentManager, "watingForNextFragment")
 
@@ -401,7 +409,7 @@ class ExcersizeActivity : AppCompatActivity(), WatingToStartExcersizeFragment.On
             override fun onTick(millisUntilFinished: Long) {
                 val temseconds = (millisUntilFinished / 1000).toInt()
                 mTotalSeconds.text = temseconds.toString()
-                mCurrentProgressBar.progress = temseconds
+              mCurrentProgressBar.incrementProgressBy(1)
 
 
                 if (temseconds == halftime) {

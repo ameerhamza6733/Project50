@@ -105,11 +105,11 @@ class ABSPlanDayFragment : Fragment() {
 
 
         inner class AdViewHolderViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-            var nativeAd: TextView
+           // var nativeAd: TextView
 
             init {
 
-                nativeAd = itemView.findViewById(R.id.native_Adview)
+               // nativeAd = itemView.findViewById(R.id.native_Adview)
             }
         }
     }

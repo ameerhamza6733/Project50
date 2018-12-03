@@ -42,4 +42,14 @@
     <style name="dialog" parent="Theme.AppCompat.Light.Dialog.MinWidth"></style>
 
     <string name="ad_attribution">Ad</string>
+
+
+
+    <style name="TheamTimePicker" parent="Theme.AppCompat.Light.Dialog">
+
+        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
+        <item name="colorAccent">@color/colorAccent</item>
+
+    </style>
 </resources>

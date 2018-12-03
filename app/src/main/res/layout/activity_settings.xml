@@ -73,7 +73,7 @@
                 android:drawablePadding="16dp"
                 android:drawableStart="@drawable/ic_notifications_black_24dp"
                 android:gravity="center_vertical"
-                android:text="Remind me workout evry day "
+                android:text="Remind me workout every day "
                 android:textColor="#000000" />
 
             <android.support.constraint.ConstraintLayout

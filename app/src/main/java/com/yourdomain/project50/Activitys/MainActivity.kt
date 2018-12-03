@@ -167,8 +167,7 @@ class MainActivity : AppCompatActivity() {
 
             } else if (ExcersizePlan.TYPE_AD == p0.itemViewType) {
                 p0 as UnifiedNativeAdViewHolder
-
-
+                p0.adView.visibility=View.GONE
                 refreshAd(p0.adView)
             }
 
@@ -330,13 +329,14 @@ class MainActivity : AppCompatActivity() {
 
         val adLoader = builder.withAdListener(object : AdListener() {
             override fun onAdFailedToLoad(errorCode: Int) {
-
+                adView.visibility=View.GONE
                 Toast.makeText(this@MainActivity, "Failed to load native ad: $errorCode", Toast.LENGTH_SHORT).show()
             }
 
             override fun onAdLoaded() {
                 super.onAdLoaded()
                 native?.let {
+                    adView.visibility=View.VISIBLE
                     populateUnifiedNativeAdView(it, adView)
 
                 }

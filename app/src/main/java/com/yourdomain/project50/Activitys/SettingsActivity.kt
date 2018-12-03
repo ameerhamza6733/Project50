@@ -1,5 +1,6 @@
 package com.yourdomain.project50.Activitys
 
+import android.app.TimePickerDialog
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
@@ -19,9 +20,15 @@ import com.yourdomain.project50.Model.Settings
 import com.yourdomain.project50.R
 import com.yourdomain.project50.TTSHelperService
 import com.yourdomain.project50.Utils
+import java.util.*
+import android.widget.TimePicker
 
 
-class SettingsActivity : AppCompatActivity(), SecondsPickerFragment.OnSecondsPickerListener, WatingCountDownSecondsPicker.OnWattingCountDownSecondPickerListener {
+
+
+class SettingsActivity : AppCompatActivity(), SecondsPickerFragment.OnSecondsPickerListener, WatingCountDownSecondsPicker.OnWattingCountDownSecondPickerListener{
+
+
     override fun onWattingSecondPicked(seconds: Int) {
         settings?.workoutSettings?.watingCoutDownTime = seconds
         btCountDownPicker.text = seconds.toString() + " s"
@@ -48,6 +55,7 @@ class SettingsActivity : AppCompatActivity(), SecondsPickerFragment.OnSecondsPic
     private lateinit var btFeedback: TextView
     private lateinit var btPrivacyPolicy: TextView
     private lateinit var btRateUs:TextView
+    private lateinit var btRemindMeEveryDay:TextView
 
     private val TAG = "SettingsActivity";
     private var settings: Settings? = null
@@ -60,7 +68,6 @@ class SettingsActivity : AppCompatActivity(), SecondsPickerFragment.OnSecondsPic
         findViews()
         onClicks()
         updateUI()
-
 
         Log.d(TAG, "" + settings?.workoutSettings?.CoachTips)
     }
@@ -79,6 +86,7 @@ class SettingsActivity : AppCompatActivity(), SecondsPickerFragment.OnSecondsPic
         btSHare = findViewById(R.id.btShare)
         btFeedback = findViewById(R.id.btFeedback)
         btPrivacyPolicy = findViewById(R.id.btPrivacyPolicy)
+        btRemindMeEveryDay=findViewById(R.id.btRemindMe)
         btRateUs=findViewById(R.id.btRateUs)
 
     }
@@ -157,6 +165,30 @@ class SettingsActivity : AppCompatActivity(), SecondsPickerFragment.OnSecondsPic
             rateUsFragment.show(supportFragmentManager, "rateUsFragment") }
 
         btSHare.setOnClickListener { Utils.shareTextIntent(this@SettingsActivity,"I have just completed Day"+"N"+ "of "+getString(R.string.app_name)+". Join me: https://play.google.com/store/apps/details?id="+application.packageName) }
+
+    btRemindMeEveryDay.setOnClickListener {
+       showHourPicker()
+    }
+    }
+
+    fun showHourPicker() {
+        val myCalender = Calendar.getInstance()
+        val hour = myCalender.get(Calendar.HOUR_OF_DAY)
+        val minute = myCalender.get(Calendar.MINUTE)
+
+
+        val myTimeListener = object : TimePickerDialog.OnTimeSetListener {
+            override fun onTimeSet(view: TimePicker, hourOfDay: Int, minute: Int) {
+                if (view.isShown) {
+                    myCalender.set(Calendar.HOUR_OF_DAY, hourOfDay)
+                    myCalender.set(Calendar.MINUTE, minute)
+                    Log.d(TAG,""+"hourOfDay: "+hourOfDay+" Mint "+minute)
+                }
+            }
+        }
+        val timePickerDialog = TimePickerDialog(this, R.style.TheamTimePicker, myTimeListener, hour, minute, false)
+        timePickerDialog.setTitle("When you want reminder")
+        timePickerDialog.show()
     }
 
     private fun updateUI() {

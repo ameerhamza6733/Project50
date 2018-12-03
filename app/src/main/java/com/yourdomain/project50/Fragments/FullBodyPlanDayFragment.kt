@@ -55,6 +55,9 @@ class FullBodyPlanDayFragment : Fragment() {
                     AdViewHolderViewHolder(LayoutInflater.from(p0.context)
                             .inflate(R.layout.native_adview, p0, false));
                 }
+                ExcersizeDay.VIEW_TYPEREST->{
+                    RrestDayViewHolder(LayoutInflater.from(p0.context).inflate(R.layout.each_rest_day,p0,false))
+                }
                 else -> {
                     ExcersizeDAYViewHolder(LayoutInflater.from(p0.context)
                             .inflate(R.layout.each_excersize_day, p0, false));
@@ -82,6 +85,9 @@ class FullBodyPlanDayFragment : Fragment() {
                 p0.tvDay.text = "Day " + excersizeList[p0.adapterPosition].day.toString()
             } else if (ExcersizeDay.VIEW_TYPE_AD == p0.itemViewType) {
                 p0 as AdViewHolderViewHolder
+            }else if (ExcersizeDay.VIEW_TYPEREST==p0.itemViewType){
+p0 as RrestDayViewHolder
+                p0.tvRestDay.text="Day " + excersizeList[p0.adapterPosition].day.toString()
             }
 
         }
@@ -115,6 +121,12 @@ class FullBodyPlanDayFragment : Fragment() {
             }
         }
 
+        inner class RrestDayViewHolder(itemView: View):RecyclerView.ViewHolder(itemView){
+           val tvRestDay:TextView
+            init {
+tvRestDay=itemView.findViewById(R.id.tvRestDay)
+            }
+        }
 
         inner class AdViewHolderViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
             var nativeAd: FrameLayout

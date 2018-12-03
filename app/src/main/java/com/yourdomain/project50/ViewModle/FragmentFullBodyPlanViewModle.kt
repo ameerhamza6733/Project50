@@ -14,6 +14,7 @@ import java.util.*
 class FragmentFullBodyPlanViewModle(application: Application) : AndroidViewModel(application) {
     private var mutableList: java.util.ArrayList<ExcersizeDay>? = null
     private var mutableLiveData: MutableLiveData<ArrayList<ExcersizeDay>?>? = null
+    val restDays: IntArray = intArrayOf(5, 15, 20,25)
 
 
     fun getDays(): MutableLiveData<ArrayList<ExcersizeDay>?>? {
@@ -22,6 +23,12 @@ class FragmentFullBodyPlanViewModle(application: Application) : AndroidViewModel
             mutableList = ArrayList();
             val hashMap = MY_Shared_PREF.getAllCompletedorInprogressDays(getApplication())
             for (dayNumber in 1..30) {
+
+                if (restDays.contains(dayNumber)){
+                    var excersizeDays = ExcersizeDay(dayNumber, ExcersizeDay.VIEW_TYPEREST)
+                    mutableList?.add(excersizeDays)
+                    continue
+                }
                 if (hashMap.containsKey(ExcersizePlan.PLAN_FULL_BODY+dayNumber.toString())) {
                     mutableList?.add(hashMap.get(ExcersizePlan.PLAN_FULL_BODY+dayNumber.toString())!!)
 

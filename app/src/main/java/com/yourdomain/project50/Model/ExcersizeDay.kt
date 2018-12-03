@@ -9,6 +9,7 @@ class ExcersizeDay(var day : Int, val  viewType:Int=-1, var totaleExcersizes:Lon
     companion object {
         val VIEW_TYPE_DAY:Int=1
         val VIEW_TYPE_AD=2;
+        val VIEW_TYPEREST=3;
 
     }
 

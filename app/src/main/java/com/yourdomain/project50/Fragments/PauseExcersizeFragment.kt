@@ -233,9 +233,10 @@ class PauseExcersizeFragment : DialogFragment() {
 
         val adLoader = builder.withAdListener(object : AdListener() {
             override fun onAdFailedToLoad(errorCode: Int) {
-
+                adPlaceHolder.visibility = View.GONE
                 Toast.makeText(activity, "Failed to load native ad: $errorCode", Toast.LENGTH_SHORT).show()
             }
+
         }).build()
 
         adLoader.loadAd(adRequest)

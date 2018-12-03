@@ -31,7 +31,7 @@ class CustomAdsViewModle : ViewModel(){
                }
 
                override fun onCancelled(p0: DatabaseError) {
-
+                   mutableLiveData?.value=null
                }
 
            })

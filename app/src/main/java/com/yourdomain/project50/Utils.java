@@ -3,6 +3,8 @@ package com.yourdomain.project50;
 import android.app.Application;
 import android.content.Context;
 import android.content.Intent;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.net.Uri;
 import android.util.Log;
 
@@ -105,4 +107,10 @@ public class Utils {
         return df.format(Math.round((lbs / 2.20) * 100D) / 100D);
     }
 
+    public  static boolean isNetworkAvailable(Application application) {
+        ConnectivityManager connectivityManager
+                = (ConnectivityManager) application.getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo activeNetworkInfo = connectivityManager.getActiveNetworkInfo();
+        return activeNetworkInfo != null && activeNetworkInfo.isConnected();
+    }
 }

@@ -25,7 +25,7 @@ class GetAdmobDataFromFireBaseViewModle : ViewModel() {
             val myRef: DatabaseReference = database.getReference("ads").child("admob")
             myRef.addListenerForSingleValueEvent(object : ValueEventListener {
                 override fun onCancelled(p0: DatabaseError) {
-
+mutableLiveData?.value=null
                 }
 
                 override fun onDataChange(p0: DataSnapshot) {

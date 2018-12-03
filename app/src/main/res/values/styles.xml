@@ -52,4 +52,10 @@
         <item name="colorAccent">@color/colorAccent</item>
 
     </style>
+
+    <style name="Theme.Transparent" parent="android:Theme.Black.NoTitleBar.Fullscreen">
+       >
+        <item name="android:windowBackground">@android:color/transparent</item>
+
+    </style>
 </resources>

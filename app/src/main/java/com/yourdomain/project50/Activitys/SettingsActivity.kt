@@ -8,9 +8,7 @@ import android.support.v4.app.DialogFragment
 import android.support.v4.content.LocalBroadcastManager
 import android.support.v7.app.AppCompatActivity
 import android.util.Log
-import android.widget.CompoundButton
-import android.widget.Switch
-import android.widget.TextView
+import android.widget.*
 import com.yourdomain.project50.Fragments.RateUsFragment
 import com.yourdomain.project50.Fragments.SecondsPickerFragment
 import com.yourdomain.project50.Fragments.TTSLauguagePicker
@@ -21,9 +19,6 @@ import com.yourdomain.project50.R
 import com.yourdomain.project50.TTSHelperService
 import com.yourdomain.project50.Utils
 import java.util.*
-import android.widget.TimePicker
-
-
 
 
 class SettingsActivity : AppCompatActivity(), SecondsPickerFragment.OnSecondsPickerListener, WatingCountDownSecondsPicker.OnWattingCountDownSecondPickerListener{
@@ -182,7 +177,8 @@ class SettingsActivity : AppCompatActivity(), SecondsPickerFragment.OnSecondsPic
                 if (view.isShown) {
                     myCalender.set(Calendar.HOUR_OF_DAY, hourOfDay)
                     myCalender.set(Calendar.MINUTE, minute)
-                    Log.d(TAG,""+"hourOfDay: "+hourOfDay+" Mint "+minute)
+                    Toast.makeText(this@SettingsActivity, "You choose : hour $hourOfDay mints: $minute",Toast.LENGTH_LONG).show()
+                    Log.d(TAG, "hourOfDay: $hourOfDay Mint $minute")
                 }
             }
         }

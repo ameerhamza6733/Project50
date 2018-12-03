@@ -287,7 +287,8 @@ class ExcersizeActivity : AppCompatActivity(), WatingToStartExcersizeFragment.On
             nativeAdId=it
         }
         val pauseExcersizeFragment = PauseExcersizeFragment.newInstance(excesizes?.title!![counter], seconds, excesizes?.icons!![counter],nativeAdId)
-        pauseExcersizeFragment.setStyle(DialogFragment.STYLE_NORMAL, android.R.style.Theme_Black_NoTitleBar_Fullscreen);
+
+        pauseExcersizeFragment.setStyle(DialogFragment.STYLE_NORMAL, R.style.Theme_Transparent);
         pauseExcersizeFragment.show(supportFragmentManager, "pauseExcersizeFragment")
 
     }

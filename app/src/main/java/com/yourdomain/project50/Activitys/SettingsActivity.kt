@@ -8,7 +8,14 @@ import android.support.v4.app.DialogFragment
 import android.support.v4.content.LocalBroadcastManager
 import android.support.v7.app.AppCompatActivity
 import android.util.Log
-import android.widget.*
+import android.widget.CompoundButton
+import android.widget.Switch
+import android.widget.TextView
+import android.widget.TimePicker
+import androidx.work.ExistingWorkPolicy
+import androidx.work.OneTimeWorkRequest
+import androidx.work.PeriodicWorkRequest
+import androidx.work.WorkManager
 import com.yourdomain.project50.Fragments.RateUsFragment
 import com.yourdomain.project50.Fragments.SecondsPickerFragment
 import com.yourdomain.project50.Fragments.TTSLauguagePicker
@@ -18,10 +25,14 @@ import com.yourdomain.project50.Model.Settings
 import com.yourdomain.project50.R
 import com.yourdomain.project50.TTSHelperService
 import com.yourdomain.project50.Utils
+import com.yourdomain.project50.WorkMangers.ComeBackLatterWorkManger
+import com.yourdomain.project50.WorkMangers.RemindMeEveryDayWorkManger
+import java.text.SimpleDateFormat
 import java.util.*
+import java.util.concurrent.TimeUnit
 
 
-class SettingsActivity : AppCompatActivity(), SecondsPickerFragment.OnSecondsPickerListener, WatingCountDownSecondsPicker.OnWattingCountDownSecondPickerListener{
+class SettingsActivity : AppCompatActivity(), SecondsPickerFragment.OnSecondsPickerListener, WatingCountDownSecondsPicker.OnWattingCountDownSecondPickerListener {
 
 
     override fun onWattingSecondPicked(seconds: Int) {
@@ -49,8 +60,8 @@ class SettingsActivity : AppCompatActivity(), SecondsPickerFragment.OnSecondsPic
     private lateinit var btSHare: TextView
     private lateinit var btFeedback: TextView
     private lateinit var btPrivacyPolicy: TextView
-    private lateinit var btRateUs:TextView
-    private lateinit var btRemindMeEveryDay:TextView
+    private lateinit var btRateUs: TextView
+    private lateinit var btRemindMeEveryDay: TextView
 
     private val TAG = "SettingsActivity";
     private var settings: Settings? = null
@@ -81,8 +92,8 @@ class SettingsActivity : AppCompatActivity(), SecondsPickerFragment.OnSecondsPic
         btSHare = findViewById(R.id.btShare)
         btFeedback = findViewById(R.id.btFeedback)
         btPrivacyPolicy = findViewById(R.id.btPrivacyPolicy)
-        btRemindMeEveryDay=findViewById(R.id.btRemindMe)
-        btRateUs=findViewById(R.id.btRateUs)
+        btRemindMeEveryDay = findViewById(R.id.btRemindMe)
+        btRateUs = findViewById(R.id.btRateUs)
 
     }
 
@@ -150,20 +161,21 @@ class SettingsActivity : AppCompatActivity(), SecondsPickerFragment.OnSecondsPic
             ttsLauguagePicker.show(supportFragmentManager, "ttsLauguagePicker")
         }
 
-        btPrivacyPolicy.setOnClickListener { Utils.openBrowser(application,getString(R.string.privacy_policy)) }
+        btPrivacyPolicy.setOnClickListener { Utils.openBrowser(application, getString(R.string.privacy_policy)) }
 
         btFeedback.setOnClickListener { Utils.feedbackEmaileIntent(this@SettingsActivity) }
 
         btRateUs.setOnClickListener {
             val rateUsFragment = RateUsFragment()
             rateUsFragment.setStyle(DialogFragment.STYLE_NORMAL, R.style.dialog);
-            rateUsFragment.show(supportFragmentManager, "rateUsFragment") }
+            rateUsFragment.show(supportFragmentManager, "rateUsFragment")
+        }
 
-        btSHare.setOnClickListener { Utils.shareTextIntent(this@SettingsActivity,"I have just completed Day"+"N"+ "of "+getString(R.string.app_name)+". Join me: https://play.google.com/store/apps/details?id="+application.packageName) }
+        btSHare.setOnClickListener { Utils.shareTextIntent(this@SettingsActivity, "I have just completed Day" + "N" + "of " + getString(R.string.app_name) + ". Join me: https://play.google.com/store/apps/details?id=" + application.packageName) }
 
-    btRemindMeEveryDay.setOnClickListener {
-       showHourPicker()
-    }
+        btRemindMeEveryDay.setOnClickListener {
+            showHourPicker()
+        }
     }
 
     fun showHourPicker() {
@@ -177,14 +189,41 @@ class SettingsActivity : AppCompatActivity(), SecondsPickerFragment.OnSecondsPic
                 if (view.isShown) {
                     myCalender.set(Calendar.HOUR_OF_DAY, hourOfDay)
                     myCalender.set(Calendar.MINUTE, minute)
-                    Toast.makeText(this@SettingsActivity, "You choose : hour $hourOfDay mints: $minute",Toast.LENGTH_LONG).show()
-                    Log.d(TAG, "hourOfDay: $hourOfDay Mint $minute")
+                    val sdf = SimpleDateFormat("HH:mm")
+                    val str = sdf.format(Date())
+                    Log.d(TAG, "current hour : " + str.split(":")[0] + " current mint: " + str.split(":")[1] + " user pick hour " + hourOfDay + " user pick mints: " + minute)
+
+                    var notifactioAfterHours = Math.abs((hourOfDay - str.split(":")[0].toInt()))
+                    var notifactionAfterMints = Math.abs((minute - str.split(":")[1].toInt()))
+
+                    Log.d(TAG, "notifactioAfterHours:  " + notifactioAfterHours + " notifactionAfterMints: " + notifactionAfterMints)
+
+                    val intiDaly = ((notifactioAfterHours * 60) + notifactionAfterMints).toLong()
+                    sacduleThePaddingNotifaction(intiDaly)
                 }
             }
         }
         val timePickerDialog = TimePickerDialog(this, R.style.TheamTimePicker, myTimeListener, hour, minute, false)
         timePickerDialog.setTitle("When you want reminder")
         timePickerDialog.show()
+    }
+
+    private fun sacduleThePaddingNotifaction(intiDelay: Long) {
+        Log.d(TAG, "shauding notifaction for 30 mints")
+        val postNotationWithDelay = OneTimeWorkRequest
+                .Builder(RemindMeEveryDayWorkManger::class.java)
+                .setInitialDelay(intiDelay, TimeUnit.MINUTES).build()
+
+        val repativeWork = PeriodicWorkRequest.Builder(RemindMeEveryDayWorkManger::class.java,24,TimeUnit.HOURS)
+
+
+        val workManager = WorkManager.getInstance()
+        workManager.beginUniqueWork(
+                "RemindMeEveryDayWorkMangerTAG",
+                ExistingWorkPolicy.REPLACE,
+                postNotationWithDelay
+        ).enqueue()
+
     }
 
     private fun updateUI() {

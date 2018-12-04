@@ -118,6 +118,7 @@ class ScaleActivity : AppCompatActivity(), CMandKGscaleFragment.OnINCandLBSRadio
         }
         val adRequest = AdRequest.Builder()
                 .addNetworkExtrasBundle(AdMobAdapter::class.java, getNonPersonalizedAdsBundle())
+
                 .build()
         mInterstitialAd?.loadAd(adRequest)
 

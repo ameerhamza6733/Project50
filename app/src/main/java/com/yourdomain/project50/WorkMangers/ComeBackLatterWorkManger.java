@@ -26,6 +26,7 @@ public class ComeBackLatterWorkManger extends Worker {
     public static final String TAG="ComeBackworkTAG";
 
     public ComeBackLatterWorkManger(@NonNull Context context, @NonNull WorkerParameters params) {super(context, params);
+    Log.d(TAG,"worker thread created");
     }
 
     @NonNull

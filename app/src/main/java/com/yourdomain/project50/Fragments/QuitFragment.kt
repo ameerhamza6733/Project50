@@ -65,7 +65,7 @@ class QuitFragment : DialogFragment() {
         Log.d(TAG,"shauding notifaction for 30 mints")
         val postNotationWithDelay =OneTimeWorkRequest
                 .Builder(ComeBackLatterWorkManger::class.java)
-                .setInitialDelay(10,TimeUnit.SECONDS).build()
+                .setInitialDelay(30,TimeUnit.MINUTES).build()
 
         val workManager = WorkManager.getInstance()
         workManager.beginUniqueWork(

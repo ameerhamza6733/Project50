@@ -27,8 +27,11 @@ import com.yourdomain.project50.ViewModle.GetAdmobDataFromFireBaseViewModle
 import java.net.MalformedURLException
 import java.net.URL
 import android.support.v4.os.HandlerCompat.postDelayed
-
-
+import androidx.work.ExistingWorkPolicy
+import androidx.work.OneTimeWorkRequest
+import androidx.work.WorkManager
+import com.yourdomain.project50.WorkMangers.ComeBackLatterWorkManger
+import java.util.concurrent.TimeUnit
 
 
 class SpalishActivity : AppCompatActivity() {
@@ -62,6 +65,7 @@ class SpalishActivity : AppCompatActivity() {
            }, 3*1000)
 
        }
+
 
     }
 

@@ -1,10 +1,7 @@
 package com.yourdomain.project50.WorkMangers
 
 import android.content.Context
-import androidx.work.ExistingWorkPolicy
-import androidx.work.PeriodicWorkRequest
-import androidx.work.WorkManager
-import androidx.work.WorkerParameters
+import androidx.work.*
 import java.util.concurrent.TimeUnit
 
 /**
@@ -13,9 +10,17 @@ import java.util.concurrent.TimeUnit
 class RemindMeEveryDayWorkManger(context: Context, params: WorkerParameters) : ComeBackLatterWorkManger(context, params) {
     override fun doWork(): Result {
        super.doWork()
-        val repativeWork = PeriodicWorkRequest.Builder(ComeBackLatterWorkManger::class.java,24, TimeUnit.HOURS)
+        val postNotationWithDelay = OneTimeWorkRequest
+                .Builder(RemindMeEveryDayWorkManger::class.java)
+                .setInitialDelay(24, TimeUnit.HOURS).build()
+
+
         val workManager = WorkManager.getInstance()
-        workManager.enqueue(repativeWork.build())
+        workManager.beginUniqueWork(
+                "RemindMeEveryDayWorkMangerTAG",
+                ExistingWorkPolicy.REPLACE,
+                postNotationWithDelay
+        ).enqueue()
         return Result.SUCCESS
     }
 }

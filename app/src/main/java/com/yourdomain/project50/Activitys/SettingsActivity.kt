@@ -214,8 +214,6 @@ class SettingsActivity : AppCompatActivity(), SecondsPickerFragment.OnSecondsPic
                 .Builder(RemindMeEveryDayWorkManger::class.java)
                 .setInitialDelay(intiDelay, TimeUnit.MINUTES).build()
 
-        val repativeWork = PeriodicWorkRequest.Builder(RemindMeEveryDayWorkManger::class.java,24,TimeUnit.HOURS)
-
 
         val workManager = WorkManager.getInstance()
         workManager.beginUniqueWork(

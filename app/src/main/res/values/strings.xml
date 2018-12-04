@@ -20,7 +20,7 @@
         <item>@drawable/place_holder_excersize_type</item>
         <item>@drawable/place_holder_excersize_type</item>
         <item>@drawable/place_holder_excersize_type</item>
-          </integer-array>
+    </integer-array>
     <string-array name="excersize_type_total_days">
         <item>30</item>
         <item>30</item>

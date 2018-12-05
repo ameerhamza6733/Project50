@@ -24,8 +24,8 @@ import com.google.android.gms.ads.AdView
 import com.google.android.gms.ads.InterstitialAd
 import com.yourdomain.project50.MY_Shared_PREF
 import com.yourdomain.project50.Model.Admob
-import com.yourdomain.project50.Model.AppAdmobDataFromFirebase
-import com.yourdomain.project50.Model.ExcersizeDay
+import com.yourdomain.project50.Model.AppAdmobSettingsFromFirebase
+import com.yourdomain.project50.Model.ExerciseDay
 import com.yourdomain.project50.Model.Excesizes
 import com.yourdomain.project50.R
 import com.yourdomain.project50.TTSHelperService
@@ -41,7 +41,7 @@ class ExcersizeListActivity : AppCompatActivity() {
         val TAG = "ExcersizeListActivity";
     }
 
-    private var currentDay: ExcersizeDay? = null
+    private var currentDay: ExerciseDay? = null
     private var currentDayKey: Int = -2
     private var excersizeDone = -2
     private var currentExcesizesPlan = ""
@@ -52,7 +52,7 @@ class ExcersizeListActivity : AppCompatActivity() {
     private lateinit var progressBar: ProgressBar
     private lateinit var adViewContaner: RelativeLayout
 
-    private var mSetingsFromFirebase: AppAdmobDataFromFirebase? = null
+    private var mSetingsFromFirebase: AppAdmobSettingsFromFirebase? = null
 
     private var adRequest: AdRequest? = null
     private val mInterstitialAd: InterstitialAd? = null

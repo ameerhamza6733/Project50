@@ -15,7 +15,7 @@ import com.yourdomain.project50.Fragments.CMandKGscaleFragment
 import com.yourdomain.project50.Fragments.INCandLBSscaleFragment
 import com.yourdomain.project50.MY_Shared_PREF
 import com.yourdomain.project50.Model.Admob
-import com.yourdomain.project50.Model.AppAdmobDataFromFirebase
+import com.yourdomain.project50.Model.AppAdmobSettingsFromFirebase
 import com.yourdomain.project50.Model.Person
 import com.yourdomain.project50.Model.PersonAppearance
 import com.yourdomain.project50.R
@@ -46,7 +46,7 @@ class ScaleActivity : AppCompatActivity(), CMandKGscaleFragment.OnINCandLBSRadio
     private val TAG = "ScaleActivity"
 
     private var mInterstitialAd: InterstitialAd? = null
-    private var mSetingsFromFirebase: AppAdmobDataFromFirebase? = null
+    private var mSetingsFromFirebase: AppAdmobSettingsFromFirebase? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

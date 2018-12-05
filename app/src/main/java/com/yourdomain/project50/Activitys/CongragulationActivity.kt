@@ -29,7 +29,7 @@ import com.google.android.gms.ads.reward.RewardedVideoAd
 import com.yourdomain.project50.Fragments.RateUsFragment
 import com.yourdomain.project50.MY_Shared_PREF
 import com.yourdomain.project50.Model.Admob
-import com.yourdomain.project50.Model.AppAdmobDataFromFirebase
+import com.yourdomain.project50.Model.AppAdmobSettingsFromFirebase
 import com.yourdomain.project50.Model.MoreApps
 import com.yourdomain.project50.R
 import com.yourdomain.project50.Utils
@@ -49,7 +49,7 @@ class CongragulationActivity : AppCompatActivity() {
     private lateinit var btClose: ImageButton
     private lateinit var btShare: ImageButton
 
-    private var mSetingsFromFirebase: AppAdmobDataFromFirebase? = null
+    private var mSetingsFromFirebase: AppAdmobSettingsFromFirebase? = null
     private var mRewardedVideoAd: RewardedVideoAd? = null
     private var adRequest: AdRequest? = null
 

@@ -2,9 +2,8 @@ package com.yourdomain.project50.ViewModle
 
 import android.app.Application
 import android.arch.lifecycle.AndroidViewModel
-import android.util.Log
 import com.yourdomain.project50.MY_Shared_PREF
-import com.yourdomain.project50.Model.ExcersizeDay
+import com.yourdomain.project50.Model.ExerciseDay
 import com.yourdomain.project50.Model.ExcersizePlan
 import com.yourdomain.project50.R
 
@@ -27,7 +26,7 @@ class ExcersizePlansViewModle(application: Application) : AndroidViewModel(appli
 
         for (i in 0 until excersizesTypes.size) {
           var fillterMapByExcersizeType= daysComplted.filterKeys { it.contains(excersizesTypes[i],true) }
-          var filterMapByProgress= fillterMapByExcersizeType.filter<String, ExcersizeDay> { it.value.progress.contains("100%") }
+          var filterMapByProgress= fillterMapByExcersizeType.filter<String, ExerciseDay> { it.value.progress.contains("100%") }
             var excersize = ExcersizePlan(excersizesTypes[i], excersizeTypeTotalDays[i].toInt(), filterMapByProgress.size, excersizeTypeImages.getResourceId(i,-1), ExcersizePlan.TYPE_EXCERSISE)
             excersizePlanList?.add(excersize)
 

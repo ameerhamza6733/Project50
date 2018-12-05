@@ -4,7 +4,7 @@ import android.app.Application
 import android.arch.lifecycle.AndroidViewModel
 import android.arch.lifecycle.MutableLiveData
 import com.yourdomain.project50.MY_Shared_PREF
-import com.yourdomain.project50.Model.ExcersizeDay
+import com.yourdomain.project50.Model.ExerciseDay
 import com.yourdomain.project50.Model.ExcersizePlan
 import java.util.ArrayList
 
@@ -12,10 +12,10 @@ import java.util.ArrayList
  * Created by apple on 11/14/18.
  */
 class FragmentDayButtPlanViewModle(application: Application) :AndroidViewModel(application){
-    private var mutableList: java.util.ArrayList<ExcersizeDay>? = null
-    private var mutableLiveData : MutableLiveData<ArrayList<ExcersizeDay>?>?=null
+    private var mutableList: java.util.ArrayList<ExerciseDay>? = null
+    private var mutableLiveData : MutableLiveData<ArrayList<ExerciseDay>?>?=null
 
-    fun getDays(): MutableLiveData<ArrayList<ExcersizeDay>?>? {
+    fun getDays(): MutableLiveData<ArrayList<ExerciseDay>?>? {
         if (mutableLiveData == null) {
             mutableLiveData = MutableLiveData()
             mutableList = ArrayList();
@@ -25,7 +25,7 @@ class FragmentDayButtPlanViewModle(application: Application) :AndroidViewModel(a
                     mutableList?.add(hashMap[ExcersizePlan.PLAN_BUTT+dayNumber.toString()]!!)
 
                 } else {
-                    var excersizeDays = ExcersizeDay(dayNumber, 1)
+                    var excersizeDays = ExerciseDay(dayNumber, 1)
                     mutableList?.add(excersizeDays)
                 }
 

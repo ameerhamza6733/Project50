@@ -116,7 +116,7 @@ val comeBackLatter=ComeBackLatter(counter,currentDayKey,currentPlan)
     private lateinit var mbtBack: ImageButton
     private lateinit var mbtdone: ImageButton
 
-    private var currentDay: ExcersizeDay? = null
+    private var currentDay: ExerciseDay? = null
     private var excesizes: Excesizes? = null
     private var counter = -1
     private var countDown: CustomCountDownTimer? = null
@@ -138,7 +138,7 @@ val comeBackLatter=ComeBackLatter(counter,currentDayKey,currentPlan)
 
     private var adRequest: AdRequest? = null
     private lateinit var adContainer: RelativeLayout
-    private var mSetingsFromFirebase: AppAdmobDataFromFirebase? = null
+    private var mSetingsFromFirebase: AppAdmobSettingsFromFirebase? = null
     private var mRewardedVideoAd: RewardedVideoAd? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -441,7 +441,7 @@ val comeBackLatter=ComeBackLatter(counter,currentDayKey,currentPlan)
         Log.d(TAG, "Saving currnet day in shared pref: " + Utils.toPersentage(counter + 1, excesizes?.title?.size!!))
         if (currentDayKey == -3) return
 
-        MY_Shared_PREF.saveDayByKey(application, (currentPlan) + (currentDayKey + 1).toString(), ExcersizeDay(currentDayKey + 1, ExcersizeDay.VIEW_TYPE_DAY, excesizes?.title?.size?.toLong()!!, counter.toLong(), Utils.toPersentage(counter + 1, excesizes?.title?.size!!)))
+        MY_Shared_PREF.saveDayByKey(application, (currentPlan) + (currentDayKey + 1).toString(), ExerciseDay(currentDayKey + 1, ExerciseDay.VIEW_TYPE_DAY, excesizes?.title?.size?.toLong()!!, counter.toLong(), Utils.toPersentage(counter + 1, excesizes?.title?.size!!)))
     }
 
     override fun onPause() {

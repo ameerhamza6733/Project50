@@ -12,13 +12,17 @@ import android.os.Build
 import android.support.v4.app.NotificationCompat
 import android.util.Log
 import android.widget.RemoteViews
+import androidx.work.OneTimeWorkRequest
+import androidx.work.WorkManager
 import androidx.work.Worker
 import androidx.work.WorkerParameters
 import com.yourdomain.project50.Activitys.ExcersizeActivity
 import com.yourdomain.project50.Activitys.ExcersizeListActivity
+import com.yourdomain.project50.Activitys.OnSnoozeReciverActivity
 import com.yourdomain.project50.MY_Shared_PREF
 import com.yourdomain.project50.R
 import java.util.*
+import java.util.concurrent.TimeUnit
 
 
 /**
@@ -59,6 +63,7 @@ open class ComeBackLatterWorkManger(context: Context, params: WorkerParameters) 
         val contentView = RemoteViews(applicationContext.packageName, R.layout.custom_notifaction)
 
         contentView.setOnClickPendingIntent(R.id.btNotfactionStart,getStartPaddingIntent())
+        contentView.setOnClickPendingIntent(R.id.btNotifactionSozen,getPaddingSnoozeInternt())
 
         val mBuilder = NotificationCompat.Builder(applicationContext, applicationContext.getString(R.string.app_name))
                 .setSmallIcon(R.mipmap.ic_launcher)
@@ -94,18 +99,27 @@ open class ComeBackLatterWorkManger(context: Context, params: WorkerParameters) 
     }
 
     private fun getStartPaddingIntent(): PendingIntent {
-        val comeBackLatter=MY_Shared_PREF.getComeBackLatterExcersize(applicationContext)
+        val comeBackLatter = MY_Shared_PREF.getComeBackLatterExcersize(applicationContext)
 
-        val resutmentButtonIntent = Intent(applicationContext,ExcersizeListActivity::class.java)
+        val resutmentButtonIntent = Intent(applicationContext, ExcersizeListActivity::class.java)
         resutmentButtonIntent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_SINGLE_TOP
         resutmentButtonIntent.flags = Intent.FLAG_ACTIVITY_NEW_TASK
-        resutmentButtonIntent.action=ExcersizeListActivity.ACTION_START_EXCERSIZE
+        resutmentButtonIntent.action = ExcersizeListActivity.ACTION_START_EXCERSIZE
 
-        resutmentButtonIntent.putExtra(ExcersizeListActivity.EXTRA_EXCERSIZES_DONE,comeBackLatter?.complatedExcersize)
-        resutmentButtonIntent.putExtra(ExcersizeListActivity.EXTRA_DAY,comeBackLatter?.excersizeDayKey)
-        resutmentButtonIntent.putExtra(ExcersizeListActivity.EXTRA_PLAN,comeBackLatter?.excersizePlan)
+        resutmentButtonIntent.putExtra(ExcersizeListActivity.EXTRA_EXCERSIZES_DONE, comeBackLatter?.complatedExcersize)
+        resutmentButtonIntent.putExtra(ExcersizeListActivity.EXTRA_DAY, comeBackLatter?.excersizeDayKey)
+        resutmentButtonIntent.putExtra(ExcersizeListActivity.EXTRA_PLAN, comeBackLatter?.excersizePlan)
 
-        val  contentIntent = PendingIntent.getActivity(applicationContext, 0, resutmentButtonIntent, 0)
+        val contentIntent = PendingIntent.getActivity(applicationContext, 0, resutmentButtonIntent, 0)
         return contentIntent
+
+    }
+
+
+
+    private fun getPaddingSnoozeInternt():PendingIntent{
+        val shoozenActivtyIntent= Intent(applicationContext,OnSnoozeReciverActivity::class.java)
+        shoozenActivtyIntent.flags=Intent.FLAG_ACTIVITY_NEW_TASK
+       return PendingIntent.getActivity(applicationContext,0,shoozenActivtyIntent,0)
     }
 }

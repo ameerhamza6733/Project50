@@ -13,20 +13,17 @@ import android.view.WindowManager
 import android.view.animation.AnimationUtils
 import android.widget.ImageView
 import android.widget.TextView
-import android.widget.Toast
 import com.bumptech.glide.Glide
 import com.google.ads.consent.*
 import com.google.android.gms.ads.MobileAds
 import com.yourdomain.project50.MY_Shared_PREF
-import com.yourdomain.project50.Model.Admob
-import com.yourdomain.project50.Model.AppAdmobDataFromFirebase
+import com.yourdomain.project50.Model.AppAdmobSettingsFromFirebase
 import com.yourdomain.project50.R
 import com.yourdomain.project50.TTSHelperService
 import com.yourdomain.project50.Utils
 import com.yourdomain.project50.ViewModle.GetAdmobDataFromFireBaseViewModle
 import java.net.MalformedURLException
 import java.net.URL
-import android.support.v4.os.HandlerCompat.postDelayed
 import androidx.work.ExistingWorkPolicy
 import androidx.work.OneTimeWorkRequest
 import androidx.work.WorkManager
@@ -65,26 +62,13 @@ class SpalishActivity : AppCompatActivity() {
            }, 3*1000)
 
        }
-sacduleThePaddingNotifaction()
+
 
     }
-    private fun sacduleThePaddingNotifaction() {
-        Log.d(TAG,"shauding notifaction for 30 mints")
-        val postNotationWithDelay =OneTimeWorkRequest
-                .Builder(ComeBackLatterWorkManger::class.java)
-                .setInitialDelay(10,TimeUnit.SECONDS).build()
 
-        val workManager = WorkManager.getInstance()
-        workManager.beginUniqueWork(
-                ComeBackLatterWorkManger.TAG,
-                ExistingWorkPolicy.REPLACE,
-                postNotationWithDelay
-        ).enqueue()
-
-    }
-    private fun checkForConsent(appAdmobDataFromFirebase: AppAdmobDataFromFirebase) {
+    private fun checkForConsent(appAdmobSettingsFromFirebase: AppAdmobSettingsFromFirebase) {
         val consentInformation = ConsentInformation.getInstance(this@SpalishActivity)
-        val publisherIds = arrayOf(appAdmobDataFromFirebase?.admobAds?.publisherId)
+        val publisherIds = arrayOf(appAdmobSettingsFromFirebase?.admobAds?.publisherId)
         consentInformation.requestConsentInfoUpdate(publisherIds, object : ConsentInfoUpdateListener {
             override fun onConsentInfoUpdated(consentStatus: ConsentStatus) {
                 // User's consent status successfully updated.

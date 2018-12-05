@@ -17,8 +17,7 @@ import android.widget.ProgressBar
 import android.widget.TextView
 import com.yourdomain.project50.Activitys.EachPlanExcersizesActivity
 import com.yourdomain.project50.Activitys.ExcersizeListActivity
-import com.yourdomain.project50.Activitys.MainActivity
-import com.yourdomain.project50.Model.ExcersizeDay
+import com.yourdomain.project50.Model.ExerciseDay
 import com.yourdomain.project50.Model.ExcersizePlan
 
 import com.yourdomain.project50.R
@@ -43,10 +42,10 @@ class FullBodyPlanDayFragment : Fragment() {
         return view
     }
 
-    private class EachExcersizeDayAdupter(val excersizeList: MutableList<ExcersizeDay>) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+    private class EachExcersizeDayAdupter(val exerciseList: MutableList<ExerciseDay>) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
         override fun onCreateViewHolder(p0: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
             return when (viewType) {
-                ExcersizeDay.VIEW_TYPE_DAY -> {
+                ExerciseDay.VIEW_TYPE_DAY -> {
                     ExcersizeDAYViewHolder(LayoutInflater.from(p0.context)
                             .inflate(R.layout.each_excersize_day, p0, false));
 
@@ -55,7 +54,7 @@ class FullBodyPlanDayFragment : Fragment() {
                     AdViewHolderViewHolder(LayoutInflater.from(p0.context)
                             .inflate(R.layout.native_adview, p0, false));
                 }
-                ExcersizeDay.VIEW_TYPEREST->{
+                ExerciseDay.VIEW_TYPEREST->{
                     RrestDayViewHolder(LayoutInflater.from(p0.context).inflate(R.layout.each_rest_day,p0,false))
                 }
                 else -> {
@@ -68,32 +67,32 @@ class FullBodyPlanDayFragment : Fragment() {
         }
 
         override fun getItemCount(): Int {
-            return excersizeList.size
+            return exerciseList.size
         }
 
         override fun onBindViewHolder(p0: RecyclerView.ViewHolder, p1: Int) {
 
-            if (ExcersizeDay.VIEW_TYPE_DAY == p0.itemViewType) {
+            if (ExerciseDay.VIEW_TYPE_DAY == p0.itemViewType) {
                 p0 as ExcersizeDAYViewHolder
-                if (excersizeList[p0.adapterPosition].totaleExcersizes>0){
-                    p0.progressBar.max=excersizeList[p0.adapterPosition].totaleExcersizes.toInt()
+                if (exerciseList[p0.adapterPosition].totaleExcersizes>0){
+                    p0.progressBar.max=exerciseList[p0.adapterPosition].totaleExcersizes.toInt()
                 }
-                if (excersizeList[p0.adapterPosition].totaleExcersizes>0){
-                    p0.progressBar.progress=excersizeList[p0.adapterPosition].doneExcersises.toInt()
-                    p0.tvProgress.setText(excersizeList[p0.adapterPosition].progress)
+                if (exerciseList[p0.adapterPosition].totaleExcersizes>0){
+                    p0.progressBar.progress=exerciseList[p0.adapterPosition].doneExcersises.toInt()
+                    p0.tvProgress.setText(exerciseList[p0.adapterPosition].progress)
                 }
-                p0.tvDay.text = "Day " + excersizeList[p0.adapterPosition].day.toString()
-            } else if (ExcersizeDay.VIEW_TYPE_AD == p0.itemViewType) {
+                p0.tvDay.text = "Day " + exerciseList[p0.adapterPosition].day.toString()
+            } else if (ExerciseDay.VIEW_TYPE_AD == p0.itemViewType) {
                 p0 as AdViewHolderViewHolder
-            }else if (ExcersizeDay.VIEW_TYPEREST==p0.itemViewType){
+            }else if (ExerciseDay.VIEW_TYPEREST==p0.itemViewType){
 p0 as RrestDayViewHolder
-                p0.tvRestDay.text="Day " + excersizeList[p0.adapterPosition].day.toString()
+                p0.tvRestDay.text="Day " + exerciseList[p0.adapterPosition].day.toString()
             }
 
         }
 
         override fun getItemViewType(position: Int): Int {
-            return excersizeList[position].viewType
+            return exerciseList[position].viewType
         }
 
         inner class ExcersizeDAYViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
@@ -105,9 +104,9 @@ p0 as RrestDayViewHolder
             init {
 
                 itemView.setOnClickListener {
-                    Log.d(TAG,""+excersizeList[adapterPosition].toString())
+                    Log.d(TAG,""+exerciseList[adapterPosition].toString())
                     val intent = Intent(itemView.context, ExcersizeListActivity::class.java)
-                    intent.putExtra(ExcersizeListActivity.EXTRA_EXCERSIZES_DONE,excersizeList[adapterPosition].doneExcersises.toInt())
+                    intent.putExtra(ExcersizeListActivity.EXTRA_EXCERSIZES_DONE,exerciseList[adapterPosition].doneExcersises.toInt())
                     intent.putExtra(ExcersizeListActivity.EXTRA_PLAN,ExcersizePlan.PLAN_FULL_BODY)
                     intent.putExtra(ExcersizeListActivity.EXTRA_DAY, adapterPosition)
                     itemView.context.startActivity(intent)

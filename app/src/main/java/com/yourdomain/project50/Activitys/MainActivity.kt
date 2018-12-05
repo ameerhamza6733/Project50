@@ -28,7 +28,7 @@ import com.google.android.gms.ads.formats.UnifiedNativeAdView
 import com.yourdomain.project50.Fragments.MoreAppsDialogeFragment
 import com.yourdomain.project50.MY_Shared_PREF
 import com.yourdomain.project50.Model.Admob
-import com.yourdomain.project50.Model.AppAdmobDataFromFirebase
+import com.yourdomain.project50.Model.AppAdmobSettingsFromFirebase
 import com.yourdomain.project50.Model.AppSettingsFromFireBase
 import com.yourdomain.project50.Model.ExcersizePlan
 import com.yourdomain.project50.R
@@ -45,7 +45,7 @@ class MainActivity : AppCompatActivity() {
     private var currentExcersizePlan = -1
     private val mNativeExpressAdView: NativeExpressAdView? = null
     private var mSettingFireBase: AppSettingsFromFireBase? = null
-    private var mAdmobSettingsFromFireBase:AppAdmobDataFromFirebase?=null
+    private var mAdmobSettingsFromFireBase:AppAdmobSettingsFromFirebase?=null
     private lateinit var adRequst: AdRequest
     private var nativeAdId:String?=null
 

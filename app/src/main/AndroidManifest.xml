@@ -53,7 +53,8 @@
         <service android:name=".TTSHelperService" />
 
         <activity android:name=".Activitys.SettingsActivity" />
-        <activity android:name=".Activitys.PostNotifactionActivity"></activity>
+        <activity android:name=".Activitys.PostNotifactionActivity" />
+        <activity android:name=".Activitys.OnSnoozeReciverActivity"></activity>
     </application>
 
 </manifest>

@@ -1,7 +1,5 @@
 package com.yourdomain.project50.Activitys
 
-import android.arch.lifecycle.Observer
-import android.arch.lifecycle.ViewModelProviders
 import android.content.Intent
 import android.os.Bundle
 import android.os.Handler
@@ -18,7 +16,6 @@ import android.support.v7.widget.RecyclerView.OnChildAttachStateChangeListener
 import android.support.v7.widget.Toolbar
 import android.util.Log
 import android.view.LayoutInflater
-import android.view.Menu
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
@@ -40,11 +37,9 @@ import com.yourdomain.project50.Fragments.FullBodyPlanDayFragment
 import com.yourdomain.project50.Fragments.RateUsFragment
 import com.yourdomain.project50.MY_Shared_PREF
 import com.yourdomain.project50.Model.Admob
-import com.yourdomain.project50.Model.AppAdmobDataFromFirebase
-import com.yourdomain.project50.Model.AppSettingsFromFireBase
+import com.yourdomain.project50.Model.AppAdmobSettingsFromFirebase
 import com.yourdomain.project50.Model.ExcersizePlan
 import com.yourdomain.project50.R
-import com.yourdomain.project50.ViewModle.AppSettingsFromFirebaseViewModle
 import com.yourdomain.project50.ViewModle.ExcersizePlansViewModle
 import kotlinx.android.synthetic.main.activity_days_excersizes.*
 
@@ -82,7 +77,7 @@ class EachPlanExcersizesActivity : AppCompatActivity() {
     private lateinit var boxTick:ImageView
     private lateinit var mPager: com.yourdomain.project50.Adupters.MYViewPager
     private var currentExcersizePlan = ExcersizePlan.PLAN_FULL_BODY
-    private var mAdmobSetingsFromFirebase: AppAdmobDataFromFirebase? = null
+    private var mAdmobSetingsFromFirebase: AppAdmobSettingsFromFirebase? = null
 
 
     private val NUM_PAGES = 3

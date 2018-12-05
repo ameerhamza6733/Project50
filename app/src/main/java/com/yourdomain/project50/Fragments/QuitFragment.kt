@@ -43,7 +43,7 @@ class QuitFragment : DialogFragment() {
         btContinue = view.findViewById(R.id.btContinue)
         btComeBackLater = view.findViewById(R.id.btComeBackLater)
 
-        Glide.with(this).asBitmap().load(R.drawable.spalish2).apply(RequestOptions().override(400, 450)).into(backGoudidImage)
+        Glide.with(this).asBitmap().load(R.drawable.spalish4).apply(RequestOptions().override(400,450)).into(backGoudidImage)
         btContinue.setOnClickListener {
             dismiss()
             mListener?.onContinue()

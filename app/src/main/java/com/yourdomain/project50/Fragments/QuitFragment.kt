@@ -53,7 +53,7 @@ class QuitFragment : DialogFragment() {
             mListener?.onContinue()
         }
         btComeBackLater.setOnClickListener {
-
+            mListener?.onComeBacKLater()
             sacduleThePaddingNotifaction()
             mListener?.onQuit()
         }

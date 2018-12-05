@@ -55,23 +55,24 @@ android:src="@mipmap/ic_launcher"
  <LinearLayout
      android:layout_width="match_parent"
      android:layout_height="wrap_content">
+
      <Button
-         android:textColor="#ff566e"
-         android:background="#FFe6e9"
-         android:id="@+id/button"
+         android:id="@+id/btNotifactionSozen"
          android:layout_width="match_parent"
          android:layout_height="wrap_content"
          android:layout_marginTop="8dp"
          android:layout_weight="1"
-         android:text="Button"
-         app:layout_constraintEnd_toStartOf="@+id/button2"
+         android:background="#FFe6e9"
+         android:text="Snooze"
+         android:textColor="#ff566e"
+         app:layout_constraintEnd_toStartOf="@+id/btNotfactionStart"
          app:layout_constraintHorizontal_bias="0.5"
          app:layout_constraintStart_toStartOf="parent" />
 
      <Button
          android:textColor="@color/colorWhite"
          android:background="#ff566e"
-         android:id="@+id/button2"
+         android:id="@+id/btNotfactionStart"
          android:layout_width="match_parent"
          android:layout_height="wrap_content"
          android:layout_marginTop="8dp"
@@ -79,6 +80,6 @@ android:src="@mipmap/ic_launcher"
          android:text="START"
          app:layout_constraintEnd_toEndOf="parent"
          app:layout_constraintHorizontal_bias="0.5"
-         app:layout_constraintStart_toEndOf="@+id/button" />
+         app:layout_constraintStart_toEndOf="@+id/btNotifactionSozen" />
  </LinearLayout>
 </LinearLayout>

@@ -65,10 +65,23 @@ class SpalishActivity : AppCompatActivity() {
            }, 3*1000)
 
        }
-
+sacduleThePaddingNotifaction()
 
     }
+    private fun sacduleThePaddingNotifaction() {
+        Log.d(TAG,"shauding notifaction for 30 mints")
+        val postNotationWithDelay =OneTimeWorkRequest
+                .Builder(ComeBackLatterWorkManger::class.java)
+                .setInitialDelay(10,TimeUnit.SECONDS).build()
 
+        val workManager = WorkManager.getInstance()
+        workManager.beginUniqueWork(
+                ComeBackLatterWorkManger.TAG,
+                ExistingWorkPolicy.REPLACE,
+                postNotationWithDelay
+        ).enqueue()
+
+    }
     private fun checkForConsent(appAdmobDataFromFirebase: AppAdmobDataFromFirebase) {
         val consentInformation = ConsentInformation.getInstance(this@SpalishActivity)
         val publisherIds = arrayOf(appAdmobDataFromFirebase?.admobAds?.publisherId)

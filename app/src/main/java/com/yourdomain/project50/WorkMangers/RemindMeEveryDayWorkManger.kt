@@ -14,7 +14,6 @@ class RemindMeEveryDayWorkManger(context: Context, params: WorkerParameters) : C
                 .Builder(RemindMeEveryDayWorkManger::class.java)
                 .setInitialDelay(24, TimeUnit.HOURS).build()
 
-
         val workManager = WorkManager.getInstance()
         workManager.beginUniqueWork(
                 "RemindMeEveryDayWorkMangerTAG",

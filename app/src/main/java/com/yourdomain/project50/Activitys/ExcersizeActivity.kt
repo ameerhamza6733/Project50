@@ -54,6 +54,9 @@ class ExcersizeActivity : AppCompatActivity(), WatingToStartExcersizeFragment.On
     }
 
     override fun onComeBacKLater() {
+        Log.d(TAG,"excersize done : "+ counter+" currentPlan: "+currentPlan +" currentDayKey: "+currentDayKey)
+val comeBackLatter=ComeBackLatter(counter,currentDayKey,currentPlan)
+        MY_Shared_PREF.saveComeBackLatterExcersize(application,comeBackLatter)
     }
 
     override fun ResumeListener() {
@@ -141,6 +144,7 @@ class ExcersizeActivity : AppCompatActivity(), WatingToStartExcersizeFragment.On
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.each_full_screen_excersize)
+        window.addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON)
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
             val w = window
             w.setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,

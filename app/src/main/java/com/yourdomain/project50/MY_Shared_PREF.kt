@@ -4,6 +4,7 @@ import android.app.Application
 import android.content.Context
 import android.util.Log
 import com.google.gson.Gson
+import com.yourdomain.project50.Activitys.ExcersizeListActivity
 import com.yourdomain.project50.Model.*
 import java.util.ArrayList
 import java.util.HashMap
@@ -15,6 +16,8 @@ import java.util.HashMap
 class MY_Shared_PREF{
 
     companion object {
+
+        private val TAG="MY_Shared_PREF";
 
         private val SHARE_PREF_FILE=this.javaClass.`package`.name+"SHARE_PREF_FILE"
         private val SHARED_PREF_ALL_DAYS_FILE=this.javaClass.`package`.name+"SHARED_PREF_ALL_DAYS_FILE"
@@ -34,6 +37,9 @@ class MY_Shared_PREF{
         private val SHARE_PREF_SETTING_FROM_FIREBASE_FILE="SHARE_PREF_SETTING_FROM_FIREBASE_FILE"
         private val SHARE_PREF_SETTTINGS_FROM_FIREBASE_KEY="SHARE_PREF_SETTTINGS_FROM_FIREBASE_KEY"
 
+
+        private val SHARE_PREF_COME_BACK_LATTER_FILE="SHARE_PREF_COME_BACK_LATTER_FILE"
+        private val SHARE_PREF_COME_BACK_LATTER_KEY="SHARE_PREF_COME_BACK_LATTER_KEY"
 
          private val  gson=Gson()
 
@@ -141,6 +147,18 @@ class MY_Shared_PREF{
             val sharePref=application.getSharedPreferences(SHARE_PREF_SETTING_FROM_FIREBASE_FILE,0)
             val edit=sharePref.edit()
             edit.putString(SHARE_PREF_SETTTINGS_FROM_FIREBASE_KEY,gson.toJson(appSettingFromFirebase)).apply()
+        }
+
+        fun saveComeBackLatterExcersize(application: Application,comeBackLatter: ComeBackLatter){
+            val share_pref=application.getSharedPreferences(SHARE_PREF_COME_BACK_LATTER_FILE,0)
+            val edit = share_pref.edit()
+           edit.putString(SHARE_PREF_COME_BACK_LATTER_KEY, gson.toJson(comeBackLatter))
+            edit.apply()
+        }
+
+        fun getComeBackLatterExcersize(contex: Context):ComeBackLatter?{
+            val share_pref= contex.getSharedPreferences(SHARE_PREF_COME_BACK_LATTER_FILE,0)
+           return gson.fromJson(share_pref.getString(SHARE_PREF_COME_BACK_LATTER_KEY,null),ComeBackLatter::class.java)
         }
 
     }

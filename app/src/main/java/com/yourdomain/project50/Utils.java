@@ -117,11 +117,18 @@ public class Utils {
     }
 
 
-    public static   Double getNextDay(int dayToBe)
+    public static   Date getNextDay()
     {
         Calendar cal = Calendar.getInstance();
         cal.setTime(new Date());
-        cal.add(Calendar.DATE, dayToBe); //minus number would decrement the days
-        return Double.parseDouble(String.valueOf(dayToBe));
+        cal.add(Calendar.DATE, 1); //minus number would decrement the days
+        return cal.getTime();
+    }
+    public static   Date getNext30Day()
+    {
+        Calendar cal = Calendar.getInstance();
+        cal.setTime(new Date());
+        cal.add(Calendar.DATE, 29); //minus number would decrement the days
+        return cal.getTime();
     }
 }

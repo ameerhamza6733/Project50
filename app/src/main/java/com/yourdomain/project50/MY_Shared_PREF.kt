@@ -143,6 +143,7 @@ class MY_Shared_PREF {
 
         fun saveGraphCalvsDays(application: Application, dataPoint: DataPoint,key :String) {
             Log.d(TAG,"save data points for graphs")
+
             val share_pref = application.getSharedPreferences(SHARE_PREF_GRAPHS_FILE, 0)
             val editer = share_pref.edit()
             var updateDataPoint=dataPoint;

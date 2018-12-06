@@ -11,6 +11,8 @@ import android.util.Log;
 import com.yourdomain.project50.Model.Excesizes;
 
 import java.text.DecimalFormat;
+import java.util.Calendar;
+import java.util.Date;
 
 /**
  * Created by apple on 11/5/18.
@@ -112,5 +114,14 @@ public class Utils {
                 = (ConnectivityManager) application.getSystemService(Context.CONNECTIVITY_SERVICE);
         NetworkInfo activeNetworkInfo = connectivityManager.getActiveNetworkInfo();
         return activeNetworkInfo != null && activeNetworkInfo.isConnected();
+    }
+
+
+    public static   Double getNextDay(int dayToBe)
+    {
+        Calendar cal = Calendar.getInstance();
+        cal.setTime(new Date());
+        cal.add(Calendar.DATE, dayToBe); //minus number would decrement the days
+        return Double.parseDouble(String.valueOf(dayToBe));
     }
 }

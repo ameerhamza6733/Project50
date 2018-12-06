@@ -54,7 +54,7 @@ dependencies {
     implementation 'com.google.firebase:firebase-database:16.0.5'
 
     implementation 'com.google.android.ads.consent:consent-library:1.0.6'
-    compile 'com.github.lecho:hellocharts-library:1.5.8@aar'
+    implementation 'com.jjoe64:graphview:4.2.2'
     implementation "android.arch.work:work-runtime:1.0.0-alpha10"
 
 

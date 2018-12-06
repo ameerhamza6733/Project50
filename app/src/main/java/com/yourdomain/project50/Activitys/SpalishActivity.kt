@@ -103,16 +103,28 @@ class SpalishActivity : AppCompatActivity() {
     }
 
     private fun showNonPersonalizedAds() {
+        if (MY_Shared_PREF.isPersonAppearanceSaved(application)){
+            startActivity(Intent(this@SpalishActivity, MainActivity::class.java))
+
+        }else{
+            startActivity(Intent(this@SpalishActivity, ScaleActivity::class.java))
+
+        }
         startService(Intent(this@SpalishActivity, TTSHelperService::class.java))
-        startActivity(Intent(this@SpalishActivity, ScaleActivity::class.java))
+
 
         finish()
     }
 
     private fun showPersonalizedAds() {
         startService(Intent(this@SpalishActivity, TTSHelperService::class.java))
-        startActivity(Intent(this@SpalishActivity, ScaleActivity::class.java))
+        if (MY_Shared_PREF.isPersonAppearanceSaved(application)){
+            startActivity(Intent(this@SpalishActivity, MainActivity::class.java))
 
+        }else{
+            startActivity(Intent(this@SpalishActivity, ScaleActivity::class.java))
+
+        }
         finish()
     }
 

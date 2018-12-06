@@ -23,11 +23,14 @@ import com.google.android.gms.ads.AdSize
 import com.google.android.gms.ads.AdView
 import com.google.android.gms.ads.MobileAds
 import com.google.android.gms.ads.reward.RewardedVideoAd
+import com.jjoe64.graphview.series.DataPoint
 import com.yourdomain.project50.*
 import com.yourdomain.project50.Fragments.*
 import com.yourdomain.project50.Model.*
 import com.yourdomain.project50.Utils.CountTotalTime
 import com.yourdomain.project50.ViewModle.ExcersizesByDayandTypeViewModle
+import java.text.SimpleDateFormat
+import java.util.*
 import java.util.concurrent.TimeUnit
 
 
@@ -359,6 +362,8 @@ val comeBackLatter=ComeBackLatter(counter,currentDayKey,currentPlan)
             mSetingsFromFirebase?.admobAds?.nativeAds11?.id?.let {
                 nativeAdId=it
             }
+            MY_Shared_PREF.saveGraphCalvsDays(application, DataPoint(Date(),excesizes?.calories!![counter]), SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).format(Date()))
+
             val watingForNextFragment = RestFragment.newInstance(excesizes?.title!![counter + 1], temp, "NEXT " + (counter + 1).toString() + "/" + (excesizes!!.icons.size).toString(), excesizes?.icons!![counter + 1], settings.workoutSettings.restTimeInSeconds,nativeAdId)
             watingForNextFragment.setStyle(DialogFragment.STYLE_NORMAL, android.R.style.Theme_Black_NoTitleBar_Fullscreen);
             watingForNextFragment.show(supportFragmentManager, "watingForNextFragment")

@@ -7,9 +7,6 @@ import com.google.gson.Gson
 import com.jjoe64.graphview.series.DataPoint
 import com.yourdomain.project50.Model.*
 import java.util.*
-import android.R.attr.x
-
-
 
 
 /**
@@ -141,31 +138,35 @@ class MY_Shared_PREF {
             }
         }
 
-        fun saveGraphCalvsDays(application: Application, dataPoint: DataPoint,key :String) {
-            Log.d(TAG,"save data points for graphs")
+        fun saveGraphCalvsDays(application: Application, dataPoint: DataPoint, key: String) {
+            Log.d(TAG, "save data points for graphs")
 
             val share_pref = application.getSharedPreferences(SHARE_PREF_GRAPHS_FILE, 0)
             val editer = share_pref.edit()
-            var updateDataPoint=dataPoint;
+            var updateDataPoint = dataPoint;
             if (share_pref.contains(key)) {
                 val priveiousCalFromThisDay = gson.fromJson<DataPoint>(share_pref.getString(key, null), DataPoint::class.java)
-                 updateDataPoint=DataPoint(dataPoint.x,priveiousCalFromThisDay.y + dataPoint.y)
+                updateDataPoint = DataPoint(dataPoint.x, priveiousCalFromThisDay.y + dataPoint.y)
             }
             editer.putString(key, gson.toJson(updateDataPoint))
             editer.apply()
 
         }
 
-        fun getAllDataGraphCalvsDays(application: Application):Array<DataPoint?>{
+        fun getAllDataGraphCalvsDays(application: Application): Array<DataPoint?> {
 
-            val sharef_Pref= application.getSharedPreferences(SHARE_PREF_GRAPHS_FILE,0)
+            val sharef_Pref = application.getSharedPreferences(SHARE_PREF_GRAPHS_FILE, 0)
             val allEntries = sharef_Pref.getAll()
             val dataPointArray = arrayOfNulls<DataPoint>(allEntries.size)
-            for ((counter, entry) in allEntries.entries.withIndex()) {
-               dataPointArray.set(counter,gson.fromJson(entry.value.toString(),DataPoint::class.java))
-                Log.d(TAG, "key : "+entry.key + " value:  " + entry.value.toString())
+            var counter = 0
+            for (entry in allEntries.entries) {
+                // i in [1, 10), 10 is excluded
+                dataPointArray.set(counter, gson.fromJson(entry.value.toString(), DataPoint::class.java))
+                Log.d(TAG, "key : " + entry.key + " value of x :  " + dataPointArray[counter]?.x?.toLong()?.let { Date(it) })
+                counter++
             }
-           return dataPointArray
+
+            return dataPointArray.reversedArray()
         }
 
         fun saveAppsSettingFromFireBase(application: Application, appSettingFromFirebase: AppSettingsFromFireBase) {
@@ -185,7 +186,6 @@ class MY_Shared_PREF {
             val share_pref = contex.getSharedPreferences(SHARE_PREF_COME_BACK_LATTER_FILE, 0)
             return gson.fromJson(share_pref.getString(SHARE_PREF_COME_BACK_LATTER_KEY, null), ComeBackLatter::class.java)
         }
-
 
 
     }

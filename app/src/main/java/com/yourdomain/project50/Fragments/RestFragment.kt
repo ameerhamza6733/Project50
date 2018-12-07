@@ -277,35 +277,38 @@ class RestFragment : DialogFragment() {
     private fun refreshAd() {
 
 
-        val builder = AdLoader.Builder(activity, mNativeAdId)
+       try{
+           val builder = AdLoader.Builder(activity, mNativeAdId)
 
-        builder.forUnifiedNativeAd(UnifiedNativeAd.OnUnifiedNativeAdLoadedListener { unifiedNativeAd ->
-            // OnUnifiedNativeAdLoadedListener implementation.
+           builder.forUnifiedNativeAd(UnifiedNativeAd.OnUnifiedNativeAdLoadedListener { unifiedNativeAd ->
+               // OnUnifiedNativeAdLoadedListener implementation.
 
-            val adView = layoutInflater
-                    .inflate(R.layout.native_adview, null) as UnifiedNativeAdView
-            populateUnifiedNativeAdView(unifiedNativeAd, adView)
-            adPlaceHolder.removeAllViews()
-            adPlaceHolder.addView(adView)
-        })
+               val adView = layoutInflater.inflate(R.layout.native_adview, null) as UnifiedNativeAdView
+               populateUnifiedNativeAdView(unifiedNativeAd, adView)
+               adPlaceHolder.removeAllViews()
+               adPlaceHolder.addView(adView)
+           })
 
-        val videoOptions = VideoOptions.Builder()
-                .build()
+           val videoOptions = VideoOptions.Builder()
+                   .build()
 
-        val adOptions = NativeAdOptions.Builder()
-                .setVideoOptions(videoOptions)
-                .build()
+           val adOptions = NativeAdOptions.Builder()
+                   .setVideoOptions(videoOptions)
+                   .build()
 
-        builder.withNativeAdOptions(adOptions)
+           builder.withNativeAdOptions(adOptions)
 
-        val adLoader = builder.withAdListener(object : AdListener() {
-            override fun onAdFailedToLoad(errorCode: Int) {
+           val adLoader = builder.withAdListener(object : AdListener() {
+               override fun onAdFailedToLoad(errorCode: Int) {
 
-                Toast.makeText(activity, "Failed to load native ad: $errorCode", Toast.LENGTH_SHORT).show()
-            }
-        }).build()
+                   Toast.makeText(activity, "Failed to load native ad: $errorCode", Toast.LENGTH_SHORT).show()
+               }
+           }).build()
 
-        adLoader.loadAd(adRequest)
+           adLoader.loadAd(adRequest)
+       }catch (e:Exception){
+
+       }
 
 
     }

@@ -6,6 +6,7 @@ import android.util.Log
 import com.google.gson.Gson
 import com.jjoe64.graphview.series.DataPoint
 import com.yourdomain.project50.Model.*
+import java.text.SimpleDateFormat
 import java.util.*
 
 
@@ -40,22 +41,11 @@ class MY_Shared_PREF {
         private val SHARE_PREF_COME_BACK_LATTER_FILE = "SHARE_PREF_COME_BACK_LATTER_FILE"
         private val SHARE_PREF_COME_BACK_LATTER_KEY = "SHARE_PREF_COME_BACK_LATTER_KEY"
 
+        private val SHARE_PRE_PERSON_APPEARANCE_HISTORY="SHARE_PRE_PERSON_APPEARANCE_HISTORY"
+
         private val gson = Gson()
 
-        fun savePersonAppearance(person: Person, context: Context) {
-            val personKey = this.javaClass.`package`.name + "personkey"
 
-            val sharedPreferences = context.applicationContext.getSharedPreferences(SHARE_PREF_FILE, 0)
-            val editer = sharedPreferences.edit()
-            editer.putString(personKey, gson.toJson(person)).apply()
-        }
-
-        fun getPersonAppearance(context: Context): Person {
-            val sharedPreferences = context.applicationContext.getSharedPreferences(SHARE_PREF_FILE, 0)
-            val personKey = "MY_SHAREED_PREF" + "personkey"
-
-            return gson.fromJson(sharedPreferences.getString(personKey, ""), Person::class.java)
-        }
 
 
         fun saveDayByKey(application: Application, key: String, day: ExerciseDay) {
@@ -109,6 +99,26 @@ class MY_Shared_PREF {
             }
         }
 
+        fun savePersonAppearanceHistory(application: Application,personAppearance: PersonAppearance){
+            val sharePref= application.getSharedPreferences(SHARE_PRE_PERSON_APPEARANCE_HISTORY,0)
+            val editer =  sharePref.edit()
+            editer.putString(SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).format(Date()), gson.toJson(personAppearance))
+            editer.apply()
+        }
+
+        fun getPersonHistory(application: Application):Array<DataPoint?>{
+            val share_pref= application.getSharedPreferences(SHARE_PRE_PERSON_APPEARANCE_HISTORY,0)
+            val allEntries = share_pref.getAll()
+            val dataPointArray = arrayOfNulls<DataPoint>(allEntries.size)
+            var counter = 0
+            for (entry in allEntries.entries) {
+
+              var appearance=  gson.fromJson(entry.value.toString(), PersonAppearance::class.java)
+                dataPointArray.set(counter, DataPoint(appearance.date,appearance.mWaight.toDouble()) )
+                counter++
+            }
+            return dataPointArray.reversedArray()
+        }
         fun saveAppSettings(application: Application, settings: Settings) {
             val sharePref = application.applicationContext.getSharedPreferences(SHARE_PREF_SEETINGS, 0)
             val editer = sharePref.edit()

@@ -34,7 +34,7 @@ class INCandLBSscaleFragment : CMandKGscaleFragment() {
         radioCentimenter.setOnClickListener {
             mListener?.onCMandKGadioClick()
         }
-        tvHight.text=Utils.CMtoFeet(mHeight.toDouble()).toString()
+        tvHight.text= String.format("%.1f",Utils.CMtoFeet(mHeight.toDouble()).toDouble())
         tvWaight.text=Utils.KGtoLBS(mWeight.toDouble()).toString()
         mScaleType= PersonAppearance.TYPE_IN_LBS
         return view

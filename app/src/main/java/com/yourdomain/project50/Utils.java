@@ -8,7 +8,11 @@ import android.net.NetworkInfo;
 import android.net.Uri;
 import android.util.Log;
 
+import com.jjoe64.graphview.series.DataPoint;
 import com.yourdomain.project50.Model.Excesizes;
+import com.yourdomain.project50.Model.PersonAppearance;
+
+import org.jetbrains.annotations.NotNull;
 
 import java.text.DecimalFormat;
 import java.util.Calendar;
@@ -20,7 +24,7 @@ import java.util.Date;
 
 public class Utils {
 
-    static DecimalFormat df = new DecimalFormat("##.##");
+
     private static String TAG = "UtilsTAG";
 
     public static String CountTotalTime(int[] viewType, int[] seconds) {
@@ -94,24 +98,13 @@ public class Utils {
     }
 
     public static String CMtoFeet(double cm) {
-        return df.format(Math.round((cm / 30.48) * 100D) / 100D);
+        return String.valueOf(cm / 30.48);
     }
 
-    public static String FeettoCM(double inch) {
-        return df.format(Math.round((inch * 30.48) * 100D) / 100D);
+    public static double KGtoLBS(double waightInKg){
+        return waightInKg*2.205;
     }
 
-    public static String KGtoLBS(double kg) {
-        return df.format(Math.round((kg * 2.20) * 100D) / 100D);
-    }
-
-    public static String LBStoKG(double lbs) {
-        return df.format(Math.round((lbs / 2.20) * 100D) / 100D);
-    }
-
-    public static String INCtoCM(double cm){
-        return df.format(Math.round(cm*2.54));
-    }
 
     public static boolean isNetworkAvailable(Application application) {
         ConnectivityManager connectivityManager
@@ -149,5 +142,23 @@ public class Utils {
         }else {
          return    R.drawable.bmi5;
         }
+    }
+
+    public static double CMtoM(double hightInCm){
+       Double hightInMeter = hightInCm/100;
+       Log.d(TAG,"converting cm to meter : hight in cm : "+hightInCm+ "hight in mater: "+hightInMeter);
+        return  hightInMeter;
+    }
+
+    public static double FeetToInch(double feet){
+        return  feet*12;
+    }
+    public static  double calculateBMIinKg(double waightInKg,double hightInMeter) {
+        return waightInKg/(hightInMeter*2);
+
+    }
+
+    public static double calcautleBMIinlbs(double wagitInPound, double hightInInch){
+        return (wagitInPound /(hightInInch*hightInInch))*703;
     }
 }

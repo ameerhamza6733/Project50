@@ -53,7 +53,7 @@ class CongragulationActivity : AppCompatActivity() {
     private var mRewardedVideoAd: RewardedVideoAd? = null
     private var adRequest: AdRequest? = null
 
-    internal var df = DecimalFormat("##.##")
+
 
     companion object {
         val EXTRA_EXCERSIZES = "CongragulationActivity.extraday";
@@ -71,9 +71,9 @@ class CongragulationActivity : AppCompatActivity() {
                     WindowManager.LayoutParams.FLAG_FULLSCREEN)
         }
         findVIews()
-        tvCalriesBurn.text = df.format(intent?.getDoubleExtra(EXTRA_CAL, 0.0))
-        tvTotleExcersize.text = df.format(intent?.getDoubleExtra(EXTRA_EXCERSIZES, 0.0))
-        tvDuration.text = df.format(intent?.getDoubleExtra(EXTRA_DURACTION, 0.0))
+        tvCalriesBurn.text = String.format("%.2f",intent?.getDoubleExtra(EXTRA_CAL, 0.0))
+        tvTotleExcersize.text =  String.format("%.2f",intent?.getDoubleExtra(EXTRA_EXCERSIZES, 0.0))
+        tvDuration.text = String.format("%.2f",intent?.getDoubleExtra(EXTRA_DURACTION, 0.0))
         tvDayComleted.text = intent?.getIntExtra(EXTRA_DAY, 0).toString()
         Glide.with(this)
                 .load(R.drawable.congragulation_cup)

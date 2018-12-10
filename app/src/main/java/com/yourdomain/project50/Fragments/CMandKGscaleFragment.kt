@@ -18,6 +18,7 @@ import com.yourdomain.project50.Model.PersonAppearance
 import com.yourdomain.project50.R
 import com.yourdomain.project50.Scale.view.ScaleRulerView
 import com.yourdomain.project50.Utils
+import java.util.*
 
 
 open class CMandKGscaleFragment : Fragment(), View.OnClickListener {
@@ -35,7 +36,7 @@ open class CMandKGscaleFragment : Fragment(), View.OnClickListener {
                 if (agreeToPrivicyPolicy) {
                     val intent = Intent(activity,MainActivity::class.java)
                     activity?.startActivity(intent)
-                    val personAppearance=PersonAppearance(mScaleType,tvHight.text.toString(),tvWaight.text.toString())
+                    val personAppearance=PersonAppearance(mScaleType,tvHight.text.toString().toDouble(),tvWaight.text.toString().toDouble(), Date())
                     mListener?.onNext(personAppearance)
                 } else {
                     Toast.makeText(activity, "Agree to privacy policy ", Toast.LENGTH_LONG).show()

@@ -35,6 +35,7 @@ class ScaleActivity : AppCompatActivity(), CMandKGscaleFragment.OnINCandLBSRadio
             val person = Person()
             person.personAppearance = personAppearance
             MY_Shared_PREF.savePerson(application, person)
+            MY_Shared_PREF.savePersonAppearanceHistory(application,personAppearance)
             finish()
         }
     }

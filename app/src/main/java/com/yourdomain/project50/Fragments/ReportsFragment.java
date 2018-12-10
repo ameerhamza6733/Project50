@@ -6,6 +6,7 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -19,7 +20,10 @@ import com.jjoe64.graphview.ValueDependentColor;
 import com.jjoe64.graphview.helper.DateAsXAxisLabelFormatter;
 import com.jjoe64.graphview.series.BarGraphSeries;
 import com.jjoe64.graphview.series.DataPoint;
+import com.jjoe64.graphview.series.LineGraphSeries;
 import com.yourdomain.project50.MY_Shared_PREF;
+import com.yourdomain.project50.Model.Person;
+import com.yourdomain.project50.Model.PersonAppearance;
 import com.yourdomain.project50.R;
 import com.yourdomain.project50.Utils;
 
@@ -40,75 +44,69 @@ public class ReportsFragment extends Fragment {
     private ImageView bmiImageView;
     private TextView btEditBMI ;
     private TextView tvBmi;
-    private double currentBMI=22.5;
+    private double currentBMI=0;
     private SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd/MM");
+    private GraphView calGraph;
+    private GraphView waightGraph;
+    private DataPoint[] waightDataPoint;
+    private Person person;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         dataPoints = MY_Shared_PREF.Companion.getAllDataGraphCalvsDays(getActivity().getApplication());
+      person=MY_Shared_PREF.Companion.getPerson(getActivity().getApplication());
+        waightDataPoint=MY_Shared_PREF.Companion.getPersonHistory(getActivity().getApplication());
         if (dataPoints.length == 0) {
             dataPoints = setUpDefultValue();
         }
+        if (waightDataPoint.length==0){
+            waightDataPoint=setUpDefultValue();
+        }
 
+        Log.d(TAG,"weight graph points: "+waightDataPoint.toString());
     }
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_reports, container, false);
-        GraphView graph = (GraphView) view.findViewById(R.id.graph);
+        calGraph = (GraphView) view.findViewById(R.id.graph);
+        waightGraph=view.findViewById(R.id.waightGraph);
         bmiImageView=view.findViewById(R.id.imageBMI);
         btEditBMI=view.findViewById(R.id.btEditBmi);
         tvBmi=view.findViewById(R.id.tvBMI);
+        updateCalGraph();
+        updateWeightGraph();
+        return view;
+    }
+    private void updateWeightGraph(){
 
-        BarGraphSeries<DataPoint> series = new BarGraphSeries<>(dataPoints);
-
-        series.setValueDependentColor(new ValueDependentColor<DataPoint>() {
-            @Override
-            public int get(DataPoint data) {
-                return Color.rgb((int) data.getX() * 255 / 4, (int) Math.abs(data.getY() * 255 / 6), 100);
-            }
-        });
-        btEditBMI.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                EditBMIDialogeFragment editBMIDialogeFragment = new EditBMIDialogeFragment();
-                editBMIDialogeFragment.setStyle(DialogFragment.STYLE_NORMAL,R.style.dialog);
-                editBMIDialogeFragment.show(getChildFragmentManager(),"editBMIDialogeFragment");
-            }
-        });
-        tvBmi.setText("BMI : "+currentBMI);
-        Glide.with(this).load(Utils.getDrawbleAccodingToBMI(currentBMI)).into(bmiImageView);
-        series.setDrawValuesOnTop(true);
-        series.setValuesOnTopColor(Color.RED);
-        series.setSpacing(50);
+        LineGraphSeries<DataPoint> series = new LineGraphSeries<>(waightDataPoint);
+        waightGraph.getGridLabelRenderer().setLabelFormatter(new DateAsXAxisLabelFormatter(getActivity()));
 
 
-        graph.getGridLabelRenderer().setLabelFormatter(new DateAsXAxisLabelFormatter(getActivity()));
-
-
-        if (dataPoints.length < 8) {
-            graph.getGridLabelRenderer().setNumHorizontalLabels(dataPoints.length); // only 4 because of the space
-            graph.getViewport().setMinX(dataPoints[0].getX());
-            graph.getViewport().setMaxX(dataPoints[dataPoints.length - 1].getX());
-            graph.getViewport().setXAxisBoundsManual(true);
-            graph.getViewport().setScrollable(true);
+        if (waightDataPoint.length < 8) {
+            waightGraph.getGridLabelRenderer().setNumHorizontalLabels(waightDataPoint.length); // only 4 because of the space
+            waightGraph.getViewport().setMinX(waightDataPoint[0].getX());
+            waightGraph.getViewport().setMaxX(waightDataPoint[waightDataPoint.length - 1].getX());
+            waightGraph.getViewport().setXAxisBoundsManual(true);
+            waightGraph.getViewport().setScrollable(true);
         } else {
-            graph.getGridLabelRenderer().setNumHorizontalLabels(7);
-            graph.getViewport().setMinX(dataPoints[0].getX());
-            graph.getViewport().setMaxX(dataPoints[7].getX());
-            graph.getViewport().setXAxisBoundsManual(true);
-            graph.getViewport().setScrollable(true);
+            waightGraph.getGridLabelRenderer().setNumHorizontalLabels(7);
+            waightGraph.getViewport().setMinX(waightDataPoint[0].getX());
+            waightGraph.getViewport().setMaxX(waightDataPoint[7].getX());
+            waightGraph.getViewport().setXAxisBoundsManual(true);
+            waightGraph.getViewport().setScrollable(true);
         }
 
 
-        graph.getGridLabelRenderer().setHumanRounding(false);
+        waightGraph.getGridLabelRenderer().setHumanRounding(false);
 
-        graph.addSeries(series);
+        waightGraph.addSeries(series);
 
-
-        graph.getGridLabelRenderer().setLabelFormatter(new DefaultLabelFormatter() {
+        waightGraph.setTitle("Weight");
+        waightGraph.getGridLabelRenderer().setLabelFormatter(new DefaultLabelFormatter() {
             @Override
             public String formatLabel(double value, boolean isValueX) {
                 if (isValueX) {
@@ -120,10 +118,74 @@ public class ReportsFragment extends Fragment {
                 }
             }
         });
+    }
+private void updateCalGraph(){
+    BarGraphSeries<DataPoint> series = new BarGraphSeries<>(dataPoints);
 
-        return view;
+    series.setValueDependentColor(new ValueDependentColor<DataPoint>() {
+        @Override
+        public int get(DataPoint data) {
+            return Color.rgb((int) data.getX() * 255 / 4, (int) Math.abs(data.getY() * 255 / 6), 100);
+        }
+    });
+    btEditBMI.setOnClickListener(new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            EditBMIDialogeFragment editBMIDialogeFragment = new EditBMIDialogeFragment();
+            editBMIDialogeFragment.setStyle(DialogFragment.STYLE_NORMAL,R.style.dialog);
+            editBMIDialogeFragment.show(getChildFragmentManager(),"editBMIDialogeFragment");
+        }
+    });
+    if (PersonAppearance.Companion.getTYPE_CM_KG()==person.getPersonAppearance().getSCALE_TYPE()){
+        currentBMI=Utils.calculateBMIinKg(person.getPersonAppearance().getMWaight(),Utils.CMtoM(person.getPersonAppearance().getMHight()));
+
+    }else {
+        currentBMI=Utils.calcautleBMIinlbs(person.getPersonAppearance().getMWaight(),Utils.FeetToInch(person.getPersonAppearance().getMHight()));
     }
 
+    tvBmi.setText("BMI : "+ String.format("%.1f",currentBMI));
+    Glide.with(this).load(Utils.getDrawbleAccodingToBMI(currentBMI)).into(bmiImageView);
+    series.setDrawValuesOnTop(true);
+    series.setValuesOnTopColor(Color.RED);
+    series.setSpacing(50);
+
+
+    calGraph.getGridLabelRenderer().setLabelFormatter(new DateAsXAxisLabelFormatter(getActivity()));
+
+
+    if (dataPoints.length < 8) {
+        calGraph.getGridLabelRenderer().setNumHorizontalLabels(dataPoints.length); // only 4 because of the space
+        calGraph.getViewport().setMinX(dataPoints[0].getX());
+        calGraph.getViewport().setMaxX(dataPoints[dataPoints.length - 1].getX());
+        calGraph.getViewport().setXAxisBoundsManual(true);
+        calGraph.getViewport().setScrollable(true);
+    } else {
+        calGraph.getGridLabelRenderer().setNumHorizontalLabels(7);
+        calGraph.getViewport().setMinX(dataPoints[0].getX());
+        calGraph.getViewport().setMaxX(dataPoints[7].getX());
+        calGraph.getViewport().setXAxisBoundsManual(true);
+        calGraph.getViewport().setScrollable(true);
+    }
+
+
+    calGraph.getGridLabelRenderer().setHumanRounding(false);
+
+    calGraph.addSeries(series);
+
+
+    calGraph.getGridLabelRenderer().setLabelFormatter(new DefaultLabelFormatter() {
+        @Override
+        public String formatLabel(double value, boolean isValueX) {
+            if (isValueX) {
+                // show normal x values
+                return simpleDateFormat.format(new Date((long) value));
+            } else {
+                // show currency for y values
+                return new DecimalFormat("#").format(value);
+            }
+        }
+    });
+}
     private DataPoint[] setUpDefultValue() {
         Calendar calendar = Calendar.getInstance();
         Date d1 = calendar.getTime();

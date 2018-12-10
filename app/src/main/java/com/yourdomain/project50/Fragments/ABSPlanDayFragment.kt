@@ -76,6 +76,9 @@ class ABSPlanDayFragment : Fragment() {
                 p0.tvDay.text = "Day " + exerciseList[p0.adapterPosition].day.toString()
             } else if (ExerciseDay.VIEW_TYPE_AD == p0.itemViewType) {
                 p0 as AdViewHolderViewHolder
+            }else if (ExerciseDay.VIEW_TYPEREST == p0.itemViewType) {
+                p0 as RrestDayViewHolder
+                p0.tvRestDay.text = "Day " + exerciseList[p0.adapterPosition].day.toString()
             }
 
         }
@@ -103,7 +106,13 @@ class ABSPlanDayFragment : Fragment() {
             }
         }
 
+        inner class RrestDayViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+            val tvRestDay: TextView
 
+            init {
+                tvRestDay = itemView.findViewById(R.id.tvRestDay)
+            }
+        }
         inner class AdViewHolderViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
            // var nativeAd: TextView
 

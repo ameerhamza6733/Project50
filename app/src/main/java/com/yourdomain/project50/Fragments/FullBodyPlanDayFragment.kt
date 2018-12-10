@@ -17,9 +17,8 @@ import android.widget.ProgressBar
 import android.widget.TextView
 import com.yourdomain.project50.Activitys.EachPlanExcersizesActivity
 import com.yourdomain.project50.Activitys.ExcersizeListActivity
-import com.yourdomain.project50.Model.ExerciseDay
 import com.yourdomain.project50.Model.ExcersizePlan
-
+import com.yourdomain.project50.Model.ExerciseDay
 import com.yourdomain.project50.R
 import com.yourdomain.project50.ViewModle.FragmentFullBodyPlanViewModle
 
@@ -27,7 +26,7 @@ import com.yourdomain.project50.ViewModle.FragmentFullBodyPlanViewModle
 class FullBodyPlanDayFragment : Fragment() {
 
     private lateinit var recyclerView2: RecyclerView;
- val TAG="FullBodyPlanDayFragment"
+    val TAG = "FullBodyPlanDayFragment"
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -54,8 +53,8 @@ class FullBodyPlanDayFragment : Fragment() {
                     AdViewHolderViewHolder(LayoutInflater.from(p0.context)
                             .inflate(R.layout.native_adview, p0, false));
                 }
-                ExerciseDay.VIEW_TYPEREST->{
-                    RrestDayViewHolder(LayoutInflater.from(p0.context).inflate(R.layout.each_rest_day,p0,false))
+                ExerciseDay.VIEW_TYPEREST -> {
+                    RrestDayViewHolder(LayoutInflater.from(p0.context).inflate(R.layout.each_rest_day, p0, false))
                 }
                 else -> {
                     ExcersizeDAYViewHolder(LayoutInflater.from(p0.context)
@@ -74,19 +73,19 @@ class FullBodyPlanDayFragment : Fragment() {
 
             if (ExerciseDay.VIEW_TYPE_DAY == p0.itemViewType) {
                 p0 as ExcersizeDAYViewHolder
-                if (exerciseList[p0.adapterPosition].totaleExcersizes>0){
-                    p0.progressBar.max=exerciseList[p0.adapterPosition].totaleExcersizes.toInt()
+                if (exerciseList[p0.adapterPosition].totaleExcersizes > 0) {
+                    p0.progressBar.max = exerciseList[p0.adapterPosition].totaleExcersizes.toInt()
                 }
-                if (exerciseList[p0.adapterPosition].totaleExcersizes>0){
-                    p0.progressBar.progress=exerciseList[p0.adapterPosition].doneExcersises.toInt()
+                if (exerciseList[p0.adapterPosition].totaleExcersizes > 0) {
+                    p0.progressBar.progress = exerciseList[p0.adapterPosition].doneExcersises.toInt()
                     p0.tvProgress.setText(exerciseList[p0.adapterPosition].progress)
                 }
                 p0.tvDay.text = "Day " + exerciseList[p0.adapterPosition].day.toString()
             } else if (ExerciseDay.VIEW_TYPE_AD == p0.itemViewType) {
                 p0 as AdViewHolderViewHolder
-            }else if (ExerciseDay.VIEW_TYPEREST==p0.itemViewType){
-p0 as RrestDayViewHolder
-                p0.tvRestDay.text="Day " + exerciseList[p0.adapterPosition].day.toString()
+            } else if (ExerciseDay.VIEW_TYPEREST == p0.itemViewType) {
+                p0 as RrestDayViewHolder
+                p0.tvRestDay.text = "Day " + exerciseList[p0.adapterPosition].day.toString()
             }
 
         }
@@ -98,32 +97,33 @@ p0 as RrestDayViewHolder
         inner class ExcersizeDAYViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
             val tvDay: TextView
             val progressBar: ProgressBar
-            val tvProgress:TextView
-            val TAG="FullBodyPlanDayFragment"
+            val tvProgress: TextView
+            val TAG = "FullBodyPlanDayFragment"
 
             init {
 
                 itemView.setOnClickListener {
-                    Log.d(TAG,""+exerciseList[adapterPosition].toString())
+                    Log.d(TAG, "" + exerciseList[adapterPosition].toString())
                     val intent = Intent(itemView.context, ExcersizeListActivity::class.java)
-                    intent.putExtra(ExcersizeListActivity.EXTRA_EXCERSIZES_DONE,exerciseList[adapterPosition].doneExcersises.toInt())
-                    intent.putExtra(ExcersizeListActivity.EXTRA_PLAN,ExcersizePlan.PLAN_FULL_BODY)
+                    intent.putExtra(ExcersizeListActivity.EXTRA_EXCERSIZES_DONE, exerciseList[adapterPosition].doneExcersises.toInt())
+                    intent.putExtra(ExcersizeListActivity.EXTRA_PLAN, ExcersizePlan.PLAN_FULL_BODY)
                     intent.putExtra(ExcersizeListActivity.EXTRA_DAY, adapterPosition)
                     itemView.context.startActivity(intent)
-                    if (EachPlanExcersizesActivity.mRewardedVideoAd?.isLoaded==true){
+                    if (EachPlanExcersizesActivity.mRewardedVideoAd?.isLoaded == true) {
                         EachPlanExcersizesActivity.mRewardedVideoAd?.show()
                     }
                 }
                 tvDay = itemView.findViewById(R.id.tvDay)
-                tvProgress=itemView.findViewById(R.id.tvProgress)
+                tvProgress = itemView.findViewById(R.id.tvProgress)
                 progressBar = itemView.findViewById(R.id.progressBar)
             }
         }
 
-        inner class RrestDayViewHolder(itemView: View):RecyclerView.ViewHolder(itemView){
-           val tvRestDay:TextView
+        inner class RrestDayViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+            val tvRestDay: TextView
+
             init {
-tvRestDay=itemView.findViewById(R.id.tvRestDay)
+                tvRestDay = itemView.findViewById(R.id.tvRestDay)
             }
         }
 

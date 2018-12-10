@@ -161,7 +161,7 @@ class SettingsActivity : AppCompatActivity(), SecondsPickerFragment.OnSecondsPic
             ttsLauguagePicker.show(supportFragmentManager, "ttsLauguagePicker")
         }
 
-        btPrivacyPolicy.setOnClickListener { Utils.openBrowser(application, getString(R.string.privacy_policy)) }
+        btPrivacyPolicy.setOnClickListener { Utils.openBrowser(application, getString(R.string.privacy_policy_url)) }
 
         btFeedback.setOnClickListener { Utils.feedbackEmaileIntent(this@SettingsActivity) }
 

@@ -11,6 +11,7 @@ import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.FrameLayout
 import android.widget.ProgressBar
 import android.widget.TextView
 import com.yourdomain.project50.Activitys.ExcersizeListActivity
@@ -18,20 +19,17 @@ import com.yourdomain.project50.Model.ExerciseDay
 import com.yourdomain.project50.Model.ExcersizePlan
 
 import com.yourdomain.project50.R
-import com.yourdomain.project50.ViewModle.FragmentABSPlanViewModle
+import com.yourdomain.project50.ViewModle.FragmentDayButtPlanViewModle
 
 
-/**
- * A simple [Fragment] subclass.
- */
-class ABSPlanDayFragment : Fragment() {
+class ButtPlanFragment : Fragment() {
 
     private lateinit var recyclerView2: RecyclerView
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
         // Inflate the layout for this fragment
-        var view=   inflater.inflate(R.layout.fragment_absplan, container, false)
+        var view=   inflater.inflate(R.layout.fragment_butt_plan, container, false)
         recyclerView2 = view.findViewById(R.id.recylerview)
         intDataSet()
         return view
@@ -91,15 +89,13 @@ class ABSPlanDayFragment : Fragment() {
             val tvDay: TextView
             val progressBar: ProgressBar
             val tvProgress:TextView
-
             init {
 
                 itemView.setOnClickListener {
                     val intent=  Intent(itemView.context, ExcersizeListActivity::class.java)
-                    intent.putExtra(ExcersizeListActivity.EXTRA_PLAN,ExcersizePlan.PLAN_ABS)
+                    intent.putExtra(ExcersizeListActivity.EXTRA_PLAN,ExcersizePlan.PLAN_BUTT)
                     intent.putExtra(ExcersizeListActivity.EXTRA_DAY,adapterPosition)
-                    itemView.context.startActivity(intent)
-                }
+                    itemView.context.startActivity(intent) }
                 tvDay = itemView.findViewById(R.id.tvDay)
                 tvProgress=itemView.findViewById(R.id.tvProgress)
                 progressBar = itemView.findViewById(R.id.progressBar)
@@ -114,17 +110,17 @@ class ABSPlanDayFragment : Fragment() {
             }
         }
         inner class AdViewHolderViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-           // var nativeAd: TextView
+            var nativeAd: FrameLayout
 
             init {
 
-               // nativeAd = itemView.findViewById(R.id.native_Adview)
+                nativeAd = itemView.findViewById(R.id.adPlaceholder)
             }
         }
     }
 
     fun intDataSet() {
-        val modleDays = ViewModelProviders.of(this!!).get(FragmentABSPlanViewModle::class.java)
+        val modleDays = ViewModelProviders.of(this!!).get(FragmentDayButtPlanViewModle::class.java)
         modleDays.getDays()?.observe(this!!, Observer {
             it?.let {
                 var excersizeDaysAdupter = EachExcersizeDayAdupter(it);
@@ -135,6 +131,5 @@ class ABSPlanDayFragment : Fragment() {
 
         })
     }
-
 
 }// Required empty public constructor

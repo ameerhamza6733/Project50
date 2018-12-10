@@ -60,7 +60,7 @@ class MainActivity : AppCompatActivity() {
 
         handler.postDelayed({
             intiDataSet()
-        }, 1000)
+        }, 500)
         mAdmobSettingsFromFireBase=MY_Shared_PREF.getFirebaseAdmobAppSettings(this.application)
        nativeAdId=Admob.NATIVE_AD_ID
         mAdmobSettingsFromFireBase?.admobAds?.nativeAds3?.id?.let {

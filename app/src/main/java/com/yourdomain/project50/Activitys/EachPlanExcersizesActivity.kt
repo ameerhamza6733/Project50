@@ -31,8 +31,8 @@ import com.google.ads.mediation.admob.AdMobAdapter
 import com.google.android.gms.ads.AdRequest
 import com.google.android.gms.ads.MobileAds
 import com.google.android.gms.ads.reward.RewardedVideoAd
-import com.yourdomain.project50.Fragments.ABSPlanDayFragment
-import com.yourdomain.project50.Fragments.ButtPlanDayFragment
+import com.yourdomain.project50.Fragments.ABSPlanFragment
+import com.yourdomain.project50.Fragments.ButtPlanFragment
 import com.yourdomain.project50.Fragments.FullBodyPlanDayFragment
 import com.yourdomain.project50.Fragments.RateUsFragment
 import com.yourdomain.project50.MY_Shared_PREF
@@ -312,10 +312,10 @@ class EachPlanExcersizesActivity : AppCompatActivity() {
                     return FullBodyPlanDayFragment()
                 }
                 1 -> {
-                    return ABSPlanDayFragment()
+                    return ABSPlanFragment()
                 }
                 2 -> {
-                    return ButtPlanDayFragment()
+                    return ButtPlanFragment()
                 }
             }
             return null

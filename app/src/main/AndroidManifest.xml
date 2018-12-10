@@ -4,7 +4,6 @@
     package="com.yourdomain.project50">
 
     <uses-permission android:name="android.permission.INTERNET" />
-    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
 
     <application
@@ -43,7 +42,7 @@
             android:theme="@style/SpalishTheme" />
         <activity android:name=".Activitys.ExcersizeListActivity" />
         <activity
-            android:name=".Activitys.ExcersizeActivity"
+            android:name=".Activitys.ExerciseActivity"
             android:screenOrientation="portrait"
             android:theme="@style/SpalishTheme" />
         <activity
@@ -53,7 +52,6 @@
         <service android:name=".TTSHelperService" />
 
         <activity android:name=".Activitys.SettingsActivity" />
-        <activity android:name=".Activitys.PostNotifactionActivity" />
         <activity android:name=".Activitys.OnSnoozeReciverActivity"></activity>
     </application>
 

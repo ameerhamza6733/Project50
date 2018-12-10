@@ -107,12 +107,12 @@ class ExcersizeListActivity : AppCompatActivity() {
 
     private fun openExcersizeActivty() {
         startService(Intent(this, TTSHelperService::class.java))
-        val internt = Intent(this, ExcersizeActivity::class.java)
+        val internt = Intent(this, ExerciseActivity::class.java)
         if (excersizeDone == totaleExsersize - 1)
             excersizeDone = -1
-        internt.putExtra(ExcersizeActivity.EXTRA_EXCERSIZES_DONE, excersizeDone)
-        internt.putExtra(ExcersizeActivity.EXTRA_PLAN, currentExcesizesPlan)
-        internt.putExtra(ExcersizeActivity.EXTRA_DAY, currentDayKey)
+        internt.putExtra(ExerciseActivity.EXTRA_EXCERSIZES_DONE, excersizeDone)
+        internt.putExtra(ExerciseActivity.EXTRA_PLAN, currentExcesizesPlan)
+        internt.putExtra(ExerciseActivity.EXTRA_DAY, currentDayKey)
         startActivity(internt)
         if (mInterstitialAd?.isLoaded == true) {
             mInterstitialAd?.show()

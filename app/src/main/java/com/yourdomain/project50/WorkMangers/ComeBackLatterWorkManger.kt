@@ -12,17 +12,13 @@ import android.os.Build
 import android.support.v4.app.NotificationCompat
 import android.util.Log
 import android.widget.RemoteViews
-import androidx.work.OneTimeWorkRequest
-import androidx.work.WorkManager
 import androidx.work.Worker
 import androidx.work.WorkerParameters
-import com.yourdomain.project50.Activitys.ExcersizeActivity
 import com.yourdomain.project50.Activitys.ExcersizeListActivity
 import com.yourdomain.project50.Activitys.OnSnoozeReciverActivity
 import com.yourdomain.project50.MY_Shared_PREF
 import com.yourdomain.project50.R
 import java.util.*
-import java.util.concurrent.TimeUnit
 
 
 /**

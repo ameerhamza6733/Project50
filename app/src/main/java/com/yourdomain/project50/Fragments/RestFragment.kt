@@ -3,16 +3,14 @@ package com.yourdomain.project50.Fragments
 import android.content.Context
 import android.os.Bundle
 import android.os.CountDownTimer
-import android.os.Handler
 import android.support.v4.app.DialogFragment
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.bumptech.glide.Glide
-import com.yourdomain.project50.Activitys.ExcersizeActivity
+import com.yourdomain.project50.Activitys.ExerciseActivity
 import com.yourdomain.project50.R
-import android.support.v4.os.HandlerCompat.postDelayed
 import android.widget.*
 import com.google.ads.consent.ConsentInformation
 import com.google.ads.consent.ConsentStatus
@@ -62,7 +60,7 @@ class RestFragment : DialogFragment() {
         }
         try {
 
-            (activity as ExcersizeActivity).sendTTSBroadCast(getString(R.string.take_a_rest))
+            (activity as ExerciseActivity).sendTTSBroadCast(getString(R.string.take_a_rest))
         } catch (E: Exception) {
 
         }
@@ -151,7 +149,7 @@ class RestFragment : DialogFragment() {
     private fun sendTTSBroadCast(string: String) {
         try {
 
-            (activity as ExcersizeActivity).sendTTSBroadCast(string)
+            (activity as ExerciseActivity).sendTTSBroadCast(string)
         } catch (E: Exception) {
 
         }

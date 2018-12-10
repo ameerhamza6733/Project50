@@ -15,28 +15,29 @@ public class ExcersizesFullBodyConstants {
 
     @SuppressLint("UseSparseArrays")
     private static HashMap<Integer, Excesizes> mDayToExsizeHashMap = new HashMap<>();
-    private static String[] excersizes_day1_title = {"Jumping jacks day1"
+    private static String[] exercise_day1_titles = {"Jumping jacks day1","Jumping jacks day1 ex 2"
            };
-    private static int[] excersizes_day1_gif_icons = {R.drawable.simple
+    private static int[] exercise_day1_gif_icons = {R.drawable.simple,R.drawable.simple
            };
-    private static int[] excersize_day1_times = {15
+    private static int[] exercise_day1_times = {15,30
     };
-    private static double[] excersize_day1_calories = {150
+    private static double[] exercise_day1_calories = {150,400
     };
-    private static int[] getExcersize_day1_view_typet = {
-            Excesizes.VIEW_TYPE_LIMTED_EXCERSIZE
+    private static int[] getExercise_day1_view_type = {
+            Excesizes.VIEW_TYPE_LIMTED_EXCERSIZE,Excesizes.VIEW_TYPE_LIMTED_EXCERSIZE
     };
-    private static String[] excersizes_day1_detail = {
-            "A jumping jack  or star jump also called side-straddle hop in the US military,"
+    private static String[] exercise_day1_detail = {
+            "A jumping jack  or star jump also called side-straddle hop in the US military,", "this is detail for ex 2"
 
     };
-    private static int[] excersizes_day1_couch_tips = {
-            R.string.excersize_full_body_plan_couch_tips_day1_excerise1
-
+    private static int[] exercise_day1_couch_tips = {
+            R.string.excersize_full_body_plan_couch_tips_day1_excerise1,R.string.excersize_full_body_plan_couch_tips_day1_excerise2
 
     };
 
-    private static String[] excersizes_defults_title = {
+
+
+    private static String[] exercise_defults_title = {
             "Jumping jacks"
             , "High stepping"
             , "Standing bicycle crunches"
@@ -51,7 +52,7 @@ public class ExcersizesFullBodyConstants {
             , "Plank"
             , "Standing side bend"
             , "Child's pose"};
-    private static int[] excersizes_defults_gif_icons = {
+    private static int[] exercises_defults_gif_icons = {
             R.drawable.simple
             , R.drawable.simple
             , R.drawable.simple
@@ -66,7 +67,7 @@ public class ExcersizesFullBodyConstants {
             , R.drawable.simple
             ,R.drawable.simple
     ,R.drawable.simple};
-    private static int[] excersize_defult_times = {
+    private static int[] exercises_defult_times = {
             10,
             20,
             30,
@@ -150,7 +151,7 @@ public class ExcersizesFullBodyConstants {
     };
 
     public static void fillUpdata() {
-        Excesizes day1Excersizes = new Excesizes(excersizes_day1_title, excersizes_day1_gif_icons, excersize_day1_times, excersizes_day1_detail, getExcersize_day1_view_typet,excersize_day1_calories,excersizes_day1_couch_tips);
+        Excesizes day1Excersizes = new Excesizes(exercise_day1_titles, exercise_day1_gif_icons, exercise_day1_times, exercise_day1_detail, getExercise_day1_view_type, exercise_day1_calories, exercise_day1_couch_tips);
         mDayToExsizeHashMap.put(1, day1Excersizes);
 
     }
@@ -161,6 +162,6 @@ public class ExcersizesFullBodyConstants {
         if (mDayToExsizeHashMap.containsKey(day)) {
             return mDayToExsizeHashMap.get(day);
         }
-        return new Excesizes(excersizes_defults_title, excersizes_defults_gif_icons, excersize_defult_times, excersizes_defult_detail, getExcersize_view_type_defult,excersize_defult_calrious,excersizes_defult_couch_tips);
+        return new Excesizes(exercise_defults_title, exercises_defults_gif_icons, exercises_defult_times, excersizes_defult_detail, getExcersize_view_type_defult,excersize_defult_calrious,excersizes_defult_couch_tips);
     }
 }

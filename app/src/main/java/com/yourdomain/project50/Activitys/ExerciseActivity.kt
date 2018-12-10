@@ -34,10 +34,10 @@ import java.util.*
 import java.util.concurrent.TimeUnit
 
 
-class ExcersizeActivity : AppCompatActivity(), WatingToStartExcersizeFragment.OnFragmentInteractionListener, PauseExcersizeFragment.OnResumeListener, QuitFragment.OnQuitListener, RestFragment.OnNextExcersizeDemoFragmentListener, SettingsVoiceControlFragment.OnVoicecontrolChangeListener {
+class ExerciseActivity : AppCompatActivity(), WatingToStartExcersizeFragment.OnFragmentInteractionListener, PauseExcersizeFragment.OnResumeListener, QuitFragment.OnQuitListener, RestFragment.OnNextExcersizeDemoFragmentListener, SettingsVoiceControlFragment.OnVoicecontrolChangeListener {
     override fun onVoiceSettingUpdate(updateSettings: Settings) {
-        Log.d(TAG, "new settings" + this@ExcersizeActivity.settings.workoutSettings.mute)
-        this@ExcersizeActivity.settings = updateSettings;
+        Log.d(TAG, "new settings" + this@ExerciseActivity.settings.workoutSettings.mute)
+        this@ExerciseActivity.settings = updateSettings;
     }
 
     override fun onSkip() {
@@ -87,7 +87,7 @@ val comeBackLatter=ComeBackLatter(counter,currentDayKey,currentPlan)
         person.totleMintsDuration = person.totleMintsDuration + totleTime.toDouble()
         MY_Shared_PREF.savePerson(application, person)
 
-        val intent = Intent(this@ExcersizeActivity, CongragulationActivity::class.java)
+        val intent = Intent(this@ExerciseActivity, CongragulationActivity::class.java)
         intent.putExtra(CongragulationActivity.EXTRA_DURACTION, person.totleMintsDuration)
         intent.putExtra(CongragulationActivity.EXTRA_EXCERSIZES, person.totleEXERCISES)
         intent.putExtra(CongragulationActivity.EXTRA_DAY, currentDayKey + 1)
@@ -100,9 +100,9 @@ val comeBackLatter=ComeBackLatter(counter,currentDayKey,currentPlan)
 
 
     companion object {
-        val EXTRA_DAY = "ExcersizeActivity.extra day";
+        val EXTRA_DAY = "ExerciseActivity.extra day";
         val EXTRA_EXCERSIZES_DONE = "ExcersizeListActivity.EXTRA_EXCERSIZES_DONE"
-        val EXTRA_PLAN = "ExcersizeActivity.EXTRA_PLA"
+        val EXTRA_PLAN = "ExerciseActivity.EXTRA_PLA"
     }
 
     private lateinit var mTotalProgressBar: ProgressBar
@@ -128,7 +128,7 @@ val comeBackLatter=ComeBackLatter(counter,currentDayKey,currentPlan)
     private var excersizeDone = -2
     private var currentPlan = "-2"
 
-    private var TAG = "ExcersizeActivity";
+    private var TAG = "ExerciseActivity";
 
     private var totleTime = ""
     private lateinit var settings: Settings
@@ -482,7 +482,7 @@ val comeBackLatter=ComeBackLatter(counter,currentDayKey,currentPlan)
         if (!settings.workoutSettings.mute) {
             val intent = Intent(TTSHelperService.ACTION_TTS)
             intent.putExtra("TTStext", text)
-            LocalBroadcastManager.getInstance(this@ExcersizeActivity.applicationContext!!).sendBroadcast(intent)
+            LocalBroadcastManager.getInstance(this@ExerciseActivity.applicationContext!!).sendBroadcast(intent)
         }
     }
 

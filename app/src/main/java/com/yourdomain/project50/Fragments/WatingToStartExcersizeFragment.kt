@@ -2,20 +2,17 @@ package com.yourdomain.project50.Fragments
 
 import android.app.Dialog
 import android.content.Context
-import android.content.Intent
 import android.os.Bundle
 import android.os.CountDownTimer
 import android.support.v4.app.DialogFragment
-import android.support.v4.content.LocalBroadcastManager
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageButton
 import android.widget.ProgressBar
 import android.widget.TextView
-import com.yourdomain.project50.Activitys.ExcersizeActivity
+import com.yourdomain.project50.Activitys.ExerciseActivity
 import com.yourdomain.project50.R
-import com.yourdomain.project50.TTSHelperService
 
 
 class WatingToStartExcersizeFragment : DialogFragment() {
@@ -75,7 +72,7 @@ class WatingToStartExcersizeFragment : DialogFragment() {
     private fun sendTTSBroadCast(text: String) {
 
        try {
-           (activity as ExcersizeActivity).sendTTSBroadCast(text)
+           (activity as ExerciseActivity).sendTTSBroadCast(text)
        }catch (E:Exception){
            E.printStackTrace()
        }

@@ -57,8 +57,8 @@ class ExerciseActivity : AppCompatActivity(), WatingToStartExcersizeFragment.OnF
     }
 
     override fun onComeBacKLater() {
-        Log.d(TAG,"excersize done : "+ counter+" currentPlan: "+currentPlan +" currentDayKey: "+currentDayKey)
-val comeBackLatter=ComeBackLatter(counter,currentDayKey,currentPlan)
+        Log.d(TAG, "excersize done : " + counter + " currentPlan: " + currentPlan + " currentDayKey: " + currentDayKey)
+        val comeBackLatter = ComeBackLatter(counter, currentDayKey, currentPlan)
         MY_Shared_PREF.saveComeBackLatterExcersize(application, comeBackLatter)
     }
 
@@ -92,15 +92,15 @@ val comeBackLatter=ComeBackLatter(counter,currentDayKey,currentPlan)
         intent.putExtra(CongragulationActivity.EXTRA_EXCERSIZES, person.totleEXERCISES)
         intent.putExtra(CongragulationActivity.EXTRA_DAY, currentDayKey + 1)
         intent.putExtra(CongragulationActivity.EXTRA_CAL, person.totleKCalBurn)
-        when(currentPlan){
-            ExcersizePlan.PLAN_FULL_BODY->{
-                FullBodyPlanDayFragment.refrashRecylerViewIndex=currentDayKey
+        when (currentPlan) {
+            ExcersizePlan.PLAN_FULL_BODY -> {
+                FullBodyPlanDayFragment.refrashRecylerViewIndex = currentDayKey
             }
-            ExcersizePlan.PLAN_ABS->{
-                ABSPlanFragment.refrashRecylerViewIndex=currentDayKey
+            ExcersizePlan.PLAN_ABS -> {
+                ABSPlanFragment.refrashRecylerViewIndex = currentDayKey
             }
-            ExcersizePlan.PLAN_BUTT->{
-                ButtPlanFragment.refrashRecylerViewIndex=currentDayKey
+            ExcersizePlan.PLAN_BUTT -> {
+                ButtPlanFragment.refrashRecylerViewIndex = currentDayKey
             }
         }
         startActivity(intent)
@@ -296,11 +296,11 @@ val comeBackLatter=ComeBackLatter(counter,currentDayKey,currentPlan)
             seconds = "x" + excesizes?.seconds?.get(counter)?.toString()
 
         }
-        var nativeAdId=Admob.NATIVE_AD_ID
+        var nativeAdId = Admob.NATIVE_AD_ID
         mSetingsFromFirebase?.admobAds?.nativeAds9?.id?.let {
-            nativeAdId=it
+            nativeAdId = it
         }
-        val pauseExcersizeFragment = PauseExcersizeFragment.newInstance(excesizes?.title!![counter], seconds, excesizes?.icons!![counter],nativeAdId)
+        val pauseExcersizeFragment = PauseExcersizeFragment.newInstance(excesizes?.title!![counter], seconds, excesizes?.icons!![counter], nativeAdId)
 
         pauseExcersizeFragment.setStyle(DialogFragment.STYLE_NORMAL, R.style.Theme_Transparent);
         pauseExcersizeFragment.show(supportFragmentManager, "pauseExcersizeFragment")
@@ -365,18 +365,20 @@ val comeBackLatter=ComeBackLatter(counter,currentDayKey,currentPlan)
                 temp = temp + "x " + excesizes?.seconds!![counter + 1].toString()
             }
             Log.d(TAG, "showing data for wating fragment: " + temp)
-            var nativeAdId=Admob.NATIVE_AD_ID
+            var nativeAdId = Admob.NATIVE_AD_ID
             mSetingsFromFirebase?.admobAds?.nativeAds11?.id?.let {
-                nativeAdId=it
+                nativeAdId = it
             }
 
-            MY_Shared_PREF.saveGraphCalvsDays(application, DataPoint(Date(),excesizes?.calories!![counter]), SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).format(Date()))
+            MY_Shared_PREF.saveGraphCalvsDays(application, DataPoint(Date(), excesizes?.calories!![counter]), SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).format(Date()))
 
-            val watingForNextFragment = RestFragment.newInstance(excesizes?.title!![counter + 1], temp, "NEXT " + (counter + 1).toString() + "/" + (excesizes!!.icons.size).toString(), excesizes?.icons!![counter + 1], settings.workoutSettings.restTimeInSeconds,nativeAdId)
+            val watingForNextFragment = RestFragment.newInstance(excesizes?.title!![counter + 1], temp, "NEXT " + (counter + 1).toString() + "/" + (excesizes!!.icons.size).toString(), excesizes?.icons!![counter + 1], settings.workoutSettings.restTimeInSeconds, nativeAdId)
             watingForNextFragment.setStyle(DialogFragment.STYLE_NORMAL, android.R.style.Theme_Black_NoTitleBar_Fullscreen);
             watingForNextFragment.show(supportFragmentManager, "watingForNextFragment")
 
         }
+        val comeBackLatter = ComeBackLatter(counter, currentDayKey, currentPlan)
+        MY_Shared_PREF.saveComeBackLatterExcersize(application, comeBackLatter)
     }
 
     private fun onBack() {
@@ -427,7 +429,7 @@ val comeBackLatter=ComeBackLatter(counter,currentDayKey,currentPlan)
             override fun onTick(millisUntilFinished: Long) {
                 val temseconds = (millisUntilFinished / 1000).toInt()
                 mTotalSeconds.text = temseconds.toString()
-              mCurrentProgressBar.incrementProgressBy(1)
+                mCurrentProgressBar.incrementProgressBy(1)
 
 
                 if (temseconds == halftime) {

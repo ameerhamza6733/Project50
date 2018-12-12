@@ -28,6 +28,7 @@ import androidx.work.ExistingWorkPolicy
 import androidx.work.OneTimeWorkRequest
 import androidx.work.WorkManager
 import com.yourdomain.project50.WorkMangers.ComeBackLatterWorkManger
+import com.yourdomain.project50.WorkMangers.RemindMeAfter48Hour
 import java.util.concurrent.TimeUnit
 
 
@@ -48,6 +49,7 @@ class SpalishActivity : AppCompatActivity() {
         tvSpalishTitle.startAnimation(AnimationUtils.loadAnimation(this, R.anim.animation_text_view));
         Glide.with(this).load(R.drawable.spalish4).into(image)
         MobileAds.initialize(this, getString(R.string.admob_app_id));
+      scheduleThe48HourNotifications(48)
        if (Utils.isNetworkAvailable(application)){
            ViewModelProviders.of(this).get(GetAdmobDataFromFireBaseViewModle::class.java).getAppSettingFromFireBase()?.observe(this, Observer {
                if (it != null) {
@@ -66,6 +68,21 @@ class SpalishActivity : AppCompatActivity() {
 
     }
 
+    private fun scheduleThe48HourNotifications(intiDelay: Long) {
+
+        val postNotationWithDelay = OneTimeWorkRequest
+                .Builder(RemindMeAfter48Hour::class.java)
+                .setInitialDelay(intiDelay, TimeUnit.HOURS).build()
+
+
+        val workManager = WorkManager.getInstance()
+        workManager.beginUniqueWork(
+                "RemindMeAfter48HourTAG",
+                ExistingWorkPolicy.REPLACE,
+                postNotationWithDelay
+        ).enqueue()
+
+    }
     private fun checkForConsent(appAdmobSettingsFromFirebase: AppAdmobSettingsFromFirebase) {
         val consentInformation = ConsentInformation.getInstance(this@SpalishActivity)
         val publisherIds = arrayOf(appAdmobSettingsFromFirebase?.admobAds?.publisherId)

@@ -14,7 +14,6 @@ import android.widget.TextView
 import android.widget.TimePicker
 import androidx.work.ExistingWorkPolicy
 import androidx.work.OneTimeWorkRequest
-import androidx.work.PeriodicWorkRequest
 import androidx.work.WorkManager
 import com.yourdomain.project50.Fragments.RateUsFragment
 import com.yourdomain.project50.Fragments.SecondsPickerFragment
@@ -25,7 +24,6 @@ import com.yourdomain.project50.Model.Settings
 import com.yourdomain.project50.R
 import com.yourdomain.project50.TTSHelperService
 import com.yourdomain.project50.Utils
-import com.yourdomain.project50.WorkMangers.ComeBackLatterWorkManger
 import com.yourdomain.project50.WorkMangers.RemindMeEveryDayWorkManger
 import java.text.SimpleDateFormat
 import java.util.*
@@ -199,7 +197,7 @@ class SettingsActivity : AppCompatActivity(), SecondsPickerFragment.OnSecondsPic
                     Log.d(TAG, "notifactioAfterHours:  " + notifactioAfterHours + " notifactionAfterMints: " + notifactionAfterMints)
 
                     val intiDaly = ((notifactioAfterHours * 60) + notifactionAfterMints).toLong()
-                    sacduleThePaddingNotifaction(intiDaly)
+                    scheduleTheDailyNotifications(intiDaly)
                 }
             }
         }
@@ -208,8 +206,8 @@ class SettingsActivity : AppCompatActivity(), SecondsPickerFragment.OnSecondsPic
         timePickerDialog.show()
     }
 
-    private fun sacduleThePaddingNotifaction(intiDelay: Long) {
-        Log.d(TAG, "shauding notifaction for 30 mints")
+    private fun scheduleTheDailyNotifications(intiDelay: Long) {
+
         val postNotationWithDelay = OneTimeWorkRequest
                 .Builder(RemindMeEveryDayWorkManger::class.java)
                 .setInitialDelay(intiDelay, TimeUnit.MINUTES).build()

@@ -59,7 +59,7 @@ class ExerciseActivity : AppCompatActivity(), WatingToStartExcersizeFragment.OnF
     override fun onComeBacKLater() {
         Log.d(TAG,"excersize done : "+ counter+" currentPlan: "+currentPlan +" currentDayKey: "+currentDayKey)
 val comeBackLatter=ComeBackLatter(counter,currentDayKey,currentPlan)
-        MY_Shared_PREF.saveComeBackLatterExcersize(application,comeBackLatter)
+        MY_Shared_PREF.saveComeBackLatterExcersize(application, comeBackLatter)
     }
 
     override fun ResumeListener() {

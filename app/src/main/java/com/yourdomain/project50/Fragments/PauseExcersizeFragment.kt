@@ -38,6 +38,7 @@ class PauseExcersizeFragment : DialogFragment() {
     private lateinit var tvSeconds: TextView
     private lateinit var gif: ImageView
     private lateinit var adPlaceHolder: FrameLayout
+    private lateinit var nativeAdImagePlaceHolder:ImageView
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -60,15 +61,16 @@ class PauseExcersizeFragment : DialogFragment() {
         tvTitle = view.findViewById(R.id.tvtitle)
         gif = view.findViewById(R.id.icon)
         adPlaceHolder = view.findViewById(R.id.adPlaceholder)
+        nativeAdImagePlaceHolder=view.findViewById(R.id.native_ad_image_placeHolder)
 
         tvTitle.text = mParamExcesizeTilte
         tvSeconds.text = mParamExcersizeSeconds
-        Glide.with(this).asGif().load(mParamGif).into(gif)
         btContinue.setOnClickListener {
             mListener?.ResumeListener()
             dismiss()
 
         }
+        Glide.with(activity!!).load(R.drawable.native_ad_place_holder).into(nativeAdImagePlaceHolder)
         adRequest = if (ConsentInformation.getInstance(activity).consentStatus == ConsentStatus.NON_PERSONALIZED) {
             AdRequest.Builder()
                     .addNetworkExtrasBundle(AdMobAdapter::class.java, getNonPersonalizedAdsBundle())
@@ -236,6 +238,7 @@ class PauseExcersizeFragment : DialogFragment() {
                 adPlaceHolder.visibility = View.GONE
                 Toast.makeText(activity, "Failed to load native ad: $errorCode", Toast.LENGTH_SHORT).show()
             }
+
 
         }).build()
 

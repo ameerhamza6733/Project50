@@ -45,6 +45,7 @@
             app:layout_constraintTop_toBottomOf="@+id/tvLable" />
 
         <com.jjoe64.graphview.GraphView
+
             android:id="@+id/graph"
             android:layout_width="match_parent"
             android:layout_height="300dp"
@@ -78,6 +79,7 @@
             app:layout_constraintTop_toBottomOf="@+id/adPlaceholder">
 
             <ImageView
+
                 android:id="@+id/imageBMI"
                 android:layout_width="0dp"
                 android:layout_height="300dp"
@@ -126,11 +128,94 @@
                 android:layout_marginEnd="8dp"
                 android:layout_marginStart="8dp"
                 android:padding="8dp"
-                app:layout_constraintBottom_toBottomOf="parent"
+
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
+            <TextView
+                android:textSize="18sp"
+                android:id="@+id/tvLableCurrentWeight"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_margin="16dp"
+                android:gravity="center"
+                android:text="Current:"
+                app:layout_constraintEnd_toStartOf="@+id/tvCurrentWeight"
+                app:layout_constraintHorizontal_bias="0.5"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/waightGraph" />
+
+            <TextView
+                android:textSize="18sp"
+                android:textColor="#000000"
+                android:id="@+id/tvCurrentWeight"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_margin="16dp"
+                android:layout_marginEnd="8dp"
+                android:gravity="center"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/tvLableCurrentWeight"
+                app:layout_constraintTop_toBottomOf="@+id/waightGraph" />
+
+            <TextView
+                android:textSize="18sp"
+                android:id="@+id/tvLableHavest"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_margin="16dp"
+                android:gravity="center"
+                android:text="Heaviest:"
+                app:layout_constraintEnd_toStartOf="@+id/tvHavest"
+                app:layout_constraintHorizontal_bias="0.5"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/tvLableCurrentWeight" />
+
+            <TextView
+                android:textSize="18sp"
+                android:textColor="#000000"
+                android:id="@+id/tvHavest"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_margin="16dp"
+                android:gravity="center"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.5"
+                app:layout_constraintStart_toEndOf="@+id/tvLableHavest"
+                app:layout_constraintTop_toBottomOf="@+id/tvCurrentWeight" />
+
+            <TextView
+                android:textSize="18sp"
+                android:id="@+id/tvLableLightest"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_margin="16dp"
+                android:layout_marginBottom="8dp"
+                android:layout_marginTop="8dp"
+                android:gravity="center"
+                android:text="Lightest:"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toStartOf="@+id/tvLightest"
+                app:layout_constraintHorizontal_bias="0.5"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/tvLableHavest" />
+
+            <TextView
+                android:textSize="18sp"
+              android:textColor="#000000"
+                android:id="@+id/tvLightest"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_margin="16dp"
+                android:layout_marginBottom="8dp"
+                android:layout_marginTop="8dp"
+                android:gravity="center"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.5"
+                app:layout_constraintStart_toEndOf="@+id/tvLableLightest"
+                app:layout_constraintTop_toBottomOf="@+id/tvHavest" />
         </android.support.constraint.ConstraintLayout>
     </android.support.constraint.ConstraintLayout>
 </ScrollView>

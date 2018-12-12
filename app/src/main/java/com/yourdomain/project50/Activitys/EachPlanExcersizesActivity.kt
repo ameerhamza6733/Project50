@@ -51,6 +51,7 @@ class EachPlanExcersizesActivity : AppCompatActivity() {
         private val MIN_SCALE = 0.65f
         private val MIN_ALPHA = 0.3f
         var mRewardedVideoAd: RewardedVideoAd? = null
+
     }
 
     private val mOnNavigationItemSelectedListener = BottomNavigationView.OnNavigationItemSelectedListener { item ->
@@ -59,7 +60,7 @@ class EachPlanExcersizesActivity : AppCompatActivity() {
                 return@OnNavigationItemSelectedListener true
             }
             R.id.navigation_dashboard -> {
-                startActivity(Intent(this@EachPlanExcersizesActivity, PreviewColumnChartActivity::class.java))
+                startActivity(Intent(this@EachPlanExcersizesActivity, ReportsActivity::class.java))
 
                 return@OnNavigationItemSelectedListener true
             }

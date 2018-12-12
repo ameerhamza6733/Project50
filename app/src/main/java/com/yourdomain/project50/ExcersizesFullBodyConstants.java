@@ -19,7 +19,7 @@ public class ExcersizesFullBodyConstants {
            };
     private static int[] exercise_day1_gif_icons = {R.drawable.simple,R.drawable.simple
            };
-    private static int[] exercise_day1_times = {15,30
+    private static int[] exercise_day1_times = {5,3
     };
     private static double[] exercise_day1_calories = {150,400
     };

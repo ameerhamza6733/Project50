@@ -19,7 +19,7 @@
             android:name="com.google.android.gms.ads.APPLICATION_ID"
             android:value="@string/admob_app_id" />
 
-        <activity android:name=".Activitys.PreviewColumnChartActivity" />
+        <activity android:name=".Activitys.ReportsActivity" />
         <activity
             android:name=".Activitys.ScaleActivity"
             android:theme="@style/SpalishTheme" />

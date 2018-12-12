@@ -5,6 +5,7 @@ import android.arch.lifecycle.Observer
 import android.arch.lifecycle.ViewModelProviders
 import android.content.Intent
 import android.os.Bundle
+import android.os.Handler
 import android.support.v4.app.Fragment
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
@@ -21,15 +22,21 @@ import com.yourdomain.project50.Model.ExcersizePlan
 import com.yourdomain.project50.Model.ExerciseDay
 import com.yourdomain.project50.R
 import com.yourdomain.project50.ViewModle.FragmentFullBodyPlanViewModle
+import java.util.*
 
 
 class FullBodyPlanDayFragment : Fragment() {
 
+    companion object {
+        public var refrashRecylerViewIndex = -1;
+    }
     private lateinit var recyclerView2: RecyclerView;
+    private  var excersizeDaysAdupter: EachExcersizeDayAdupter?=null
+    private var mDataSet = ArrayList<ExerciseDay>()
+
     val TAG = "FullBodyPlanDayFragment"
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
@@ -38,7 +45,23 @@ class FullBodyPlanDayFragment : Fragment() {
         var view = inflater.inflate(R.layout.fragment_blank, container, false)
         recyclerView2 = view.findViewById(R.id.daysRecyclerView)
         intDataSet()
+
         return view
+    }
+
+    override fun onResume() {
+        super.onResume()
+        Log.d(TAG, "onResume: refresh the index " + refrashRecylerViewIndex)
+
+            if (refrashRecylerViewIndex != -1) {
+                val updatedDay =  ExerciseDay(mDataSet.get(refrashRecylerViewIndex).day,mDataSet.get(refrashRecylerViewIndex).viewType,1,1,"100%")
+                mDataSet.set(refrashRecylerViewIndex,updatedDay)
+               excersizeDaysAdupter?.notifyItemChanged(refrashRecylerViewIndex)
+                excersizeDaysAdupter?.notifyDataSetChanged()
+                refrashRecylerViewIndex = -1
+            }
+
+
     }
 
     private class EachExcersizeDayAdupter(val exerciseList: MutableList<ExerciseDay>) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
@@ -141,7 +164,14 @@ class FullBodyPlanDayFragment : Fragment() {
         val modleDays = ViewModelProviders.of(activity!!).get(FragmentFullBodyPlanViewModle::class.java)
         modleDays.getDays()?.observe(activity!!, Observer {
             it?.let {
-                var excersizeDaysAdupter = EachExcersizeDayAdupter(it);
+                mDataSet = it
+                if (excersizeDaysAdupter == null)
+                {
+                    excersizeDaysAdupter = EachExcersizeDayAdupter(mDataSet);
+                }else{
+                    Log.d(TAG,"adupter not null: ")
+                }
+                recyclerView2.setHasFixedSize(false)
                 recyclerView2.layoutManager = LinearLayoutManager(activity, LinearLayoutManager.VERTICAL, false)
                 recyclerView2.adapter = excersizeDaysAdupter
 

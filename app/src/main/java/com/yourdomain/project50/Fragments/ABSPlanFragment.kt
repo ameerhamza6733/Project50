@@ -19,6 +19,7 @@ import com.yourdomain.project50.Model.ExcersizePlan
 
 import com.yourdomain.project50.R
 import com.yourdomain.project50.ViewModle.FragmentABSPlanViewModle
+import java.util.ArrayList
 
 
 /**
@@ -26,8 +27,14 @@ import com.yourdomain.project50.ViewModle.FragmentABSPlanViewModle
  */
 class ABSPlanFragment : Fragment() {
 
-    private lateinit var recyclerView2: RecyclerView
 
+    companion object {
+        public var refrashRecylerViewIndex = -1;
+    }
+
+    private lateinit var recyclerView2: RecyclerView;
+    private  var excersizeDaysAdupter: EachExcersizeDayAdupter?=null
+    private var mDataSet = ArrayList<ExerciseDay>()
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
         // Inflate the layout for this fragment
@@ -127,7 +134,8 @@ class ABSPlanFragment : Fragment() {
         val modleDays = ViewModelProviders.of(this!!).get(FragmentABSPlanViewModle::class.java)
         modleDays.getDays()?.observe(this!!, Observer {
             it?.let {
-                var excersizeDaysAdupter = EachExcersizeDayAdupter(it);
+                mDataSet=it
+                 excersizeDaysAdupter = EachExcersizeDayAdupter(it);
                 recyclerView2.layoutManager = LinearLayoutManager(activity, LinearLayoutManager.VERTICAL, false)
                 recyclerView2.adapter = excersizeDaysAdupter
 

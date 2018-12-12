@@ -49,6 +49,7 @@ class MainActivity : AppCompatActivity() {
     private lateinit var adRequst: AdRequest
     private var nativeAdId:String?=null
 
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
@@ -60,7 +61,7 @@ class MainActivity : AppCompatActivity() {
 
         handler.postDelayed({
             intiDataSet()
-        }, 500)
+        }, 500 )
         mAdmobSettingsFromFireBase=MY_Shared_PREF.getFirebaseAdmobAppSettings(this.application)
        nativeAdId=Admob.NATIVE_AD_ID
         mAdmobSettingsFromFireBase?.admobAds?.nativeAds3?.id?.let {

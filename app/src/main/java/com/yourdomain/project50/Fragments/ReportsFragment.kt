@@ -1,5 +1,6 @@
 package com.yourdomain.project50.Fragments
 
+import android.annotation.SuppressLint
 import android.graphics.Color
 import android.os.Bundle
 import android.support.v4.app.DialogFragment
@@ -57,6 +58,9 @@ class ReportsFragment : Fragment() {
     private val simpleDateFormat = SimpleDateFormat("dd/MM")
     private var calGraph: GraphView? = null
     private var waightGraph: GraphView? = null
+    private lateinit var tvHigest:TextView
+    private lateinit var tvLightest:TextView
+    private lateinit var tvCurrent:TextView
     private lateinit var waightDataPoint: Array<DataPoint?>
     private var person: Person? = null
     private lateinit var adPlaceHolder:FrameLayout
@@ -88,6 +92,9 @@ class ReportsFragment : Fragment() {
         bmiImageView = view.findViewById(R.id.imageBMI)
         btEditBMI = view.findViewById(R.id.btEditBmi)
         tvBmi = view.findViewById(R.id.tvBMI)
+        tvHigest=view.findViewById(R.id.tvHavest)
+        tvLightest=view.findViewById(R.id.tvLightest)
+        tvCurrent=view.findViewById(R.id.tvCurrentWeight)
         adPlaceHolder = view.findViewById(R.id.adPlaceholder)
         updateCalGraph()
         updateWeightGraph()
@@ -97,12 +104,11 @@ class ReportsFragment : Fragment() {
         return view
     }
 
+    @SuppressLint("SetTextI18n")
     private fun updateWeightGraph() {
 
         val series = LineGraphSeries(waightDataPoint!!)
         waightGraph!!.gridLabelRenderer.labelFormatter = DateAsXAxisLabelFormatter(activity)
-
-
         if (waightDataPoint!!.size < 8) {
             waightGraph!!.gridLabelRenderer.numHorizontalLabels = waightDataPoint!!.size // only 4 because of the space
             waightGraph!!.viewport.setMinX(waightDataPoint!![0]?.x!!)
@@ -134,7 +140,33 @@ class ReportsFragment : Fragment() {
                 }
             }
         }
+        tvHigest.text = ""+ waightDataPoint[getIndexOfLargest()]!!.y
+        tvLightest.text=""+waightDataPoint[getIndexOfLowest()]!!.y
+        tvCurrent.text=""+waightDataPoint[waightDataPoint.size-1]!!.y
+
     }
+
+
+    fun getIndexOfLargest(): Int {
+        if (waightDataPoint == null || waightDataPoint.size == 0) return -1 // null or empty
+
+        var largest = 0
+        for (i in 1 until waightDataPoint.size) {
+            if (waightDataPoint[i]!!.y > waightDataPoint[largest]!!.y) largest = i
+        }
+        return largest // position of the first largest found
+    }
+
+    fun getIndexOfLowest(): Int {
+        if (waightDataPoint == null || waightDataPoint.size == 0) return -1 // null or empty
+
+        var largest = 0
+        for (i in 1 until waightDataPoint.size) {
+            if (waightDataPoint[i]!!.y > waightDataPoint[largest]!!.y) largest = i
+        }
+        return largest // position of the first largest found
+    }
+
 
     private fun updateCalGraph() {
         val series = BarGraphSeries(dataPoints!!)
@@ -302,7 +334,8 @@ class ReportsFragment : Fragment() {
      * corresponding "populate" method when one is successfully returned.
      *
      */
-    private fun refreshAd() {
+    private fun refreshAd()  {
+        try{
         adRequest = if (ConsentInformation.getInstance(activity).consentStatus == ConsentStatus.NON_PERSONALIZED) {
             AdRequest.Builder()
                     .addNetworkExtrasBundle(AdMobAdapter::class.java, getNonPersonalizedAdsBundle())
@@ -312,7 +345,7 @@ class ReportsFragment : Fragment() {
                     .build()
         }
 
-        try{
+
             val builder = AdLoader.Builder(activity, mSetingsFromFirebase?.admobAds?.nativeAds13?.id)
 
             builder.forUnifiedNativeAd(UnifiedNativeAd.OnUnifiedNativeAdLoadedListener { unifiedNativeAd ->
@@ -342,7 +375,7 @@ class ReportsFragment : Fragment() {
 
             adLoader.loadAd(adRequest)
         }catch (e:Exception){
-
+e.printStackTrace()
         }
 
 

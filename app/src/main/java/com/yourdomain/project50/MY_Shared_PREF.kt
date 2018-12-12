@@ -102,7 +102,9 @@ class MY_Shared_PREF {
         fun savePersonAppearanceHistory(application: Application,personAppearance: PersonAppearance){
             val sharePref= application.getSharedPreferences(SHARE_PRE_PERSON_APPEARANCE_HISTORY,0)
             val editer =  sharePref.edit()
-            editer.putString(SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).format(Date()), gson.toJson(personAppearance))
+            var key = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).format(Date())
+
+            editer.putString(key, gson.toJson(personAppearance))
             editer.apply()
         }
 

@@ -92,7 +92,17 @@ val comeBackLatter=ComeBackLatter(counter,currentDayKey,currentPlan)
         intent.putExtra(CongragulationActivity.EXTRA_EXCERSIZES, person.totleEXERCISES)
         intent.putExtra(CongragulationActivity.EXTRA_DAY, currentDayKey + 1)
         intent.putExtra(CongragulationActivity.EXTRA_CAL, person.totleKCalBurn)
-
+        when(currentPlan){
+            ExcersizePlan.PLAN_FULL_BODY->{
+                FullBodyPlanDayFragment.refrashRecylerViewIndex=currentDayKey
+            }
+            ExcersizePlan.PLAN_ABS->{
+                ABSPlanFragment.refrashRecylerViewIndex=currentDayKey
+            }
+            ExcersizePlan.PLAN_BUTT->{
+                ButtPlanFragment.refrashRecylerViewIndex=currentDayKey
+            }
+        }
         startActivity(intent)
         finish()
 
@@ -119,7 +129,7 @@ val comeBackLatter=ComeBackLatter(counter,currentDayKey,currentPlan)
     private lateinit var mbtBack: ImageButton
     private lateinit var mbtdone: ImageButton
 
-    private var currentDay: ExerciseDay? = null
+
     private var excesizes: Excesizes? = null
     private var counter = -1
     private var countDown: CustomCountDownTimer? = null
@@ -158,10 +168,7 @@ val comeBackLatter=ComeBackLatter(counter,currentDayKey,currentPlan)
         currentDayKey = intent.getIntExtra(EXTRA_DAY, -2)
         excersizeDone = intent.getIntExtra(EXTRA_EXCERSIZES_DONE, -2)
         currentPlan = intent.getStringExtra(EXTRA_PLAN)
-        if (currentDayKey != -2) {
-            currentDay = MY_Shared_PREF.getDayByKey(application, currentPlan + currentDayKey.toString())
 
-        }
         if (excersizeDone != -2) {
             counter = excersizeDone
         }

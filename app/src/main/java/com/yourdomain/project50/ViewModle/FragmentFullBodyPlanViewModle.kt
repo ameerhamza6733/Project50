@@ -25,16 +25,16 @@ class FragmentFullBodyPlanViewModle(application: Application) : AndroidViewModel
             for (dayNumber in 1..30) {
 
                 if (restDays.contains(dayNumber)){
-                    var excersizeDays = ExerciseDay(dayNumber, ExerciseDay.VIEW_TYPEREST)
-                    mutableList?.add(excersizeDays)
+                    var excersizeDay = ExerciseDay(dayNumber, ExerciseDay.VIEW_TYPEREST)
+                    mutableList?.add(excersizeDay)
                     continue
                 }
                 if (hashMap.containsKey(ExcersizePlan.PLAN_FULL_BODY+dayNumber.toString())) {
                     mutableList?.add(hashMap.get(ExcersizePlan.PLAN_FULL_BODY+dayNumber.toString())!!)
 
                 } else {
-                    var excersizeDays = ExerciseDay(dayNumber, 1)
-                    mutableList?.add(excersizeDays)
+                    var excersizeDay = ExerciseDay(dayNumber, 1)
+                    mutableList?.add(excersizeDay)
                 }
 
 

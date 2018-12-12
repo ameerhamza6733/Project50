@@ -11,7 +11,7 @@ import com.yourdomain.project50.Fragments.ReportsFragment;
 import com.yourdomain.project50.R;
 
 
-public class PreviewColumnChartActivity extends AppCompatActivity {
+public class ReportsActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

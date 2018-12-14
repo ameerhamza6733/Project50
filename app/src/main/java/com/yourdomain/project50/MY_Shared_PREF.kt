@@ -200,6 +200,22 @@ class MY_Shared_PREF {
         }
 
 
+       public fun clearTheAllProgress(application: Application){
+          val sharefPrefDayFile =  application.getSharedPreferences(SHARED_PREF_ALL_DAYS_FILE,0)
+           val sharefPrefPerson= application.getSharedPreferences(SHARE_PREFF_PERSON,0);
+           val sharePrefgraphs=application.getSharedPreferences(SHARE_PREF_GRAPHS_FILE,0)
+           val sharefPrefComeBackLatter = application.getSharedPreferences(SHARE_PREF_COME_BACK_LATTER_FILE,0)
+           val sharefPrefPersonHistory= application.getSharedPreferences(SHARE_PRE_PERSON_APPEARANCE_HISTORY,0)
+
+           sharefPrefDayFile.edit().clear().apply()
+           sharefPrefPerson.edit().clear().apply()
+           sharePrefgraphs.edit().clear().apply()
+           sharefPrefComeBackLatter.edit().clear().apply()
+           sharefPrefPersonHistory.edit().clear().apply()
+
+        }
+
+
     }
 
 }

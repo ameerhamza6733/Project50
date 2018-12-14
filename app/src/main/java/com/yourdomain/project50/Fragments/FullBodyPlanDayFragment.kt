@@ -3,9 +3,9 @@ package com.yourdomain.project50.Fragments
 
 import android.arch.lifecycle.Observer
 import android.arch.lifecycle.ViewModelProviders
+import android.content.Context
 import android.content.Intent
 import android.os.Bundle
-import android.os.Handler
 import android.support.v4.app.Fragment
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
@@ -16,7 +16,7 @@ import android.view.ViewGroup
 import android.widget.FrameLayout
 import android.widget.ProgressBar
 import android.widget.TextView
-import com.yourdomain.project50.Activitys.EachPlanExcersizesActivity
+import com.yourdomain.project50.Activitys.EachPlanDaysListActivity
 import com.yourdomain.project50.Activitys.ExcersizeListActivity
 import com.yourdomain.project50.Model.ExcersizePlan
 import com.yourdomain.project50.Model.ExerciseDay
@@ -33,6 +33,7 @@ class FullBodyPlanDayFragment : Fragment() {
     private lateinit var recyclerView2: RecyclerView;
     private  var excersizeDaysAdupter: EachExcersizeDayAdupter?=null
     private var mDataSet = ArrayList<ExerciseDay>()
+    private var onRefrechCallback:FullBodyPlanDayFragment.onRefrech?=null
 
     val TAG = "FullBodyPlanDayFragment"
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -54,6 +55,7 @@ class FullBodyPlanDayFragment : Fragment() {
         Log.d(TAG, "onResume: refresh the index " + refrashRecylerViewIndex)
 
             if (refrashRecylerViewIndex != -1) {
+                onRefrechCallback?.onRefrechCallBack()
                 val updatedDay =  ExerciseDay(mDataSet.get(refrashRecylerViewIndex).day,mDataSet.get(refrashRecylerViewIndex).viewType,1,1,"100%")
                 mDataSet.set(refrashRecylerViewIndex,updatedDay)
                excersizeDaysAdupter?.notifyItemChanged(refrashRecylerViewIndex)
@@ -64,6 +66,12 @@ class FullBodyPlanDayFragment : Fragment() {
 
     }
 
+    override fun onAttach(context: Context?) {
+        super.onAttach(context)
+        if(context is onRefrech){
+            onRefrechCallback=context
+        }
+    }
     private class EachExcersizeDayAdupter(val exerciseList: MutableList<ExerciseDay>) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
         override fun onCreateViewHolder(p0: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
             return when (viewType) {
@@ -132,8 +140,8 @@ class FullBodyPlanDayFragment : Fragment() {
                     intent.putExtra(ExcersizeListActivity.EXTRA_PLAN, ExcersizePlan.PLAN_FULL_BODY)
                     intent.putExtra(ExcersizeListActivity.EXTRA_DAY, adapterPosition)
                     itemView.context.startActivity(intent)
-                    if (EachPlanExcersizesActivity.mRewardedVideoAd?.isLoaded == true) {
-                        EachPlanExcersizesActivity.mRewardedVideoAd?.show()
+                    if (EachPlanDaysListActivity.mRewardedVideoAd?.isLoaded == true) {
+                        EachPlanDaysListActivity.mRewardedVideoAd?.show()
                     }
                 }
                 tvDay = itemView.findViewById(R.id.tvDay)
@@ -180,5 +188,7 @@ class FullBodyPlanDayFragment : Fragment() {
         })
     }
 
-
+    public interface onRefrech{
+        fun onRefrechCallBack()
+    }
 }// Required empty public constructor

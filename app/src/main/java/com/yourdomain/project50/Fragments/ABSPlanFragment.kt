@@ -3,11 +3,13 @@ package com.yourdomain.project50.Fragments
 
 import android.arch.lifecycle.Observer
 import android.arch.lifecycle.ViewModelProviders
+import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.support.v4.app.Fragment
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -35,6 +37,7 @@ class ABSPlanFragment : Fragment() {
     private lateinit var recyclerView2: RecyclerView;
     private  var excersizeDaysAdupter: EachExcersizeDayAdupter?=null
     private var mDataSet = ArrayList<ExerciseDay>()
+    private var onRefreshCallback:onRefrech?=null
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
         // Inflate the layout for this fragment
@@ -42,6 +45,23 @@ class ABSPlanFragment : Fragment() {
         recyclerView2 = view.findViewById(R.id.recylerview)
         intDataSet()
         return view
+    }
+
+
+    override fun onResume() {
+        super.onResume()
+
+
+        if (refrashRecylerViewIndex != -1) {
+            onRefreshCallback?.onRefrechAbsCallBack()
+            val updatedDay =  ExerciseDay(mDataSet.get(refrashRecylerViewIndex).day,mDataSet.get(refrashRecylerViewIndex).viewType,1,1,"100%")
+            mDataSet.set(refrashRecylerViewIndex,updatedDay)
+            excersizeDaysAdupter?.notifyItemChanged(refrashRecylerViewIndex)
+            excersizeDaysAdupter?.notifyDataSetChanged()
+            refrashRecylerViewIndex = -1
+        }
+
+
     }
 
     private class EachExcersizeDayAdupter(val exerciseList: MutableList<ExerciseDay>) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
@@ -144,5 +164,14 @@ class ABSPlanFragment : Fragment() {
         })
     }
 
+    override fun onAttach(context: Context?) {
+        super.onAttach(context)
+        if(context is onRefrech){
+            onRefreshCallback=context
+        }
+    }
+    public interface onRefrech{
+        fun onRefrechAbsCallBack()
+    }
 
 }// Required empty public constructor

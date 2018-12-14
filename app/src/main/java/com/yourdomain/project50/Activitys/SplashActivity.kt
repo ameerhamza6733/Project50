@@ -27,12 +27,11 @@ import java.net.URL
 import androidx.work.ExistingWorkPolicy
 import androidx.work.OneTimeWorkRequest
 import androidx.work.WorkManager
-import com.yourdomain.project50.WorkMangers.ComeBackLatterWorkManger
 import com.yourdomain.project50.WorkMangers.RemindMeAfter48Hour
 import java.util.concurrent.TimeUnit
 
 
-class SpalishActivity : AppCompatActivity() {
+class SplashActivity : AppCompatActivity() {
     val TAG = "SpalishActivityTAG"
     private var form: ConsentForm? = null
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -84,7 +83,7 @@ class SpalishActivity : AppCompatActivity() {
 
     }
     private fun checkForConsent(appAdmobSettingsFromFirebase: AppAdmobSettingsFromFirebase) {
-        val consentInformation = ConsentInformation.getInstance(this@SpalishActivity)
+        val consentInformation = ConsentInformation.getInstance(this@SplashActivity)
         val publisherIds = arrayOf(appAdmobSettingsFromFirebase?.admobAds?.publisherId)
         consentInformation.requestConsentInfoUpdate(publisherIds, object : ConsentInfoUpdateListener {
             override fun onConsentInfoUpdated(consentStatus: ConsentStatus) {
@@ -121,25 +120,25 @@ class SpalishActivity : AppCompatActivity() {
 
     private fun showNonPersonalizedAds() {
         if (MY_Shared_PREF.isPersonAppearanceSaved(application)){
-            startActivity(Intent(this@SpalishActivity, MainActivity::class.java))
+            startActivity(Intent(this@SplashActivity, MainActivity::class.java))
 
         }else{
-            startActivity(Intent(this@SpalishActivity, ScaleActivity::class.java))
+            startActivity(Intent(this@SplashActivity, ScaleActivity::class.java))
 
         }
-        startService(Intent(this@SpalishActivity, TTSHelperService::class.java))
+        startService(Intent(this@SplashActivity, TTSHelperService::class.java))
 
 
         finish()
     }
 
     private fun showPersonalizedAds() {
-        startService(Intent(this@SpalishActivity, TTSHelperService::class.java))
+        startService(Intent(this@SplashActivity, TTSHelperService::class.java))
         if (MY_Shared_PREF.isPersonAppearanceSaved(application)){
-            startActivity(Intent(this@SpalishActivity, MainActivity::class.java))
+            startActivity(Intent(this@SplashActivity, MainActivity::class.java))
 
         }else{
-            startActivity(Intent(this@SpalishActivity, ScaleActivity::class.java))
+            startActivity(Intent(this@SplashActivity, ScaleActivity::class.java))
 
         }
         finish()
@@ -159,7 +158,7 @@ class SpalishActivity : AppCompatActivity() {
             // Handle error.
         }
 
-        form = ConsentForm.Builder(this@SpalishActivity, privacyUrl)
+        form = ConsentForm.Builder(this@SplashActivity, privacyUrl)
                 .withListener(object : ConsentFormListener() {
                     override fun onConsentFormLoaded() {
                         // Consent form loaded successfully.

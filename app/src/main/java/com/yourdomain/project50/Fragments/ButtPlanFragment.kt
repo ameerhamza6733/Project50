@@ -3,6 +3,7 @@ package com.yourdomain.project50.Fragments
 
 import android.arch.lifecycle.Observer
 import android.arch.lifecycle.ViewModelProviders
+import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.support.v4.app.Fragment
@@ -32,6 +33,7 @@ class ButtPlanFragment : Fragment() {
 
     private lateinit var recyclerView2: RecyclerView;
     private  var excersizeDaysAdupter: EachExcersizeDayAdupter?=null
+    private var onRefreshCallback:onRefrech?=null
     private var mDataSet = ArrayList<ExerciseDay>()
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
@@ -41,6 +43,29 @@ class ButtPlanFragment : Fragment() {
         recyclerView2 = view.findViewById(R.id.recylerview)
         intDataSet()
         return view
+    }
+
+    override fun onResume() {
+        super.onResume()
+
+
+        if (refrashRecylerViewIndex != -1) {
+            onRefreshCallback?.onRefrechButtCallBack()
+            val updatedDay =  ExerciseDay(mDataSet.get(refrashRecylerViewIndex).day,mDataSet.get(refrashRecylerViewIndex).viewType,1,1,"100%")
+            mDataSet.set(refrashRecylerViewIndex,updatedDay)
+            excersizeDaysAdupter?.notifyItemChanged(refrashRecylerViewIndex)
+            excersizeDaysAdupter?.notifyDataSetChanged()
+            refrashRecylerViewIndex = -1
+        }
+
+
+    }
+
+    override fun onAttach(context: Context?) {
+        super.onAttach(context)
+        if(context is onRefrech){
+            onRefreshCallback=context
+        }
     }
 
     private class EachExcersizeDayAdupter(val exerciseList: MutableList<ExerciseDay>) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
@@ -139,6 +164,10 @@ class ButtPlanFragment : Fragment() {
             }
 
         })
+    }
+
+    public interface onRefrech{
+        fun onRefrechButtCallBack()
     }
 
 }// Required empty public constructor

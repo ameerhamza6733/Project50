@@ -97,8 +97,8 @@ public class Utils {
         application.startActivity(openUrlIntent);
     }
 
-    public static String CMtoFeet(double cm) {
-        return String.valueOf(cm / 30.48);
+    public static double CMtoFeet(double cm) {
+        return cm / 30.48;
     }
 
     public static double KGtoLBS(double waightInKg){

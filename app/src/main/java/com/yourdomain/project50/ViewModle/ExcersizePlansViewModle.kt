@@ -28,6 +28,7 @@ class ExcersizePlansViewModle(application: Application) : AndroidViewModel(appli
           var fillterMapByExcersizeType= daysComplted.filterKeys { it.contains(excersizesTypes[i],true) }
           var filterMapByProgress= fillterMapByExcersizeType.filter<String, ExerciseDay> { it.value.progress.contains("100%") }
             var excersize = ExcersizePlan(excersizesTypes[i], excersizeTypeTotalDays[i].toInt(), filterMapByProgress.size, excersizeTypeImages.getResourceId(i,-1), ExcersizePlan.TYPE_EXCERSISE)
+
             excersizePlanList?.add(excersize)
 
         }

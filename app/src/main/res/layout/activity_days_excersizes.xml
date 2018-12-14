@@ -7,7 +7,7 @@
     android:layout_height="match_parent"
     android:background="@color/colorPrimary"
     android:orientation="vertical"
-    tools:context="com.yourdomain.project50.Activitys.EachPlanExcersizesActivity">
+    tools:context="com.yourdomain.project50.Activitys.EachPlanDaysListActivity">
 
     <android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:app="http://schemas.android.com/apk/res-auto"

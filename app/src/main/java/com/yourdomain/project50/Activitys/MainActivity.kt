@@ -192,8 +192,8 @@ class MainActivity : AppCompatActivity() {
                         moreAppsDialogeFragment.setStyle(DialogFragment.STYLE_NORMAL, R.style.dialog);
                         moreAppsDialogeFragment.show(supportFragmentManager, "moreAppsDialogeFragment")
                     } else {
-                        val intent = Intent(itemView.context, EachPlanExcersizesActivity::class.java)
-                        intent.putExtra(EachPlanExcersizesActivity.EXTRA_PLAN, adapterPosition)
+                        val intent = Intent(itemView.context, EachPlanDaysListActivity::class.java)
+                        intent.putExtra(EachPlanDaysListActivity.EXTRA_PLAN, adapterPosition)
                         itemView.context.startActivity(intent)
                         finish()
                     }

@@ -26,7 +26,7 @@ class RateUsFragment : DialogFragment() {
             Utils.openGooglePlay(activity?.application, activity?.packageName)
         }
         btRateClose.setOnClickListener {
-           if (activity?.javaClass?.simpleName?.contains("EachPlanExcersizesActivity")==true){
+           if (activity?.javaClass?.simpleName?.contains("EachPlanDaysListActivity")==true){
                activity?.finish()
            }else {
                try {

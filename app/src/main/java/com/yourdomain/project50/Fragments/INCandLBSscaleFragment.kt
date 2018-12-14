@@ -24,18 +24,18 @@ class INCandLBSscaleFragment : CMandKGscaleFragment() {
         mHeightWheelView.setValueChangeListener({
 
             mHeight = Utils.CMtoFeet(it.toDouble()).toFloat()
-            tvHight.text = mHeight.toString()
+            tvHight.text = String.format("%.1f",mHeight)
         })
         mWeightWheelView.initViewParam(mWeight, mMaxWeight, mMinWeight)
         mWeightWheelView.setValueChangeListener({
             mWeight = Utils.KGtoLBS(it.toDouble()).toFloat()
-            tvWaight.text = mWeight.toString()
+            tvWaight.text = String.format("%.2f",mWeight)
         })
         radioCentimenter.setOnClickListener {
             mListener?.onCMandKGadioClick()
         }
-        tvHight.text= String.format("%.1f",Utils.CMtoFeet(mHeight.toDouble()).toDouble())
-        tvWaight.text=Utils.KGtoLBS(mWeight.toDouble()).toString()
+        tvHight.text= String.format("%.2f",Utils.CMtoFeet(mHeight.toDouble()))
+        tvWaight.text= String.format("%.1f",Utils.KGtoLBS(mWeight.toDouble()))
         mScaleType= PersonAppearance.TYPE_IN_LBS
         return view
     }

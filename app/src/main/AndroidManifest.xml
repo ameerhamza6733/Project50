@@ -24,7 +24,7 @@
             android:name=".Activitys.ScaleActivity"
             android:theme="@style/SpalishTheme" />
         <activity
-            android:name=".Activitys.SpalishActivity"
+            android:name=".Activitys.SplashActivity"
             android:theme="@style/SpalishTheme">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -37,7 +37,7 @@
             android:label="@string/title_activity_main"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name=".Activitys.EachPlanExcersizesActivity"
+            android:name=".Activitys.EachPlanDaysListActivity"
             android:label="@string/title_activity_all_excersizes"
             android:theme="@style/SpalishTheme" />
         <activity android:name=".Activitys.ExcersizeListActivity" />

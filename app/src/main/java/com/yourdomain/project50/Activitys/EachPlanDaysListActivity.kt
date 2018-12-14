@@ -44,7 +44,27 @@ import com.yourdomain.project50.ViewModle.ExcersizePlansViewModle
 import kotlinx.android.synthetic.main.activity_days_excersizes.*
 
 
-class EachPlanExcersizesActivity : AppCompatActivity() {
+class EachPlanDaysListActivity : AppCompatActivity(), FullBodyPlanDayFragment.onRefrech,ABSPlanFragment.onRefrech,ButtPlanFragment.onRefrech {
+    override fun onRefrechButtCallBack() {
+       refrashExcersizePlanAudupter(3)
+    }
+
+    override fun onRefrechAbsCallBack() {
+       refrashExcersizePlanAudupter(2)
+    }
+
+    override fun onRefrechCallBack() {
+      refrashExcersizePlanAudupter(1)
+
+    }
+
+    private fun refrashExcersizePlanAudupter(position: Int){
+        val oldPlan= excersizePlanList[position]
+        val updatedPlan = ExcersizePlan(oldPlan.name,oldPlan.totalDays,oldPlan.completedDays+1,oldPlan.image,oldPlan.ViewType)
+        excersizePlanList.set(position,updatedPlan)
+        excersizePlansListAdupter?.notifyItemChanged(position)
+        excersizePlansListAdupter?.notifyDataSetChanged()
+    }
     companion object {
         protected val TAG = "ExcersizesActivity";
         public val EXTRA_PLAN = "EXTRA_PLAN";
@@ -60,12 +80,12 @@ class EachPlanExcersizesActivity : AppCompatActivity() {
                 return@OnNavigationItemSelectedListener true
             }
             R.id.navigation_dashboard -> {
-                startActivity(Intent(this@EachPlanExcersizesActivity, ReportsActivity::class.java))
+                startActivity(Intent(this@EachPlanDaysListActivity, ReportsActivity::class.java))
 
                 return@OnNavigationItemSelectedListener true
             }
             R.id.navigation_notifications -> {
-                startActivity(Intent(this@EachPlanExcersizesActivity, SettingsActivity::class.java))
+                startActivity(Intent(this@EachPlanDaysListActivity, SettingsActivity::class.java))
                 return@OnNavigationItemSelectedListener true
             }
         }
@@ -74,11 +94,13 @@ class EachPlanExcersizesActivity : AppCompatActivity() {
 
 
     private lateinit var recyclerView: RecyclerView
-    private lateinit var blubGifView:ImageView
-    private lateinit var boxTick:ImageView
+    private var excersizePlansListAdupter: ExcersizePlansAdupter? = null
+    private lateinit var blubGifView: ImageView
+    private lateinit var boxTick: ImageView
     private lateinit var mPager: com.yourdomain.project50.Adupters.MYViewPager
-    private var currentExcersizePlan = ExcersizePlan.PLAN_FULL_BODY
+    private var currentVisibalExcersizePlan = ExcersizePlan.PLAN_FULL_BODY
     private var mAdmobSetingsFromFirebase: AppAdmobSettingsFromFirebase? = null
+    private lateinit var excersizePlanList: MutableList<ExcersizePlan>
 
 
     private val NUM_PAGES = 3
@@ -93,8 +115,8 @@ class EachPlanExcersizesActivity : AppCompatActivity() {
 
         extraPlan = intent?.getIntExtra(EXTRA_PLAN, 0)!!
         recyclerView = findViewById(R.id.excersizeType)
-        blubGifView=findViewById(R.id.blubGifView)
-        boxTick=findViewById(R.id.tickBox)
+        blubGifView = findViewById(R.id.blubGifView)
+        boxTick = findViewById(R.id.tickBox)
 
         recyclerView.setHasFixedSize(true)
         mPager = findViewById(R.id.viewpager)
@@ -119,18 +141,17 @@ class EachPlanExcersizesActivity : AppCompatActivity() {
         Glide.with(this).asBitmap().load(R.drawable.ic_tick_white_24dp).into(boxTick)
 
         blubGifView.setOnClickListener {
-            if (mRewardedVideoAd?.isLoaded==true){
+            if (mRewardedVideoAd?.isLoaded == true) {
                 mRewardedVideoAd?.show()
-            }else{
-                Toast.makeText(this,"Ad not loaded",Toast.LENGTH_LONG).show()
+            } else {
+                Toast.makeText(this, "Ad not loaded", Toast.LENGTH_LONG).show()
             }
         }
         boxTick.setOnClickListener {
-            val intent = Intent(this@EachPlanExcersizesActivity,MainActivity::class.java)
+            val intent = Intent(this@EachPlanDaysListActivity, MainActivity::class.java)
             startActivity(intent)
         }
     }
-
 
 
     private fun showPersonalizedAds() {
@@ -164,16 +185,16 @@ class EachPlanExcersizesActivity : AppCompatActivity() {
 
     private fun intiDataSet() {
         val model = ExcersizePlansViewModle(application)
-        var list = model.getExcersizePlans();
-        if (list.size > 0) {
-            list.add(0, ExcersizePlan("native ad", 0, 0, -1, ExcersizePlan.TYPE_AD))
+        excersizePlanList = model.getExcersizePlans();
+        if (excersizePlanList.size > 0) {
+            excersizePlanList.add(0, ExcersizePlan("native ad", 0, 0, -1, ExcersizePlan.TYPE_AD))
 
-            var excersizeAdupter = ExcersizePlansAdupter(list);
+            excersizePlansListAdupter = ExcersizePlansAdupter(excersizePlanList);
             val llm = LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false);
 
             recyclerView.layoutManager = llm
             recyclerView.addOnChildAttachStateChangeListener(ChildAttachListener(llm))
-            recyclerView.adapter = excersizeAdupter
+            recyclerView.adapter = excersizePlansListAdupter
             recyclerView.scrollToPosition(extraPlan + 1)
         }
 
@@ -185,7 +206,6 @@ class EachPlanExcersizesActivity : AppCompatActivity() {
         rateUsFragment.setStyle(DialogFragment.STYLE_NORMAL, R.style.dialog);
         rateUsFragment.show(supportFragmentManager, "rateUsFragment")
     }
-
 
 
     inner class ExcersizePlansAdupter(val excersizePlans: MutableList<ExcersizePlan>) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
@@ -279,15 +299,15 @@ class EachPlanExcersizesActivity : AppCompatActivity() {
                 Log.d(TAG, "onChildViewAttachedToWindow" + llm.findFirstCompletelyVisibleItemPosition())
                 when (llm.findFirstCompletelyVisibleItemPosition()) {
                     1 -> {
-                        currentExcersizePlan = ExcersizePlan.PLAN_FULL_BODY
+                        currentVisibalExcersizePlan = ExcersizePlan.PLAN_FULL_BODY
                         mPager.setCurrentItem(0)
                     }
                     2 -> {
-                        currentExcersizePlan = ExcersizePlan.PLAN_ABS
+                        currentVisibalExcersizePlan = ExcersizePlan.PLAN_ABS
                         mPager.setCurrentItem(1)
                     }
                     3 -> {
-                        currentExcersizePlan = ExcersizePlan.PLAN_BUTT
+                        currentVisibalExcersizePlan = ExcersizePlan.PLAN_BUTT
                         mPager.setCurrentItem(2)
                     }
                 }

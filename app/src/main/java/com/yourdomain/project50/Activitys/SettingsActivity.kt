@@ -9,6 +9,7 @@ import android.support.v4.app.DialogFragment
 import android.support.v4.content.LocalBroadcastManager
 import android.support.v7.app.AppCompatActivity
 import android.util.Log
+import android.view.View
 import android.widget.CompoundButton
 import android.widget.Switch
 import android.widget.TextView
@@ -61,7 +62,7 @@ class SettingsActivity : AppCompatActivity(), SecondsPickerFragment.OnSecondsPic
     private lateinit var btPrivacyPolicy: TextView
     private lateinit var btRateUs: TextView
     private lateinit var btRemindMeEveryDay: TextView
-    private lateinit var btRestProgress:TextView
+    private lateinit var btRestProgress: TextView
 
     private val TAG = "SettingsActivity";
     private var settings: Settings? = null
@@ -93,7 +94,7 @@ class SettingsActivity : AppCompatActivity(), SecondsPickerFragment.OnSecondsPic
         btFeedback = findViewById(R.id.btFeedback)
         btPrivacyPolicy = findViewById(R.id.btPrivacyPolicy)
         btRemindMeEveryDay = findViewById(R.id.btRemindMe)
-        btRestProgress=findViewById(R.id.btRestProgress)
+        btRestProgress = findViewById(R.id.btRestProgress)
         btRateUs = findViewById(R.id.btRateUs)
 
     }
@@ -180,9 +181,12 @@ class SettingsActivity : AppCompatActivity(), SecondsPickerFragment.OnSecondsPic
 
         btRestProgress.setOnClickListener {
             MY_Shared_PREF.clearTheAllProgress(this@SettingsActivity.application)
-            Snackbar.make(btCountDownPicker,"Clearing the progress",Snackbar.LENGTH_LONG).show()
+            Snackbar.make(btCountDownPicker, "Restart required ", Snackbar.LENGTH_LONG).setAction("Restart", View.OnClickListener {
+                Utils.RestartTheApp(application)
+            }).show()
         }
     }
+
 
     fun showHourPicker() {
         val myCalender = Calendar.getInstance()

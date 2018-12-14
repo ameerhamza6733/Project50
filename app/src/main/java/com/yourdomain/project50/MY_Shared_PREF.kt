@@ -207,11 +207,11 @@ class MY_Shared_PREF {
            val sharefPrefComeBackLatter = application.getSharedPreferences(SHARE_PREF_COME_BACK_LATTER_FILE,0)
            val sharefPrefPersonHistory= application.getSharedPreferences(SHARE_PRE_PERSON_APPEARANCE_HISTORY,0)
 
-           sharefPrefDayFile.edit().clear().apply()
-           sharefPrefPerson.edit().clear().apply()
-           sharePrefgraphs.edit().clear().apply()
-           sharefPrefComeBackLatter.edit().clear().apply()
-           sharefPrefPersonHistory.edit().clear().apply()
+           sharefPrefDayFile.edit().clear().commit()
+           sharefPrefPerson.edit().clear().commit()
+           sharePrefgraphs.edit().clear().commit()
+           sharefPrefComeBackLatter.edit().clear().commit()
+           sharefPrefPersonHistory.edit().clear().commit()
 
         }
 

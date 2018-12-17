@@ -11,15 +11,8 @@ import android.net.NetworkInfo;
 import android.net.Uri;
 import android.util.Log;
 
-import com.jjoe64.graphview.series.DataPoint;
-import com.yourdomain.project50.Activitys.SettingsActivity;
-import com.yourdomain.project50.Activitys.SplashActivity;
 import com.yourdomain.project50.Model.Excesizes;
-import com.yourdomain.project50.Model.PersonAppearance;
 
-import org.jetbrains.annotations.NotNull;
-
-import java.text.DecimalFormat;
 import java.util.Calendar;
 import java.util.Date;
 
@@ -30,6 +23,8 @@ import java.util.Date;
 public class Utils {
 
 
+    static Calendar cal = Calendar.getInstance();
+    static Date date = new Date();
     private static String TAG = "UtilsTAG";
 
     public static String CountTotalTime(int[] viewType, int[] seconds) {
@@ -106,10 +101,9 @@ public class Utils {
         return cm / 30.48;
     }
 
-    public static double KGtoLBS(double waightInKg){
-        return waightInKg*2.205;
+    public static double KGtoLBS(double waightInKg) {
+        return waightInKg * 2.205;
     }
-
 
     public static boolean isNetworkAvailable(Application application) {
         ConnectivityManager connectivityManager
@@ -117,9 +111,6 @@ public class Utils {
         NetworkInfo activeNetworkInfo = connectivityManager.getActiveNetworkInfo();
         return activeNetworkInfo != null && activeNetworkInfo.isConnected();
     }
-
-    static Calendar cal = Calendar.getInstance();
-    static Date date = new Date();
 
     public static Date getNextDay() {
 
@@ -135,37 +126,39 @@ public class Utils {
         return cal.getTime();
     }
 
-    public static int getDrawbleAccodingToBMI(double currentBMI){
-        if (currentBMI<18.5){
+    public static int getDrawbleAccodingToBMI(double currentBMI) {
+        if (currentBMI < 18.5) {
             return R.drawable.bmi1;
-        }else if (currentBMI>=18.5 && currentBMI<24.5){
+        } else if (currentBMI >= 18.5 && currentBMI < 24.5) {
             return R.drawable.bmi2;
-        }else  if(currentBMI>=24.5 && currentBMI<30.5){
-            return  R.drawable.bmi3;
-        }else if(currentBMI>=30.5 && currentBMI<40.5 ){
+        } else if (currentBMI >= 24.5 && currentBMI < 30.5) {
+            return R.drawable.bmi3;
+        } else if (currentBMI >= 30.5 && currentBMI < 40.5) {
             return R.drawable.bmi4;
-        }else {
-         return    R.drawable.bmi5;
+        } else {
+            return R.drawable.bmi5;
         }
     }
 
-    public static double CMtoM(double hightInCm){
-       Double hightInMeter = hightInCm/100;
-       Log.d(TAG,"converting cm to meter : hight in cm : "+hightInCm+ "hight in mater: "+hightInMeter);
-        return  hightInMeter;
+    public static double CMtoM(double hightInCm) {
+        Double hightInMeter = hightInCm / 100;
+        Log.d(TAG, "converting cm to meter : hight in cm : " + hightInCm + "hight in mater: " + hightInMeter);
+        return hightInMeter;
     }
 
-    public static double FeetToInch(double feet){
-        return  feet*12;
+    public static double FeetToInch(double feet) {
+        return feet * 12;
     }
-    public static  double calculateBMIinKg(double waightInKg,double hightInMeter) {
-        return waightInKg/(hightInMeter*2);
+
+    public static double calculateBMIinKg(double waightInKg, double hightInMeter) {
+        return waightInKg / (hightInMeter * 2);
 
     }
 
-    public static double calcautleBMIinlbs(double wagitInPound, double hightInInch){
-        return (wagitInPound /(hightInInch*hightInInch))*703;
+    public static double calcautleBMIinlbs(double wagitInPound, double hightInInch) {
+        return (wagitInPound / (hightInInch * hightInInch)) * 703;
     }
+
     public static void RestartTheApp(Application c) {
         try {
             //check if the context is given
@@ -203,5 +196,13 @@ public class Utils {
         } catch (Exception ex) {
             Log.e(TAG, "Was not able to restart application");
         }
+    }
+
+    public static String youtubeUrlToVideoId(String videoUrl) {
+
+
+
+
+        return videoUrl.replace("https://www.youtube.com/watch?v=", "")+"\"";
     }
 }

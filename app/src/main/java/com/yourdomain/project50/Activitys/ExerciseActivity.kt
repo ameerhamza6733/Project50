@@ -34,7 +34,11 @@ import java.util.*
 import java.util.concurrent.TimeUnit
 
 
-class ExerciseActivity : AppCompatActivity(), WatingToStartExcersizeFragment.OnFragmentInteractionListener, PauseExcersizeFragment.OnResumeListener, QuitFragment.OnQuitListener, RestFragment.OnNextExcersizeDemoFragmentListener, SettingsVoiceControlFragment.OnVoicecontrolChangeListener {
+class ExerciseActivity : AppCompatActivity(), WatingToStartExcersizeFragment.OnFragmentInteractionListener, PauseExcersizeFragment.OnResumeListener, QuitFragment.OnQuitListener, RestFragment.OnNextExcersizeDemoFragmentListener, SettingsVoiceControlFragment.OnVoicecontrolChangeListener, VideoFragment.OnVideoFragmentListener {
+    override fun onDetachedVideoFragment() {
+        countDown?.resume()
+    }
+
     override fun onVoiceSettingUpdate(updateSettings: Settings) {
         Log.d(TAG, "new settings" + this@ExerciseActivity.settings.workoutSettings.mute)
         this@ExerciseActivity.settings = updateSettings;
@@ -128,6 +132,7 @@ class ExerciseActivity : AppCompatActivity(), WatingToStartExcersizeFragment.OnF
     private lateinit var mbtNext: ImageButton
     private lateinit var mbtBack: ImageButton
     private lateinit var mbtdone: ImageButton
+    private lateinit var mbtVideo: ImageButton
 
 
     private var excesizes: Excesizes? = null
@@ -148,6 +153,7 @@ class ExerciseActivity : AppCompatActivity(), WatingToStartExcersizeFragment.OnF
         settings = MY_Shared_PREF.getAppSettings(application)
 
     }
+
 
     private var adRequest: AdRequest? = null
     private lateinit var adContainer: RelativeLayout
@@ -253,6 +259,7 @@ class ExerciseActivity : AppCompatActivity(), WatingToStartExcersizeFragment.OnF
         mbtdone = findViewById(R.id.btDone)
         mLayout = findViewById(R.id.type_unlimted)
         adContainer = findViewById(R.id.adContanir)
+        mbtVideo = findViewById(R.id.btVideo)
 
 
         mbtdone.setOnClickListener {
@@ -285,6 +292,21 @@ class ExerciseActivity : AppCompatActivity(), WatingToStartExcersizeFragment.OnF
             val settingsVoiceControlFragment = SettingsVoiceControlFragment()
             settingsVoiceControlFragment.setStyle(DialogFragment.STYLE_NORMAL, R.style.dialog);
             settingsVoiceControlFragment.show(supportFragmentManager, "settingsVoiceControlFragment")
+        }
+
+        mbtVideo.setOnClickListener {
+            countDown?.pause()
+            var adId = Admob.NATIVE_AD_ID
+            mSetingsFromFirebase?.admobAds?.nativeAds8?.id?.let {
+                adId = it
+            }
+            val videoFragment = VideoFragment.newInstance(excesizes?.title!![counter], excesizes?.detail!![counter], excesizes?.videosLinks!![counter], adId)
+            videoFragment.setStyle(DialogFragment.STYLE_NORMAL, R.style.Theme_Transparent);
+            videoFragment.show(supportFragmentManager, "videoFragment")
+
+        }
+        mtotalTextView.setOnClickListener {
+           goBack()
         }
     }
 
@@ -461,8 +483,19 @@ class ExerciseActivity : AppCompatActivity(), WatingToStartExcersizeFragment.OnF
 
     override fun onPause() {
         Log.d(TAG, "onPause");
-        countDown?.cancel()
+        countDown?.pause()
         super.onPause()
+    }
+
+    override fun onStop() {
+        countDown?.cancel()
+        countDown=null
+        super.onStop()
+    }
+    override fun onResume() {
+        countDown?.resume()
+        super.onResume()
+
     }
 
     override fun onDestroy() {
@@ -472,10 +505,15 @@ class ExerciseActivity : AppCompatActivity(), WatingToStartExcersizeFragment.OnF
         mediaPlayer?.release()
         if (mRewardedVideoAd?.isLoaded == true)
             mRewardedVideoAd?.show()
+        countDown=null
         super.onDestroy()
     }
 
     override fun onBackPressed() {
+        goBack()
+    }
+
+    private fun goBack() {
         countDown?.pause()
         if (settings.workoutSettings.voiceGuide) {
             sendTTSBroadCast(getString(R.string.dont_quit_keep_going))
@@ -483,7 +521,6 @@ class ExerciseActivity : AppCompatActivity(), WatingToStartExcersizeFragment.OnF
         val quitFragment = QuitFragment()
         quitFragment.setStyle(DialogFragment.STYLE_NORMAL, R.style.dialog);
         quitFragment.show(supportFragmentManager, "quitFragment")
-
     }
 
     fun sendTTSBroadCast(text: String) {

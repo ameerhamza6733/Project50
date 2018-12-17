@@ -19,7 +19,7 @@ public class ExcersizesFullBodyConstants {
            };
     private static int[] exercise_day1_gif_icons = {R.drawable.simple,R.drawable.simple
            };
-    private static int[] exercise_day1_times = {5,3
+    private static int[] exercise_day1_times = {30,30
     };
     private static double[] exercise_day1_calories = {150,400
     };
@@ -34,7 +34,9 @@ public class ExcersizesFullBodyConstants {
             R.string.excersize_full_body_plan_couch_tips_day1_excerise1,R.string.excersize_full_body_plan_couch_tips_day1_excerise2
 
     };
-
+    private static String[] exercise_day1_video_links={
+      "https://www.youtube.com/watch?v=JGfygJXTwq4","https://www.youtube.com/watch?v=2Vv-BfVoq4g"
+    };
 
 
     private static String[] exercise_defults_title = {
@@ -150,8 +152,25 @@ public class ExcersizesFullBodyConstants {
 
     };
 
+    private static String[] excersize_defult_video_links  = {
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            ""
+            ,""
+    };
+
     public static void fillUpdata() {
-        Excesizes day1Excersizes = new Excesizes(exercise_day1_titles, exercise_day1_gif_icons, exercise_day1_times, exercise_day1_detail, getExercise_day1_view_type, exercise_day1_calories, exercise_day1_couch_tips);
+        Excesizes day1Excersizes = new Excesizes(exercise_day1_titles, exercise_day1_gif_icons, exercise_day1_times, exercise_day1_detail, getExercise_day1_view_type, exercise_day1_calories, exercise_day1_couch_tips,exercise_day1_video_links);
         mDayToExsizeHashMap.put(1, day1Excersizes);
 
     }
@@ -162,6 +181,6 @@ public class ExcersizesFullBodyConstants {
         if (mDayToExsizeHashMap.containsKey(day)) {
             return mDayToExsizeHashMap.get(day);
         }
-        return new Excesizes(exercise_defults_title, exercises_defults_gif_icons, exercises_defult_times, excersizes_defult_detail, getExcersize_view_type_defult,excersize_defult_calrious,excersizes_defult_couch_tips);
+        return new Excesizes(exercise_defults_title, exercises_defults_gif_icons, exercises_defult_times, excersizes_defult_detail, getExcersize_view_type_defult,excersize_defult_calrious,excersizes_defult_couch_tips,excersize_defult_video_links);
     }
 }

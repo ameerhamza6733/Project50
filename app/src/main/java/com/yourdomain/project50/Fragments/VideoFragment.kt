@@ -1,14 +1,18 @@
 package com.yourdomain.project50.Fragments
 
-import android.app.Dialog
 import android.content.Context
+import android.net.Uri
 import android.os.Bundle
 import android.support.v4.app.DialogFragment
+import android.util.DisplayMetrics
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.webkit.WebResourceRequest
+import android.webkit.WebView
+import android.webkit.WebViewClient
 import android.widget.*
-import com.bumptech.glide.Glide
 import com.google.ads.consent.ConsentInformation
 import com.google.ads.consent.ConsentStatus
 import com.google.ads.mediation.admob.AdMobAdapter
@@ -21,56 +25,36 @@ import com.google.android.gms.ads.formats.NativeAdOptions
 import com.google.android.gms.ads.formats.UnifiedNativeAd
 import com.google.android.gms.ads.formats.UnifiedNativeAdView
 import com.yourdomain.project50.R
+import com.yourdomain.project50.Utils
 
 
-class PauseExcersizeFragment : DialogFragment() {
-
-
-    private var mParamExcesizeTilte: String? = null
-    private var mParamExcersizeSeconds: String? = null
-    private var mParamGif: Int? = null
-    private var mNativeAdId: String? = null
-    private var mListener: OnResumeListener? = null
+class VideoFragment : DialogFragment() {
+    private lateinit var adPlaceHolder: FrameLayout
     private lateinit var adRequest: AdRequest
 
-    private lateinit var btContinue: ImageButton
-    private lateinit var tvTitle: TextView
-    private lateinit var tvSeconds: TextView
-    private lateinit var gif: ImageView
-    private lateinit var adPlaceHolder: FrameLayout
-    private lateinit var nativeAdImagePlaceHolder:ImageView
+    private var mNativeAdId: String? = null
+    private var mTitle: String? = null
+    private var mDis: String? = null
+    private var mVideoUrl: String? = null
+    private val TAG = "VideoFragment"
+
+    private var mListener: OnVideoFragmentListener? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         if (arguments != null) {
-            mParamExcesizeTilte = arguments!!.getString(ARG_EXCERSIXE_TITLE)
-            mParamExcersizeSeconds = arguments!!.getString(ARG_EXCERSIZE_SECONDS)
-            mParamGif = arguments!!.getInt(ARG_EXCERSIZE_PAUSE_GIF)
-            mNativeAdId=arguments!!.getString(ARG_NATIVE_AD_ID)
+            mTitle = arguments!!.getString(ARG_PARAM_TITLE)
+            mDis = arguments!!.getString(ARG_PARAM_DES)
+            mVideoUrl = arguments!!.getString(ARG_PARAM_VIDEO_URL)
+            mNativeAdId = arguments!!.getString(ARG_NATIVE_AD_ID)
         }
     }
 
-    override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
-        return super.onCreateDialog(savedInstanceState)
-    }
-
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        val view = inflater.inflate(R.layout.fragment_pause_excersize, container, false)
-
-        btContinue = view.findViewById(R.id.btResume);
-        tvSeconds = view.findViewById(R.id.tvSeonds)
-        tvTitle = view.findViewById(R.id.tvtitle)
-        gif = view.findViewById(R.id.icon)
-        adPlaceHolder=view.findViewById(R.id.adPlaceholder)
-
-        tvTitle.text = mParamExcesizeTilte
-        tvSeconds.text = mParamExcersizeSeconds
-        btContinue.setOnClickListener {
-            mListener?.ResumeListener()
-            dismiss()
-
-        }
-
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
+                              savedInstanceState: Bundle?): View? {
+        // Inflate the layout for this fragment
+        val view = inflater.inflate(R.layout.fragment_video, container, false)
+        adPlaceHolder = view.findViewById(R.id.adPlaceholder)
         adRequest = if (ConsentInformation.getInstance(activity).consentStatus == ConsentStatus.NON_PERSONALIZED) {
             AdRequest.Builder()
                     .addNetworkExtrasBundle(AdMobAdapter::class.java, getNonPersonalizedAdsBundle())
@@ -79,48 +63,73 @@ class PauseExcersizeFragment : DialogFragment() {
             AdRequest.Builder()
                     .build()
         }
-        refreshAd();
+        val title = view.findViewById<TextView>(R.id.tvTitle)
+        val description = view.findViewById<TextView>(R.id.tvDescription)
+        val webviewYoutube = view.findViewById<WebView>(R.id.webviewYoutubePlayer)
+        title.setText(mTitle)
+        description.setText(mDis)
+
+
+        val displaymetrics = DisplayMetrics()
+        activity!!.windowManager.defaultDisplay.getMetrics(displaymetrics)
+        val height = displaymetrics.heightPixels
+        val width = displaymetrics.widthPixels
+
+        Log.d(TAG, "youtube video url id from url: " + Utils.youtubeUrlToVideoId(mVideoUrl))
+        val frameVideo = "<html><body>" + mVideoUrl + "<br><iframe width=\"420\" height=\"315\" src=\"https://www.youtube.com/embed/"+Utils.youtubeUrlToVideoId(mVideoUrl)+" frameborder=\"0\" allowfullscreen></iframe></body></html>";
+
+
+        webviewYoutube.webViewClient = object : WebViewClient() {
+            override fun shouldOverrideUrlLoading(view: WebView?, request: WebResourceRequest?): Boolean {
+                return false
+            }
+        };
+        val webSettings = webviewYoutube.getSettings();
+        webSettings.setJavaScriptEnabled(true);
+        webviewYoutube.loadData(frameVideo, "text/html", "utf-8");
+        refreshAd()
         return view
     }
 
+    // TODO: Rename method, update argument and hook method into UI event
+
     override fun onAttach(context: Context?) {
         super.onAttach(context)
-        if (context is OnResumeListener) {
+        if (context is OnVideoFragmentListener) {
             mListener = context
-        } else {
-            throw RuntimeException(context!!.toString() + " must implement OnFragmentInteractionListener")
         }
     }
 
     override fun onDetach() {
-        mListener?.ResumeListener()
+        mListener?.onDetachedVideoFragment()
         super.onDetach()
         mListener = null
     }
 
-    interface OnResumeListener {
-        fun ResumeListener()
+    interface OnVideoFragmentListener {
+
+        fun onDetachedVideoFragment()
     }
 
     companion object {
-
-        private val ARG_EXCERSIXE_TITLE = "ARG_EXCERSIXE_TITLE"
-        private val ARG_EXCERSIZE_SECONDS = "ARG_EXCERSIZE_SECONDS"
-        private val ARG_EXCERSIZE_PAUSE_GIF = "ARG_EXCERSIZE_PAUSE_GIF"
+        // TODO: Rename parameter arguments, choose names that match
+        // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
+        private val ARG_PARAM_TITLE = "ARG_PARAM_TITLE"
+        private val ARG_PARAM_DES = "ARG_PARAM_DES"
+        private val ARG_PARAM_VIDEO_URL = "ARG_PARAM_VIDEO_URL"
         private val ARG_NATIVE_AD_ID = "ARG_NATIVE_AD_ID"
-
-
-        fun newInstance(title: String, seconds: String, gif: Int, nativeAdId: String): PauseExcersizeFragment {
-            val fragment = PauseExcersizeFragment()
+        fun newInstance(title: String, description: String, videoLink: String, nativeAdId: String): VideoFragment {
+            val fragment = VideoFragment()
             val args = Bundle()
-            args.putString(ARG_EXCERSIXE_TITLE, title)
-            args.putString(ARG_EXCERSIZE_SECONDS, seconds)
-            args.putInt(ARG_EXCERSIZE_PAUSE_GIF, gif)
+            args.putString(ARG_PARAM_TITLE, title)
+            args.putString(ARG_PARAM_DES, description)
+            args.putString(ARG_PARAM_VIDEO_URL, videoLink)
             args.putString(ARG_NATIVE_AD_ID, nativeAdId)
             fragment.arguments = args
             return fragment
         }
     }
+
 
     private fun populateUnifiedNativeAdView(nativeAd: UnifiedNativeAd, adView: UnifiedNativeAdView) {
         // Set the media view. Media content will be automatically populated in the media view once

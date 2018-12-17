@@ -174,7 +174,7 @@
                 android:layout_gravity="center_vertical"
                 android:background="@drawable/circle_button"
                 android:padding="8dp"
-                app:srcCompat="@drawable/ic_done_black_24dp" />
+                app:srcCompat="@drawable/ic_done_white_24dp" />
 
             <ImageButton
                 android:id="@+id/btNext"

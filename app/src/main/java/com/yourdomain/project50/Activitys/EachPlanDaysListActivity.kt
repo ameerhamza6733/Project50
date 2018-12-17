@@ -243,7 +243,6 @@ class EachPlanDaysListActivity : AppCompatActivity(), FullBodyPlanDayFragment.on
                 p0.daysProgressBar.progress = excersizePlans[p0.adapterPosition].completedDays
                 p0.tvTotalDaysLeft.text = "Days left " + daysComplted
 
-                //  Log.d(TAG,"onBind"+p1 +" "+p0.adapterPosition);
                 Log.d(TAG, "totale day completed by user " + excersizePlans[p0.adapterPosition].completedDays)
             } else if (ExcersizePlan.TYPE_AD == p0.itemViewType) {
                 p0 as AdViewHolderViewHolder
@@ -263,6 +262,7 @@ class EachPlanDaysListActivity : AppCompatActivity(), FullBodyPlanDayFragment.on
             var daysProgressBar: ProgressBar
 
             init {
+
                 itemView.isFocusableInTouchMode = true
                 tvtitle = itemView.findViewById(R.id.excersizeTitle)
                 image = itemView.findViewById(R.id.image)

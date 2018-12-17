@@ -12,14 +12,17 @@ public class Person {
     private double totleEXERCISES;
     private double totleKCalBurn;
     private double totleMintsDuration;
+
     private PersonAppearance personAppearance;
 
     public Person() {
         totleEXERCISES=0;
         totleKCalBurn=0;
         totleMintsDuration=0;
+
         personAppearance=null;
     }
+
 
     public double getTotleEXERCISES() {
         return totleEXERCISES;

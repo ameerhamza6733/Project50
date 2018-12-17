@@ -7,6 +7,8 @@ import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.support.v4.app.Fragment
+import android.support.v4.content.ContextCompat
+import android.support.v7.widget.CardView
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
 import android.util.Log
@@ -14,10 +16,13 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.FrameLayout
+import android.widget.ImageButton
 import android.widget.ProgressBar
 import android.widget.TextView
 import com.yourdomain.project50.Activitys.EachPlanDaysListActivity
 import com.yourdomain.project50.Activitys.ExcersizeListActivity
+import com.yourdomain.project50.MY_Shared_PREF
+import com.yourdomain.project50.Model.CurrentDayandPlan
 import com.yourdomain.project50.Model.ExcersizePlan
 import com.yourdomain.project50.Model.ExerciseDay
 import com.yourdomain.project50.R
@@ -34,6 +39,7 @@ class FullBodyPlanDayFragment : Fragment() {
     private  var excersizeDaysAdupter: EachExcersizeDayAdupter?=null
     private var mDataSet = ArrayList<ExerciseDay>()
     private var onRefrechCallback:FullBodyPlanDayFragment.onRefrech?=null
+    private  var currentDayandPlan: CurrentDayandPlan?=null
 
     val TAG = "FullBodyPlanDayFragment"
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -72,7 +78,7 @@ class FullBodyPlanDayFragment : Fragment() {
             onRefrechCallback=context
         }
     }
-    private class EachExcersizeDayAdupter(val exerciseList: MutableList<ExerciseDay>) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+    private inner class EachExcersizeDayAdupter(val exerciseList: MutableList<ExerciseDay>) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
         override fun onCreateViewHolder(p0: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
             return when (viewType) {
                 ExerciseDay.VIEW_TYPE_DAY -> {
@@ -99,19 +105,38 @@ class FullBodyPlanDayFragment : Fragment() {
         override fun getItemCount(): Int {
             return exerciseList.size
         }
-
+        private var index=-1
         override fun onBindViewHolder(p0: RecyclerView.ViewHolder, p1: Int) {
-
+            p0.setIsRecyclable(false)
             if (ExerciseDay.VIEW_TYPE_DAY == p0.itemViewType) {
                 p0 as ExcersizeDAYViewHolder
+
                 if (exerciseList[p0.adapterPosition].totaleExcersizes > 0) {
                     p0.progressBar.max = exerciseList[p0.adapterPosition].totaleExcersizes.toInt()
                 }
                 if (exerciseList[p0.adapterPosition].totaleExcersizes > 0) {
                     p0.progressBar.progress = exerciseList[p0.adapterPosition].doneExcersises.toInt()
-                    p0.tvProgress.setText(exerciseList[p0.adapterPosition].progress)
+                    if (exerciseList[p0.adapterPosition].progress.equals("100%")){
+                        p0.tvProgress.visibility=View.INVISIBLE
+                        p0.progressBar.visibility=View.INVISIBLE
+                        p0.tvAllDaysCompleted.visibility=View.VISIBLE
+
+                    }else{
+                        p0.tvProgress.visibility=View.VISIBLE
+                        p0.progressBar.visibility=View.VISIBLE
+                        p0.tvAllDaysCompleted.visibility=View.INVISIBLE
+                        p0.tvProgress.setText(exerciseList[p0.adapterPosition].progress)
+
+                    }
+
+
                 }
                 p0.tvDay.text = "Day " + exerciseList[p0.adapterPosition].day.toString()
+                if (currentDayandPlan?.day==p0.adapterPosition){
+                    p0.rootEExcersizeDay.setCardBackgroundColor(ContextCompat.getColor(p0.progressBar.context,R.color.colorAccent))
+               p0.tvDay.setTextColor(ContextCompat.getColor(p0.progressBar.context, R.color.colorWhite))
+                    p0.tvProgress.setTextColor(ContextCompat.getColor(p0.progressBar.context,R.color.colorWhite))
+                }
             } else if (ExerciseDay.VIEW_TYPE_AD == p0.itemViewType) {
                 p0 as AdViewHolderViewHolder
             } else if (ExerciseDay.VIEW_TYPEREST == p0.itemViewType) {
@@ -129,11 +154,16 @@ class FullBodyPlanDayFragment : Fragment() {
             val tvDay: TextView
             val progressBar: ProgressBar
             val tvProgress: TextView
+            val tvAllDaysCompleted: ImageButton
+            val rootEExcersizeDay:CardView
             val TAG = "FullBodyPlanDayFragment"
 
             init {
-
+                rootEExcersizeDay=itemView.findViewById(R.id.rootEachExcersizeDay)
                 itemView.setOnClickListener {
+                    currentDayandPlan =CurrentDayandPlan(adapterPosition,ExcersizePlan.PLAN_FULL_BODY)
+                    MY_Shared_PREF.saveCurrentDayandPlan(activity?.application!!, currentDayandPlan!!)
+                    itemView.background= ContextCompat.getDrawable(itemView.context, R.drawable.recylerview_selector);
                     Log.d(TAG, "" + exerciseList[adapterPosition].toString())
                     val intent = Intent(itemView.context, ExcersizeListActivity::class.java)
                     intent.putExtra(ExcersizeListActivity.EXTRA_EXCERSIZES_DONE, exerciseList[adapterPosition].doneExcersises.toInt())
@@ -143,9 +173,12 @@ class FullBodyPlanDayFragment : Fragment() {
                     if (EachPlanDaysListActivity.mRewardedVideoAd?.isLoaded == true) {
                         EachPlanDaysListActivity.mRewardedVideoAd?.show()
                     }
+               notifyDataSetChanged()
                 }
                 tvDay = itemView.findViewById(R.id.tvDay)
                 tvProgress = itemView.findViewById(R.id.tvProgress)
+
+                tvAllDaysCompleted=itemView.findViewById(R.id.tvAllDaysCompleted)
                 progressBar = itemView.findViewById(R.id.progressBar)
             }
         }
@@ -172,6 +205,7 @@ class FullBodyPlanDayFragment : Fragment() {
         val modleDays = ViewModelProviders.of(activity!!).get(FragmentFullBodyPlanViewModle::class.java)
         modleDays.getDays()?.observe(activity!!, Observer {
             it?.let {
+                currentDayandPlan=MY_Shared_PREF.getCurrentDayPlan(activity?.application!!,ExcersizePlan.PLAN_FULL_BODY)
                 mDataSet = it
                 if (excersizeDaysAdupter == null)
                 {

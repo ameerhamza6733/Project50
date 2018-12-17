@@ -43,6 +43,11 @@ class MY_Shared_PREF {
 
         private val SHARE_PRE_PERSON_APPEARANCE_HISTORY="SHARE_PRE_PERSON_APPEARANCE_HISTORY"
 
+        private val SHARE_PREF_CURRENT_DAY_FILE="SHARE_PREF_CURRENT_DAY_FILE"
+        private val SHARED_PREF_CURRENT_DAY_KEY="SHARED_PREF_CURRENT_DAY_KEY"
+
+
+
         private val gson = Gson()
 
 
@@ -199,6 +204,21 @@ class MY_Shared_PREF {
             return gson.fromJson(share_pref.getString(SHARE_PREF_COME_BACK_LATTER_KEY, null), ComeBackLatter::class.java)
         }
 
+
+        fun saveCurrentDayandPlan(application: Application,currentDayAndPlan : CurrentDayandPlan){
+            val shared_pref= application.getSharedPreferences(SHARE_PREF_CURRENT_DAY_FILE,0)
+            val editer =  shared_pref.edit()
+            editer.putString(currentDayAndPlan.plan+SHARED_PREF_CURRENT_DAY_KEY,gson.toJson(currentDayAndPlan))
+            editer.apply()
+        }
+
+        fun getCurrentDayPlan(application: Application,plan :String):CurrentDayandPlan?{
+            val shared_pref=  application.getSharedPreferences(SHARE_PREF_CURRENT_DAY_FILE,0)
+            if(shared_pref.contains(plan+SHARED_PREF_CURRENT_DAY_KEY)){
+                return gson.fromJson(shared_pref.getString(plan+SHARED_PREF_CURRENT_DAY_KEY,null),CurrentDayandPlan::class.java)
+            }
+            return null
+        }
 
        public fun clearTheAllProgress(application: Application){
           val sharefPrefDayFile =  application.getSharedPreferences(SHARED_PREF_ALL_DAYS_FILE,0)

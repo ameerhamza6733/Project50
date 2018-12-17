@@ -18,15 +18,12 @@ import com.bumptech.glide.Glide
 import com.google.ads.consent.ConsentInformation
 import com.google.ads.consent.ConsentStatus
 import com.google.ads.mediation.admob.AdMobAdapter
-import com.google.android.gms.ads.AdRequest
-import com.google.android.gms.ads.AdSize
-import com.google.android.gms.ads.AdView
-import com.google.android.gms.ads.InterstitialAd
+import com.google.android.gms.ads.*
 import com.yourdomain.project50.MY_Shared_PREF
 import com.yourdomain.project50.Model.Admob
 import com.yourdomain.project50.Model.AppAdmobSettingsFromFirebase
-import com.yourdomain.project50.Model.ExerciseDay
 import com.yourdomain.project50.Model.Excesizes
+import com.yourdomain.project50.Model.ExerciseDay
 import com.yourdomain.project50.R
 import com.yourdomain.project50.TTSHelperService
 import com.yourdomain.project50.ViewModle.ExcersizesByDayandTypeViewModle
@@ -55,7 +52,7 @@ class ExcersizeListActivity : AppCompatActivity() {
     private var mSetingsFromFirebase: AppAdmobSettingsFromFirebase? = null
 
     private var adRequest: AdRequest? = null
-    private val mInterstitialAd: InterstitialAd? = null
+    private var mInterstitialAd: InterstitialAd? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -120,13 +117,24 @@ class ExcersizeListActivity : AppCompatActivity() {
     }
 
     private fun loadInterstial() {
-
+        mInterstitialAd = InterstitialAd(this)
         if (mSetingsFromFirebase?.admobAds?.interstitialAds5?.id == null) {
             mInterstitialAd?.adUnitId = Admob.INTERSTITIAL_AD_ID
         } else {
             mInterstitialAd?.adUnitId = mSetingsFromFirebase?.admobAds?.interstitialAds5?.id
         }
         mInterstitialAd?.loadAd(adRequest)
+        mInterstitialAd?.adListener = object : AdListener() {
+            override fun onAdLoaded() {
+                super.onAdLoaded()
+                Log.d(TAG, "onAdLoaded")
+            }
+
+            override fun onAdFailedToLoad(p0: Int) {
+                super.onAdFailedToLoad(p0)
+                Log.d(TAG, "onAdFailedToLoad")
+            }
+        }
 
     }
 

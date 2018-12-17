@@ -133,6 +133,7 @@ class ExerciseActivity : AppCompatActivity(), WatingToStartExcersizeFragment.OnF
     private lateinit var mbtBack: ImageButton
     private lateinit var mbtdone: ImageButton
     private lateinit var mbtVideo: ImageButton
+    private lateinit var mbtHelp:ImageButton
 
 
     private var excesizes: Excesizes? = null
@@ -260,6 +261,7 @@ class ExerciseActivity : AppCompatActivity(), WatingToStartExcersizeFragment.OnF
         mLayout = findViewById(R.id.type_unlimted)
         adContainer = findViewById(R.id.adContanir)
         mbtVideo = findViewById(R.id.btVideo)
+        mbtHelp=findViewById(R.id.btHelp)
 
 
         mbtdone.setOnClickListener {
@@ -295,21 +297,28 @@ class ExerciseActivity : AppCompatActivity(), WatingToStartExcersizeFragment.OnF
         }
 
         mbtVideo.setOnClickListener {
-            countDown?.pause()
-            var adId = Admob.NATIVE_AD_ID
-            mSetingsFromFirebase?.admobAds?.nativeAds8?.id?.let {
-                adId = it
-            }
-            val videoFragment = VideoFragment.newInstance(excesizes?.title!![counter], excesizes?.detail!![counter], excesizes?.videosLinks!![counter], adId)
-            videoFragment.setStyle(DialogFragment.STYLE_NORMAL, R.style.Theme_Transparent);
-            videoFragment.show(supportFragmentManager, "videoFragment")
-
+           showVideoFragment()
         }
         mtotalTextView.setOnClickListener {
            goBack()
         }
+
+        mbtHelp.setOnClickListener {
+            showVideoFragment()
+        }
     }
 
+    private fun showVideoFragment(){
+        countDown?.pause()
+        var adId = Admob.NATIVE_AD_ID
+        mSetingsFromFirebase?.admobAds?.nativeAds8?.id?.let {
+            adId = it
+        }
+        val videoFragment = VideoFragment.newInstance(excesizes?.title!![counter], excesizes?.detail!![counter], excesizes?.videosLinks!![counter], adId)
+        videoFragment.setStyle(DialogFragment.STYLE_NORMAL, R.style.Theme_Transparent);
+        videoFragment.show(supportFragmentManager, "videoFragment")
+
+    }
     private fun onPauseExcersize() {
         var seconds = ""
         if (excesizes?.viewType!![counter] == Excesizes.VIEW_TYPE_LIMTED_EXCERSIZE) {

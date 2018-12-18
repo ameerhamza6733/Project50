@@ -56,7 +56,7 @@ class WatingToStartExcersizeFragment : DialogFragment() {
                 }
 
                 override fun onFinish() {
-                    mListener?.onCountDownDonw()
+
                     try {
                         dismiss()
                     } catch (e: Exception) {
@@ -127,6 +127,7 @@ class WatingToStartExcersizeFragment : DialogFragment() {
 
     override fun onDetach() {
         countDownTimer?.cancel()
+        mListener?.onCountDownDonw()
         super.onDetach()
         mListener = null
     }

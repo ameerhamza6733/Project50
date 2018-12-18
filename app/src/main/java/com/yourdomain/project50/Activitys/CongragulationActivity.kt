@@ -3,12 +3,14 @@ package com.yourdomain.project50.Activitys
 import android.arch.lifecycle.Observer
 import android.arch.lifecycle.ViewModelProviders
 import android.content.Context
+import android.content.Intent
 import android.os.Build
 import android.os.Bundle
 import android.support.v4.app.DialogFragment
 import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -34,7 +36,6 @@ import com.yourdomain.project50.Model.MoreApps
 import com.yourdomain.project50.R
 import com.yourdomain.project50.Utils
 import com.yourdomain.project50.ViewModle.CustomAdsViewModle
-import java.text.DecimalFormat
 import java.util.*
 
 class CongragulationActivity : AppCompatActivity() {
@@ -52,7 +53,7 @@ class CongragulationActivity : AppCompatActivity() {
     private var mSetingsFromFirebase: AppAdmobSettingsFromFirebase? = null
     private var mRewardedVideoAd: RewardedVideoAd? = null
     private var adRequest: AdRequest? = null
-
+    private var TAG="CongragulationActivity"
 
 
     companion object {
@@ -71,9 +72,9 @@ class CongragulationActivity : AppCompatActivity() {
                     WindowManager.LayoutParams.FLAG_FULLSCREEN)
         }
         findVIews()
-        tvCalriesBurn.text = String.format("%.2f",intent?.getDoubleExtra(EXTRA_CAL, 0.0))
-        tvTotleExcersize.text =  String.format("%.2f",intent?.getDoubleExtra(EXTRA_EXCERSIZES, 0.0))
-        tvDuration.text = String.format("%.2f",intent?.getDoubleExtra(EXTRA_DURACTION, 0.0))
+        tvCalriesBurn.text = String.format("%.2f", intent?.getDoubleExtra(EXTRA_CAL, 0.0))
+        tvTotleExcersize.text = String.format("%.2f", intent?.getDoubleExtra(EXTRA_EXCERSIZES, 0.0))
+        tvDuration.text = String.format("%.2f", intent?.getDoubleExtra(EXTRA_DURACTION, 0.0))
         tvDayComleted.text = intent?.getIntExtra(EXTRA_DAY, 0).toString()
         Glide.with(this)
                 .load(R.drawable.congragulation_cup)
@@ -138,15 +139,29 @@ class CongragulationActivity : AppCompatActivity() {
             rateUsFragment.show(supportFragmentManager, "rateUsFragment")
         }
 
-        btClose.setOnClickListener { finish() }
-        btShare.setOnClickListener { Utils.shareTextExtra(application, "I have just completed " + tvDayComleted.text + " of (app name). Join me " + application.packageName) }
+        btClose.setOnClickListener {
+            startActivity(Intent(this@CongragulationActivity,EachPlanDaysListActivity::class.java))
+            showVideoAd()
+            finish()
+        }
+        btShare.setOnClickListener {
+            Utils.shareTextExtra(this@CongragulationActivity, "I have just completed " + tvDayComleted.text +getString(R.string.app_name)+ ". Join me " + "https://play.google.com/store/apps/details?id="+application.packageName) }
 
     }
 
     override fun onBackPressed() {
-        if (mRewardedVideoAd?.isLoaded == true)
-            mRewardedVideoAd?.show()
+        startActivity(Intent(this@CongragulationActivity,EachPlanDaysListActivity::class.java))
+        showVideoAd()
         finish()
+    }
+
+    private fun showVideoAd() {
+        if (mRewardedVideoAd?.isLoaded == true) {
+            mRewardedVideoAd?.show()
+        }
+        else{
+            Log.d(TAG,"video ad not loded")
+        }
     }
 
     inner class MoreAppsAdupter(val moreApps: ArrayList<MoreApps>) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {

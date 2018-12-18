@@ -43,10 +43,11 @@ public class Utils {
         return String.valueOf(((done * 100 / totle))) + "%";
     }
 
-    public static void shareTextExtra(Application application, String text) {
+    public static void shareTextExtra(Context application, String text) {
         Intent intent2 = new Intent();
         intent2.setAction(Intent.ACTION_SEND);
         intent2.setType("text/plain");
+        intent2.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         intent2.putExtra(Intent.EXTRA_TEXT, text);
         application.startActivity(Intent.createChooser(intent2, "Share via"));
     }
@@ -74,6 +75,7 @@ public class Utils {
         String shareBody = text;
         Intent sharingIntent = new Intent(android.content.Intent.ACTION_SEND);
         sharingIntent.setType("text/plain");
+        sharingIntent.putExtra(Intent.EXTRA_SUBJECT,application.getString(R.string.app_name));
         sharingIntent.putExtra(android.content.Intent.EXTRA_TEXT, shareBody);
         application.startActivity(Intent.createChooser(sharingIntent, "Share using"));
     }

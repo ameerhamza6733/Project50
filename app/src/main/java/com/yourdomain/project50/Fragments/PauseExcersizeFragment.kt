@@ -66,7 +66,7 @@ class PauseExcersizeFragment : DialogFragment() {
         tvTitle.text = mParamExcesizeTilte
         tvSeconds.text = mParamExcersizeSeconds
         btContinue.setOnClickListener {
-            mListener?.ResumeListener()
+
             dismiss()
 
         }

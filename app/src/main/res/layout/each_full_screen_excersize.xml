@@ -129,10 +129,12 @@
             android:layout_marginBottom="8dp"
             android:layout_marginEnd="8dp"
             android:layout_marginStart="8dp"
+            android:layout_marginTop="8dp"
             android:progressDrawable="@drawable/progress_bar_with_custom_hight"
             app:layout_constraintBottom_toTopOf="@+id/adContanir"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent" />
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/tvDescription" />
 
         <RelativeLayout
             android:id="@+id/adContanir"
@@ -159,7 +161,7 @@
             app:layout_constraintStart_toStartOf="@+id/thisProgressBar"
             app:layout_constraintTop_toTopOf="@+id/thisProgressBar" />
 
-        <LinearLayout
+        <android.support.constraint.ConstraintLayout
 
             android:id="@+id/type_unlimted"
             android:layout_width="match_parent"
@@ -167,18 +169,23 @@
             android:layout_marginBottom="16dp"
             android:layout_marginEnd="8dp"
             android:layout_marginStart="8dp"
-            android:orientation="horizontal"
+
             app:layout_constraintBottom_toTopOf="@+id/adContanir"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent">
 
             <ImageButton
-
                 android:id="@+id/btBack"
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
+                android:layout_width="30dp"
+                android:layout_height="41dp"
+
                 android:layout_weight="1"
-                android:background="#FFFFFF"
+
+                android:background="?android:selectableItemBackground"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toStartOf="@+id/btDone"
+                app:layout_constraintHorizontal_bias="0.5"
+                app:layout_constraintStart_toStartOf="parent"
                 app:srcCompat="@drawable/ic_chevron_left_black_24dp" />
 
             <ImageButton
@@ -187,18 +194,28 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
                 android:background="@drawable/circle_button"
-                android:padding="8dp"
+                android:padding="4dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toStartOf="@+id/btNext"
+                app:layout_constraintHorizontal_bias="0.5"
+                app:layout_constraintStart_toEndOf="@+id/btBack"
+                app:layout_constraintTop_toTopOf="parent"
                 app:srcCompat="@drawable/ic_done_white_24dp" />
 
             <ImageButton
                 android:id="@+id/btNext"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
+                android:layout_marginEnd="8dp"
+                android:layout_marginTop="8dp"
                 android:layout_weight="1"
-                android:background="#FFFFFF"
+                android:background="?android:selectableItemBackground"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/btDone"
+                app:layout_constraintTop_toTopOf="parent"
                 app:srcCompat="@drawable/ic_chevron_right_black_24dp" />
 
-        </LinearLayout>
+        </android.support.constraint.ConstraintLayout>
 
         <ImageButton
 

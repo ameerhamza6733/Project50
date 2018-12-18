@@ -7,6 +7,7 @@ import android.media.MediaPlayer
 import android.os.Build
 import android.os.Bundle
 import android.os.Handler
+import android.support.constraint.ConstraintLayout
 import android.support.v4.app.DialogFragment
 import android.support.v4.content.LocalBroadcastManager
 import android.support.v7.app.AppCompatActivity
@@ -53,6 +54,9 @@ class ExerciseActivity : AppCompatActivity(), WatingToStartExcersizeFragment.OnF
     }
 
     override fun onQuit() {
+        startActivity(Intent(this,EachPlanDaysListActivity::class.java))
+        if (mRewardedVideoAd?.isLoaded == true)
+            mRewardedVideoAd?.show()
         finish()
     }
 
@@ -128,12 +132,13 @@ class ExerciseActivity : AppCompatActivity(), WatingToStartExcersizeFragment.OnF
     private lateinit var mtvTitle: TextView
     private lateinit var mbtSpeaker: ImageButton
     private lateinit var mbtStop: TextView
-    private lateinit var mLayout: LinearLayout
+    private lateinit var mLayout: ConstraintLayout
     private lateinit var mbtNext: ImageButton
     private lateinit var mbtBack: ImageButton
     private lateinit var mbtdone: ImageButton
     private lateinit var mbtVideo: ImageButton
     private lateinit var mbtHelp:ImageButton
+    private var videoAd13:RewardedVideoAd?=null
 
 
     private var excesizes: Excesizes? = null
@@ -339,6 +344,20 @@ class ExerciseActivity : AppCompatActivity(), WatingToStartExcersizeFragment.OnF
     }
 
     private fun updateWithOutCountDownUI() {
+        if (counter>0){
+            mCurrentProgressBar.visibility = View.INVISIBLE
+            mbtNext.visibility=View.VISIBLE
+            mbtdone.visibility=View.VISIBLE
+            mbtStop.visibility = View.INVISIBLE
+            mbtBack.visibility=View.VISIBLE
+        }else{
+            mCurrentProgressBar.visibility = View.INVISIBLE
+            mbtNext.visibility=View.VISIBLE
+            mbtdone.visibility=View.VISIBLE
+            mbtStop.visibility = View.INVISIBLE
+            mbtBack.visibility=View.INVISIBLE
+
+        }
 
         mTotalProgressBar.max = excesizes?.title?.size!!
 
@@ -353,7 +372,7 @@ class ExerciseActivity : AppCompatActivity(), WatingToStartExcersizeFragment.OnF
         mtvescription.text = excesizes?.detail!![counter]
         mtvTitle.text = excesizes?.title!![counter].toUpperCase()
         mTotalProgressBar.progress = counter
-        mLayout.visibility = View.VISIBLE
+        mbtdone.visibility = View.VISIBLE
         mCurrentProgressBar.visibility = View.INVISIBLE
         mbtStop.visibility = View.INVISIBLE
 
@@ -364,7 +383,9 @@ class ExerciseActivity : AppCompatActivity(), WatingToStartExcersizeFragment.OnF
     private var runable: Runnable? = null
 
     private fun onNext(showWatingForNextFragment: Boolean) {
+
         if (showWatingForNextFragment) {
+
             playSound(R.raw.beep_start_exercise)
             handle = Handler()
             runable = Runnable {
@@ -414,8 +435,14 @@ class ExerciseActivity : AppCompatActivity(), WatingToStartExcersizeFragment.OnF
 
     private fun onBack() {
         counter--
+        countDown?.cancel()
         if (excesizes?.viewType!![counter] == Excesizes.VIEW_TYPE_LIMTED_EXCERSIZE) {
-            updateUIWithCountDown()
+            finish()
+            val internt = Intent(this, ExerciseActivity::class.java)
+            internt.putExtra(ExerciseActivity.EXTRA_EXCERSIZES_DONE, counter-1)
+            internt.putExtra(ExerciseActivity.EXTRA_PLAN, currentPlan)
+            internt.putExtra(ExerciseActivity.EXTRA_DAY, currentDayKey)
+            startActivity(internt)
         } else if (excesizes?.viewType!![counter] == Excesizes.VIEW_TYPE_UN_LIMTED_EXCERSIZE) {
             updateWithOutCountDownUI()
 
@@ -424,9 +451,23 @@ class ExerciseActivity : AppCompatActivity(), WatingToStartExcersizeFragment.OnF
 
 
     private fun updateUIWithCountDown() {
-        mLayout.visibility = View.INVISIBLE
-        mCurrentProgressBar.visibility = View.VISIBLE
-        mbtStop.visibility = View.VISIBLE
+
+
+       if (counter>0){
+           mCurrentProgressBar.visibility = View.VISIBLE
+           mbtNext.visibility=View.INVISIBLE
+           mbtdone.visibility=View.INVISIBLE
+           mbtStop.visibility = View.VISIBLE
+           mbtBack.visibility=View.VISIBLE
+       }else{
+           mCurrentProgressBar.visibility = View.VISIBLE
+           mbtNext.visibility=View.INVISIBLE
+           mbtdone.visibility=View.INVISIBLE
+           mbtStop.visibility = View.VISIBLE
+           mbtBack.visibility=View.INVISIBLE
+
+       }
+
         mTotalProgressBar.max = excesizes?.title?.size!!
         mtotalTextView.text = (counter + 1).toString() + "/" + excesizes?.icons?.size.toString()
         Glide.with(this).asGif().load(excesizes?.icons?.get(counter)).into(mImageVIew)
@@ -512,8 +553,7 @@ class ExerciseActivity : AppCompatActivity(), WatingToStartExcersizeFragment.OnF
         handle?.removeCallbacks(runable)
         mediaPlayer?.stop()
         mediaPlayer?.release()
-        if (mRewardedVideoAd?.isLoaded == true)
-            mRewardedVideoAd?.show()
+
         countDown=null
         super.onDestroy()
     }

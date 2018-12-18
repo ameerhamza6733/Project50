@@ -46,11 +46,11 @@ class QuitFragment : DialogFragment() {
         Glide.with(this).asBitmap().load(R.drawable.spalish4).apply(RequestOptions().override(400,450)).into(backGoudidImage)
         btContinue.setOnClickListener {
             dismiss()
-            mListener?.onContinue()
+
         }
         btClose.setOnClickListener {
             dismiss()
-            mListener?.onContinue()
+
         }
         btComeBackLater.setOnClickListener {
             mListener?.onComeBacKLater()
@@ -86,7 +86,7 @@ class QuitFragment : DialogFragment() {
     }
 
     override fun onDetach() {
-
+        mListener?.onContinue()
         super.onDetach()
         mListener = null
     }

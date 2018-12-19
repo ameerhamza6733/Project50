@@ -38,7 +38,7 @@
             android:label="@string/title_activity_main"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name=".Activitys.EachPlanDaysListActivity"
+            android:name=".Activitys.EachPlanActivity"
             android:label="@string/title_activity_all_excersizes"
             android:theme="@style/SpalishTheme" />
         <activity android:name=".Activitys.ExcersizeListActivity" />
@@ -47,7 +47,7 @@
             android:screenOrientation="portrait"
             android:theme="@style/SpalishTheme" />
         <activity
-            android:name=".Activitys.CongragulationActivity"
+            android:name=".Activitys.CongratulationActivity"
             android:theme="@style/SpalishTheme" />
 
         <service android:name=".TTSHelperService" />

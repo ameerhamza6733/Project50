@@ -37,7 +37,7 @@
         android:layout_marginBottom="24dp"
         android:layout_marginEnd="8dp"
         android:layout_marginStart="8dp"
-        android:text="@string/lose_belly_fat"
+        android:text="@string/app_name"
         android:textColor="#FFF"
         android:textSize="60sp"
         app:layout_constraintBottom_toBottomOf="parent"

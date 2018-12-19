@@ -38,7 +38,7 @@ import com.yourdomain.project50.Utils
 import com.yourdomain.project50.ViewModle.CustomAdsViewModle
 import java.util.*
 
-class CongragulationActivity : AppCompatActivity() {
+class CongratulationActivity : AppCompatActivity() {
 
     private lateinit var tvDayComleted: TextView
     private lateinit var tvCalriesBurn: TextView
@@ -53,14 +53,14 @@ class CongragulationActivity : AppCompatActivity() {
     private var mSetingsFromFirebase: AppAdmobSettingsFromFirebase? = null
     private var mRewardedVideoAd: RewardedVideoAd? = null
     private var adRequest: AdRequest? = null
-    private var TAG="CongragulationActivity"
+    private var TAG="CongratulationActivity"
 
 
     companion object {
-        val EXTRA_EXCERSIZES = "CongragulationActivity.extraday";
-        val EXTRA_DURACTION = "CongragulationActivity.EXTRA_DURACTION"
-        val EXTRA_CAL = "CongragulationActivity.extra_cal"
-        val EXTRA_DAY = "CongragulationActivity.EXTRA_DAY"
+        val EXTRA_EXCERSIZES = "CongratulationActivity.extraday";
+        val EXTRA_DURACTION = "CongratulationActivity.EXTRA_DURACTION"
+        val EXTRA_CAL = "CongratulationActivity.extra_cal"
+        val EXTRA_DAY = "CongratulationActivity.EXTRA_DAY"
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -140,17 +140,17 @@ class CongragulationActivity : AppCompatActivity() {
         }
 
         btClose.setOnClickListener {
-            startActivity(Intent(this@CongragulationActivity,EachPlanDaysListActivity::class.java))
+            startActivity(Intent(this@CongratulationActivity,EachPlanActivity::class.java))
             showVideoAd()
             finish()
         }
         btShare.setOnClickListener {
-            Utils.shareTextExtra(this@CongragulationActivity, "I have just completed " + tvDayComleted.text +getString(R.string.app_name)+ ". Join me " + "https://play.google.com/store/apps/details?id="+application.packageName) }
+            Utils.shareTextExtra(this@CongratulationActivity, "I have just completed " + tvDayComleted.text +getString(R.string.app_name)+ ". Join me " + "https://play.google.com/store/apps/details?id="+application.packageName) }
 
     }
 
     override fun onBackPressed() {
-        startActivity(Intent(this@CongragulationActivity,EachPlanDaysListActivity::class.java))
+        startActivity(Intent(this@CongratulationActivity,EachPlanActivity::class.java))
         showVideoAd()
         finish()
     }

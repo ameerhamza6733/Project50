@@ -44,7 +44,7 @@ import com.yourdomain.project50.ViewModle.ExcersizePlansViewModle
 import kotlinx.android.synthetic.main.activity_days_excersizes.*
 
 
-class EachPlanDaysListActivity : AppCompatActivity(), FullBodyPlanDayFragment.onRefrech,ABSPlanFragment.onRefrech,ButtPlanFragment.onRefrech {
+class EachPlanActivity : AppCompatActivity(), FullBodyPlanDayFragment.onRefrech,ABSPlanFragment.onRefrech,ButtPlanFragment.onRefrech {
     override fun onRefrechButtCallBack() {
        refrashExcersizePlanAudupter(3)
     }
@@ -53,7 +53,7 @@ class EachPlanDaysListActivity : AppCompatActivity(), FullBodyPlanDayFragment.on
        refrashExcersizePlanAudupter(2)
     }
 
-    override fun onRefrechCallBack() {
+    override fun onRefrechFullBodyCallBack() {
       refrashExcersizePlanAudupter(1)
 
     }
@@ -80,12 +80,12 @@ class EachPlanDaysListActivity : AppCompatActivity(), FullBodyPlanDayFragment.on
                 return@OnNavigationItemSelectedListener true
             }
             R.id.navigation_dashboard -> {
-                startActivity(Intent(this@EachPlanDaysListActivity, ReportsActivity::class.java))
+                startActivity(Intent(this@EachPlanActivity, ReportsActivity::class.java))
 
                 return@OnNavigationItemSelectedListener true
             }
             R.id.navigation_notifications -> {
-                startActivity(Intent(this@EachPlanDaysListActivity, SettingsActivity::class.java))
+                startActivity(Intent(this@EachPlanActivity, SettingsActivity::class.java))
                 return@OnNavigationItemSelectedListener true
             }
         }
@@ -148,7 +148,7 @@ class EachPlanDaysListActivity : AppCompatActivity(), FullBodyPlanDayFragment.on
             }
         }
         boxTick.setOnClickListener {
-            val intent = Intent(this@EachPlanDaysListActivity, MainActivity::class.java)
+            val intent = Intent(this@EachPlanActivity, MainActivity::class.java)
             startActivity(intent)
         }
     }

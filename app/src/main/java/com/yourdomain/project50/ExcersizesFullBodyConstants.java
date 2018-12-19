@@ -31,7 +31,7 @@ public class ExcersizesFullBodyConstants {
 
     };
     private static int[] exercise_day1_couch_tips = {
-            R.string.excersize_full_body_plan_couch_tips_day1_excerise1,R.string.excersize_full_body_plan_couch_tips_day1_excerise2
+            R.string.exercise_full_body_plan_couch_tips_day1_exercise1,R.string.exercise_full_body_plan_couch_tips_day1_exercise2
 
     };
     private static String[] exercise_day1_video_links={
@@ -135,20 +135,20 @@ public class ExcersizesFullBodyConstants {
     };
 
     private static int[] excersizes_defult_couch_tips = {
-            R.string.excersize_full_body_plan_couch_tip_defult,
-            R.string.excersize_full_body_plan_couch_tip_defult,
-            R.string.excersize_full_body_plan_couch_tip_defult,
-            R.string.excersize_full_body_plan_couch_tip_defult,
-            R.string.excersize_full_body_plan_couch_tip_defult,
-            R.string.excersize_full_body_plan_couch_tip_defult,
-            R.string.excersize_full_body_plan_couch_tip_defult,
-            R.string.excersize_full_body_plan_couch_tip_defult,
-            R.string.excersize_full_body_plan_couch_tip_defult,
-            R.string.excersize_full_body_plan_couch_tip_defult,
-            R.string.excersize_full_body_plan_couch_tip_defult,
-            R.string.excersize_full_body_plan_couch_tip_defult,
-            R.string.excersize_full_body_plan_couch_tip_defult,
-            R.string.excersize_full_body_plan_couch_tip_defult
+            R.string.exercise_full_body_plan_couch_tip_defult,
+            R.string.exercise_full_body_plan_couch_tip_defult,
+            R.string.exercise_full_body_plan_couch_tip_defult,
+            R.string.exercise_full_body_plan_couch_tip_defult,
+            R.string.exercise_full_body_plan_couch_tip_defult,
+            R.string.exercise_full_body_plan_couch_tip_defult,
+            R.string.exercise_full_body_plan_couch_tip_defult,
+            R.string.exercise_full_body_plan_couch_tip_defult,
+            R.string.exercise_full_body_plan_couch_tip_defult,
+            R.string.exercise_full_body_plan_couch_tip_defult,
+            R.string.exercise_full_body_plan_couch_tip_defult,
+            R.string.exercise_full_body_plan_couch_tip_defult,
+            R.string.exercise_full_body_plan_couch_tip_defult,
+            R.string.exercise_full_body_plan_couch_tip_defult
 
     };
 

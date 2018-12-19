@@ -43,10 +43,10 @@ public class ExcersizesBUTTPlanConstants {
             Excesizes.VIEW_TYPE_LIMTED_EXCERSIZE
     };
     private static int[] excersizes_day1_couch_tips = {
-            R.string.excersize_butt_plan_couch_tips_day1_excerise1,
-            R.string.excersize_butt_plan_tips_day1_excerise2,
-            R.string.excersize_butt_plan_tips_day1_excerise3,
-            R.string.excersize_butt_plan_tips_day1_excerise4
+            R.string.exercise_butt_plan_couch_tips_day1_excerise1,
+            R.string.exercise_butt_plan_tips_day1_excerise2,
+            R.string.exercise_butt_plan_tips_day1_exercise3,
+            R.string.exercise_butt_plan_tips_day1_exercise4
 
     };
     private static String[] excersizes_day1_detail = {
@@ -154,20 +154,20 @@ public class ExcersizesBUTTPlanConstants {
     };
 
     private static int[] excersizes_defult_couch_tips = {
-            R.string.excersize_butt_plan_couch_tip_defult,
-            R.string.excersize_butt_plan_couch_tip_defult,
-            R.string.excersize_butt_plan_couch_tip_defult,
-            R.string.excersize_butt_plan_couch_tip_defult,
-            R.string.excersize_butt_plan_couch_tip_defult,
-            R.string.excersize_butt_plan_couch_tip_defult,
-            R.string.excersize_butt_plan_couch_tip_defult,
-            R.string.excersize_butt_plan_couch_tip_defult,
-            R.string.excersize_butt_plan_couch_tip_defult,
-            R.string.excersize_butt_plan_couch_tip_defult,
-            R.string.excersize_butt_plan_couch_tip_defult,
-            R.string.excersize_butt_plan_couch_tip_defult,
-            R.string.excersize_butt_plan_couch_tip_defult,
-            R.string.excersize_butt_plan_couch_tip_defult
+            R.string.exercise_butt_plan_couch_tip_defult,
+            R.string.exercise_butt_plan_couch_tip_defult,
+            R.string.exercise_butt_plan_couch_tip_defult,
+            R.string.exercise_butt_plan_couch_tip_defult,
+            R.string.exercise_butt_plan_couch_tip_defult,
+            R.string.exercise_butt_plan_couch_tip_defult,
+            R.string.exercise_butt_plan_couch_tip_defult,
+            R.string.exercise_butt_plan_couch_tip_defult,
+            R.string.exercise_butt_plan_couch_tip_defult,
+            R.string.exercise_butt_plan_couch_tip_defult,
+            R.string.exercise_butt_plan_couch_tip_defult,
+            R.string.exercise_butt_plan_couch_tip_defult,
+            R.string.exercise_butt_plan_couch_tip_defult,
+            R.string.exercise_butt_plan_couch_tip_defult
 
     };
     private static String[] excersize_defult_video_links  = {

@@ -97,22 +97,6 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-//    override fun onCreateOptionsMenu(menu: Menu): Boolean {
-//        // Inflate the menu; this adds items to the action bar if it is present.
-//        menuInflater.inflate(R.menu.main, menu)
-//        return true
-//    }
-//
-//    override fun onOptionsItemSelected(item: MenuItem): Boolean {
-//        // Handle action bar item clicks here. The action bar will
-//        // automatically handle clicks on the Home/Up button, so long
-//        // as you specify a parent activity in AndroidManifest.xml.
-//        when (item.itemId) {
-//            R.id.action_settings -> return true
-//            else -> return super.onOptionsItemSelected(item)
-//        }
-//    }
-
 
     private fun intiDataSet() {
         val model = ExcersizePlansViewModle(application)
@@ -192,8 +176,8 @@ class MainActivity : AppCompatActivity() {
                         moreAppsDialogeFragment.setStyle(DialogFragment.STYLE_NORMAL, R.style.dialog);
                         moreAppsDialogeFragment.show(supportFragmentManager, "moreAppsDialogeFragment")
                     } else {
-                        val intent = Intent(itemView.context, EachPlanDaysListActivity::class.java)
-                        intent.putExtra(EachPlanDaysListActivity.EXTRA_PLAN, adapterPosition)
+                        val intent = Intent(itemView.context, EachPlanActivity::class.java)
+                        intent.putExtra(EachPlanActivity.EXTRA_PLAN, adapterPosition)
                         itemView.context.startActivity(intent)
                         finish()
                     }
@@ -303,11 +287,6 @@ class MainActivity : AppCompatActivity() {
 
     }
 
-    /**
-     * Creates a request for a new native ad based on the boolean parameters and calls the
-     * corresponding "populate" method when one is successfully returned.
-     *
-     */
     private fun refreshAd(adView: UnifiedNativeAdView) {
 
 

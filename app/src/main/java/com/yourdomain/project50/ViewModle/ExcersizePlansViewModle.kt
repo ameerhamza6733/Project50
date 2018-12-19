@@ -19,9 +19,9 @@ class ExcersizePlansViewModle(application: Application) : AndroidViewModel(appli
 
         excersizePlanList = ArrayList();
 
-        val excersizesTypes = getApplication<Application>().resources.getStringArray(R.array.excersize_type)
-        val excersizeTypeImages = getApplication<Application>().resources.obtainTypedArray(R.array.excersize_type_icon)
-        val excersizeTypeTotalDays = getApplication<Application>().resources.getStringArray(R.array.excersize_type_total_days)
+        val excersizesTypes = getApplication<Application>().resources.getStringArray(R.array.exercise_type)
+        val excersizeTypeImages = getApplication<Application>().resources.obtainTypedArray(R.array.exercise_type_icon)
+        val excersizeTypeTotalDays = getApplication<Application>().resources.getStringArray(R.array.exercise_type_total_days)
         val daysComplted = MY_Shared_PREF.getAllCompletedorInprogressDays(getApplication())
 
         for (i in 0 until excersizesTypes.size) {

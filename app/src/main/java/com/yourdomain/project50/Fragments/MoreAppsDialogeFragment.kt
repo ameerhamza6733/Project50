@@ -7,7 +7,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
-import com.yourdomain.project50.Activitys.EachPlanDaysListActivity
+import com.yourdomain.project50.Activitys.EachPlanActivity
 import com.yourdomain.project50.R
 import com.yourdomain.project50.Utils
 
@@ -32,8 +32,8 @@ class MoreAppsDialogeFragment : DialogFragment() {
         btLatter = view.findViewById(R.id.btLatter)
         btyas = view.findViewById(R.id.btYasNow)
         btLatter.setOnClickListener {
-            val intent = Intent(activity, EachPlanDaysListActivity::class.java)
-            intent.putExtra(EachPlanDaysListActivity.EXTRA_PLAN, intdex)
+            val intent = Intent(activity, EachPlanActivity::class.java)
+            intent.putExtra(EachPlanActivity.EXTRA_PLAN, intdex)
             activity?.startActivity(intent)
             activity?.finish()
         }

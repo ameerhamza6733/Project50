@@ -54,7 +54,7 @@ class ExerciseActivity : AppCompatActivity(), WatingToStartExcersizeFragment.OnF
     }
 
     override fun onQuit() {
-        startActivity(Intent(this,EachPlanDaysListActivity::class.java))
+        startActivity(Intent(this,EachPlanActivity::class.java))
         if (mRewardedVideoAd?.isLoaded == true)
             mRewardedVideoAd?.show()
         finish()
@@ -95,11 +95,11 @@ class ExerciseActivity : AppCompatActivity(), WatingToStartExcersizeFragment.OnF
         person.totleMintsDuration = person.totleMintsDuration + totleTime.toDouble()
         MY_Shared_PREF.savePerson(application, person)
 
-        val intent = Intent(this@ExerciseActivity, CongragulationActivity::class.java)
-        intent.putExtra(CongragulationActivity.EXTRA_DURACTION, person.totleMintsDuration)
-        intent.putExtra(CongragulationActivity.EXTRA_EXCERSIZES, person.totleEXERCISES)
-        intent.putExtra(CongragulationActivity.EXTRA_DAY, currentDayKey + 1)
-        intent.putExtra(CongragulationActivity.EXTRA_CAL, person.totleKCalBurn)
+        val intent = Intent(this@ExerciseActivity, CongratulationActivity::class.java)
+        intent.putExtra(CongratulationActivity.EXTRA_DURACTION, person.totleMintsDuration)
+        intent.putExtra(CongratulationActivity.EXTRA_EXCERSIZES, person.totleEXERCISES)
+        intent.putExtra(CongratulationActivity.EXTRA_DAY, currentDayKey + 1)
+        intent.putExtra(CongratulationActivity.EXTRA_CAL, person.totleKCalBurn)
         when (currentPlan) {
             ExcersizePlan.PLAN_FULL_BODY -> {
                 FullBodyPlanDayFragment.refrashRecylerViewIndex = currentDayKey

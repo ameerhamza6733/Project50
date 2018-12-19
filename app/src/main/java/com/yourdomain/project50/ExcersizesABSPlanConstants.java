@@ -50,10 +50,10 @@ public class ExcersizesABSPlanConstants {
             ": Crossed Arm Crunch. Crossed arm crunch is a beginner friendly bodyweight crunch exercise that works your"
     };
     private static int[] excersizes_day1_couch_tips = {
-            R.string.excersize_abs_couch_tips_day1_excerise1,
-            R.string.excersize_abs_couch_tips_day1_excerise2,
-            R.string.excersize_abs_couch_tip_defult,
-            R.string.excersize_abs_couch_tips_day1_excerise4
+            R.string.exercise_abs_couch_tips_day1_exercise1,
+            R.string.exercise_abs_couch_tips_day1_exercise2,
+            R.string.exercise_abs_couch_tip_defult,
+            R.string.exercise_abs_couch_tips_day1_exercise4
 
     };
 
@@ -124,20 +124,20 @@ public class ExcersizesABSPlanConstants {
             ,400
     };
     private static int[] excersizes_defult_couch_tips = {
-            R.string.excersize_abs_couch_tip_defult,
-            R.string.excersize_abs_couch_tip_defult,
-            R.string.excersize_abs_couch_tip_defult,
-            R.string.excersize_abs_couch_tip_defult,
-            R.string.excersize_abs_couch_tip_defult,
-            R.string.excersize_abs_couch_tip_defult,
-            R.string.excersize_abs_couch_tip_defult,
-            R.string.excersize_abs_couch_tip_defult,
-            R.string.excersize_abs_couch_tip_defult,
-            R.string.excersize_abs_couch_tip_defult,
-            R.string.excersize_abs_couch_tip_defult,
-            R.string.excersize_abs_couch_tip_defult,
-            R.string.excersize_abs_couch_tip_defult,
-            R.string.excersize_abs_couch_tip_defult
+            R.string.exercise_abs_couch_tip_defult,
+            R.string.exercise_abs_couch_tip_defult,
+            R.string.exercise_abs_couch_tip_defult,
+            R.string.exercise_abs_couch_tip_defult,
+            R.string.exercise_abs_couch_tip_defult,
+            R.string.exercise_abs_couch_tip_defult,
+            R.string.exercise_abs_couch_tip_defult,
+            R.string.exercise_abs_couch_tip_defult,
+            R.string.exercise_abs_couch_tip_defult,
+            R.string.exercise_abs_couch_tip_defult,
+            R.string.exercise_abs_couch_tip_defult,
+            R.string.exercise_abs_couch_tip_defult,
+            R.string.exercise_abs_couch_tip_defult,
+            R.string.exercise_abs_couch_tip_defult
 
     };
     private static int[] getExcersize_view_type_defult = {

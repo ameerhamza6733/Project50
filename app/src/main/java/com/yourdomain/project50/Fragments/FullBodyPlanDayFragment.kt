@@ -19,7 +19,7 @@ import android.widget.FrameLayout
 import android.widget.ImageButton
 import android.widget.ProgressBar
 import android.widget.TextView
-import com.yourdomain.project50.Activitys.EachPlanDaysListActivity
+import com.yourdomain.project50.Activitys.EachPlanActivity
 import com.yourdomain.project50.Activitys.ExcersizeListActivity
 import com.yourdomain.project50.MY_Shared_PREF
 import com.yourdomain.project50.Model.CurrentDayandPlan
@@ -61,7 +61,7 @@ class FullBodyPlanDayFragment : Fragment() {
         Log.d(TAG, "onResume: refresh the index " + refrashRecylerViewIndex)
 
             if (refrashRecylerViewIndex != -1) {
-                onRefrechCallback?.onRefrechCallBack()
+                onRefrechCallback?.onRefrechFullBodyCallBack()
                 val updatedDay =  ExerciseDay(mDataSet.get(refrashRecylerViewIndex).day,mDataSet.get(refrashRecylerViewIndex).viewType,1,1,"100%")
                 mDataSet.set(refrashRecylerViewIndex,updatedDay)
                excersizeDaysAdupter?.notifyItemChanged(refrashRecylerViewIndex)
@@ -170,8 +170,8 @@ class FullBodyPlanDayFragment : Fragment() {
                     intent.putExtra(ExcersizeListActivity.EXTRA_PLAN, ExcersizePlan.PLAN_FULL_BODY)
                     intent.putExtra(ExcersizeListActivity.EXTRA_DAY, adapterPosition)
                     itemView.context.startActivity(intent)
-                    if (EachPlanDaysListActivity.mRewardedVideoAd?.isLoaded == true) {
-                        EachPlanDaysListActivity.mRewardedVideoAd?.show()
+                    if (EachPlanActivity.mRewardedVideoAd?.isLoaded == true) {
+                        EachPlanActivity.mRewardedVideoAd?.show()
                     }
                notifyDataSetChanged()
                 }
@@ -223,6 +223,6 @@ class FullBodyPlanDayFragment : Fragment() {
     }
 
     public interface onRefrech{
-        fun onRefrechCallBack()
+        fun onRefrechFullBodyCallBack()
     }
 }// Required empty public constructor

@@ -61,7 +61,13 @@ class ExerciseActivity : AppCompatActivity(), WatingToStartExcersizeFragment.OnF
     }
 
     override fun onContinue() {
-        countDown?.resume()
+        if (excesizes?.viewType!![counter] == Excesizes.VIEW_TYPE_LIMTED_EXCERSIZE) {
+            countDown?.resume()
+        } else if (excesizes?.viewType!![counter] == Excesizes.VIEW_TYPE_UN_LIMTED_EXCERSIZE) {
+
+
+        }
+
     }
 
     override fun onComeBacKLater() {
@@ -319,7 +325,7 @@ class ExerciseActivity : AppCompatActivity(), WatingToStartExcersizeFragment.OnF
         mSetingsFromFirebase?.admobAds?.nativeAds8?.id?.let {
             adId = it
         }
-        val videoFragment = VideoFragment.newInstance(excesizes?.title!![counter], excesizes?.detail!![counter], excesizes?.videosLinks!![counter], adId)
+        val videoFragment = VideoFragment.newInstance(excesizes?.title!![counter], excesizes?.detail!![counter], excesizes?.icons!![counter], adId)
         videoFragment.setStyle(DialogFragment.STYLE_NORMAL, R.style.Theme_Transparent);
         videoFragment.show(supportFragmentManager, "videoFragment")
 

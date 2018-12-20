@@ -12,14 +12,14 @@
     <!--starting excersize_type-->
     <!--//TODO:Edit exercise plan  make sure you add icon,todaydays and title aslo-->
     <string-array name="exercise_type">
-        <item>FULL BODY PLAN</item>
-        <item>ABS PLAN</item>
-        <item>BUTT PLAN</item>
+        <item>FULL BODY PLAN edit </item>
+        <item>ABS PLAN edit</item>
+        <item>BUTT PLAN edit</item>
     </string-array>
     <!--these icon will shows on page 3,4-->
     <integer-array name="exercise_type_icon">
         <item>@drawable/place_holder_excersize_type</item>
-        <item>@drawable/place_holder_excersize_type</item>
+        <item>@drawable/abs_plan_work_out_icon</item>
         <item>@drawable/place_holder_excersize_type</item>
     </integer-array>
     <string-array name="exercise_type_total_days">

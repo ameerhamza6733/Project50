@@ -1,18 +1,14 @@
 package com.yourdomain.project50.Fragments
 
 import android.content.Context
-import android.net.Uri
 import android.os.Bundle
 import android.support.v4.app.DialogFragment
 import android.util.DisplayMetrics
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.webkit.WebResourceRequest
-import android.webkit.WebView
-import android.webkit.WebViewClient
 import android.widget.*
+import com.bumptech.glide.Glide
 import com.google.ads.consent.ConsentInformation
 import com.google.ads.consent.ConsentStatus
 import com.google.ads.mediation.admob.AdMobAdapter
@@ -25,7 +21,6 @@ import com.google.android.gms.ads.formats.NativeAdOptions
 import com.google.android.gms.ads.formats.UnifiedNativeAd
 import com.google.android.gms.ads.formats.UnifiedNativeAdView
 import com.yourdomain.project50.R
-import com.yourdomain.project50.Utils
 
 
 class VideoFragment : DialogFragment() {
@@ -35,7 +30,7 @@ class VideoFragment : DialogFragment() {
     private var mNativeAdId: String? = null
     private var mTitle: String? = null
     private var mDis: String? = null
-    private var mVideoUrl: String? = null
+    private var mGifUrl: Int? = null
     private val TAG = "VideoFragment"
 
     private var mListener: OnVideoFragmentListener? = null
@@ -45,7 +40,7 @@ class VideoFragment : DialogFragment() {
         if (arguments != null) {
             mTitle = arguments!!.getString(ARG_PARAM_TITLE)
             mDis = arguments!!.getString(ARG_PARAM_DES)
-            mVideoUrl = arguments!!.getString(ARG_PARAM_VIDEO_URL)
+            mGifUrl = arguments!!.getInt(ARG_PARAM_VIDEO_URL)
             mNativeAdId = arguments!!.getString(ARG_NATIVE_AD_ID)
         }
     }
@@ -65,7 +60,7 @@ class VideoFragment : DialogFragment() {
         }
         val title = view.findViewById<TextView>(R.id.tvTitle)
         val description = view.findViewById<TextView>(R.id.tvDescription)
-        val webviewYoutube = view.findViewById<WebView>(R.id.webviewYoutubePlayer)
+        val gifView = view.findViewById<ImageView>(R.id.videoGifView)
         title.setText(mTitle)
         description.setText(mDis)
 
@@ -74,19 +69,8 @@ class VideoFragment : DialogFragment() {
         activity!!.windowManager.defaultDisplay.getMetrics(displaymetrics)
         val height = displaymetrics.heightPixels
         val width = displaymetrics.widthPixels
+        Glide.with(this).load(mGifUrl).into(gifView)
 
-        Log.d(TAG, "youtube video url id from url: " + Utils.youtubeUrlToVideoId(mVideoUrl))
-        val frameVideo = "<html><body>" + mVideoUrl + "<br><iframe width=\"420\" height=\"315\" src=\"https://www.youtube.com/embed/"+Utils.youtubeUrlToVideoId(mVideoUrl)+" frameborder=\"0\" allowfullscreen></iframe></body></html>";
-
-
-        webviewYoutube.webViewClient = object : WebViewClient() {
-            override fun shouldOverrideUrlLoading(view: WebView?, request: WebResourceRequest?): Boolean {
-                return false
-            }
-        };
-        val webSettings = webviewYoutube.getSettings();
-        webSettings.setJavaScriptEnabled(true);
-        webviewYoutube.loadData(frameVideo, "text/html", "utf-8");
         refreshAd()
         return view
     }
@@ -118,12 +102,12 @@ class VideoFragment : DialogFragment() {
         private val ARG_PARAM_DES = "ARG_PARAM_DES"
         private val ARG_PARAM_VIDEO_URL = "ARG_PARAM_VIDEO_URL"
         private val ARG_NATIVE_AD_ID = "ARG_NATIVE_AD_ID"
-        fun newInstance(title: String, description: String, videoLink: String, nativeAdId: String): VideoFragment {
+        fun newInstance(title: String, description: String, gif: Int, nativeAdId: String): VideoFragment {
             val fragment = VideoFragment()
             val args = Bundle()
             args.putString(ARG_PARAM_TITLE, title)
             args.putString(ARG_PARAM_DES, description)
-            args.putString(ARG_PARAM_VIDEO_URL, videoLink)
+            args.putInt(ARG_PARAM_VIDEO_URL, gif)
             args.putString(ARG_NATIVE_AD_ID, nativeAdId)
             fragment.arguments = args
             return fragment

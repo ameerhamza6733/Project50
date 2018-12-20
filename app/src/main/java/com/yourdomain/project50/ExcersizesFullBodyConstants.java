@@ -34,9 +34,7 @@ public class ExcersizesFullBodyConstants {
             R.string.exercise_full_body_plan_couch_tips_day1_exercise1,R.string.exercise_full_body_plan_couch_tips_day1_exercise2
 
     };
-    private static String[] exercise_day1_video_links={
-      "https://www.youtube.com/watch?v=JGfygJXTwq4","https://www.youtube.com/watch?v=2Vv-BfVoq4g"
-    };
+
 
 
     private static String[] exercise_defults_title = {
@@ -170,7 +168,7 @@ public class ExcersizesFullBodyConstants {
     };
 
     public static void fillUpdata() {
-        Excesizes day1Excersizes = new Excesizes(exercise_day1_titles, exercise_day1_gif_icons, exercise_day1_times, exercise_day1_detail, getExercise_day1_view_type, exercise_day1_calories, exercise_day1_couch_tips,exercise_day1_video_links);
+        Excesizes day1Excersizes = new Excesizes(exercise_day1_titles, exercise_day1_gif_icons, exercise_day1_times, exercise_day1_detail, getExercise_day1_view_type, exercise_day1_calories, exercise_day1_couch_tips);
         mDayToExsizeHashMap.put(1, day1Excersizes);
 
     }
@@ -181,6 +179,6 @@ public class ExcersizesFullBodyConstants {
         if (mDayToExsizeHashMap.containsKey(day)) {
             return mDayToExsizeHashMap.get(day);
         }
-        return new Excesizes(exercise_defults_title, exercises_defults_gif_icons, exercises_defult_times, excersizes_defult_detail, getExcersize_view_type_defult,excersize_defult_calrious,excersizes_defult_couch_tips,excersize_defult_video_links);
+        return new Excesizes(exercise_defults_title, exercises_defults_gif_icons, exercises_defult_times, excersizes_defult_detail, getExcersize_view_type_defult,excersize_defult_calrious,excersizes_defult_couch_tips);
     }
 }

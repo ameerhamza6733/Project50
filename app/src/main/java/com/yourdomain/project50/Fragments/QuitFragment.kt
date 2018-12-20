@@ -31,6 +31,7 @@ class QuitFragment : DialogFragment() {
     private lateinit var btClose: TextView
     private lateinit var btContinue: TextView
     private lateinit var btComeBackLater: TextView
+    private var comebackLater =false
 
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
@@ -55,6 +56,7 @@ class QuitFragment : DialogFragment() {
         btComeBackLater.setOnClickListener {
             mListener?.onComeBacKLater()
             sacduleThePaddingNotifaction()
+            comebackLater=true;
             mListener?.onQuit()
         }
         btQuit.setOnClickListener { mListener?.onQuit() }
@@ -86,7 +88,9 @@ class QuitFragment : DialogFragment() {
     }
 
     override fun onDetach() {
-        mListener?.onContinue()
+       if (!comebackLater){
+           mListener?.onContinue()
+       }
         super.onDetach()
         mListener = null
     }

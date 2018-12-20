@@ -23,16 +23,16 @@ class ExcersizesByDayandTypeViewModle : ViewModel() {
             mutableLiveData = MutableLiveData()
             when (plan) {
                 ExcersizePlan.PLAN_FULL_BODY -> {
-                    val ids = ExcersizesFullBodyConstants.getDay1ExcersizeKeys(day + 1)
-                    mutableLiveData?.value = ids
+                    val excesizes = ExcersizesFullBodyConstants.getDay1ExcersizeKeys(day + 1)
+                    mutableLiveData?.value = excesizes
                 }
                 ExcersizePlan.PLAN_ABS -> {
-                    val ids = ExcersizesABSPlanConstants.getDay1ExcersizeKeys(day + 1)
-                    mutableLiveData?.value = ids
+                    val excesizes = ExcersizesABSPlanConstants.getExcersizeByDay(day + 1)
+                    mutableLiveData?.value = excesizes
                 }
                 else -> {
-                    val ids = ExcersizesBUTTPlanConstants.getDay1ExcersizeKeys(day + 1)
-                    mutableLiveData?.value = ids
+                    val excesizes = ExcersizesBUTTPlanConstants.getDay1ExcersizeKeys(day + 1)
+                    mutableLiveData?.value = excesizes
                 }
             }
 

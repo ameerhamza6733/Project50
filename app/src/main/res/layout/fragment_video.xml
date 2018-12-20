@@ -10,9 +10,10 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <WebView
-            android:background="#214057"
-            android:id="@+id/webviewYoutubePlayer"
+        <ImageView
+
+            android:background="@color/colorWhite"
+            android:id="@+id/videoGifView"
             android:layout_width="match_parent"
             android:layout_height="350dp"
             android:layout_marginTop="8dp"
@@ -27,7 +28,7 @@
             android:textSize="24sp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/webviewYoutubePlayer"
+            app:layout_constraintTop_toBottomOf="@+id/videoGifView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content" />
 

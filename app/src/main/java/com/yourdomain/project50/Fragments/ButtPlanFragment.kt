@@ -15,6 +15,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.FrameLayout
+import android.widget.ImageButton
 import android.widget.ProgressBar
 import android.widget.TextView
 import com.yourdomain.project50.Activitys.ExcersizeListActivity
@@ -99,20 +100,35 @@ class ButtPlanFragment : Fragment() {
 
         override fun onBindViewHolder(p0: RecyclerView.ViewHolder, p1: Int) {
 
+            p0.setIsRecyclable(false)
             if (ExerciseDay.VIEW_TYPE_DAY == p0.itemViewType) {
                 p0 as ExcersizeDAYViewHolder
+
                 if (exerciseList[p0.adapterPosition].totaleExcersizes > 0) {
                     p0.progressBar.max = exerciseList[p0.adapterPosition].totaleExcersizes.toInt()
                 }
                 if (exerciseList[p0.adapterPosition].totaleExcersizes > 0) {
                     p0.progressBar.progress = exerciseList[p0.adapterPosition].doneExcersises.toInt()
-                    p0.tvProgress.setText(exerciseList[p0.adapterPosition].progress)
+                    if (exerciseList[p0.adapterPosition].progress.equals("100%")){
+                        p0.tvProgress.visibility=View.INVISIBLE
+                        p0.progressBar.visibility=View.INVISIBLE
+                        p0.tvAllDaysCompleted.visibility=View.VISIBLE
+
+                    }else{
+                        p0.tvProgress.visibility=View.VISIBLE
+                        p0.progressBar.visibility=View.VISIBLE
+                        p0.tvAllDaysCompleted.visibility=View.INVISIBLE
+                        p0.tvProgress.setText(exerciseList[p0.adapterPosition].progress)
+
+                    }
+
+
                 }
                 p0.tvDay.text = "Day " + exerciseList[p0.adapterPosition].day.toString()
-                if (currentDayandPlan?.day == p0.adapterPosition) {
-                    p0.rootEExcersizeDay.setCardBackgroundColor(ContextCompat.getColor(p0.progressBar.context, R.color.colorAccent))
+                if (currentDayandPlan?.day==p0.adapterPosition){
+                    p0.rootEExcersizeDay.setCardBackgroundColor(ContextCompat.getColor(p0.progressBar.context,R.color.colorAccent))
                     p0.tvDay.setTextColor(ContextCompat.getColor(p0.progressBar.context, R.color.colorWhite))
-                    p0.tvProgress.setTextColor(ContextCompat.getColor(p0.progressBar.context, R.color.colorWhite))
+                    p0.tvProgress.setTextColor(ContextCompat.getColor(p0.progressBar.context,R.color.colorWhite))
                 }
             } else if (ExerciseDay.VIEW_TYPE_AD == p0.itemViewType) {
                 p0 as AdViewHolderViewHolder
@@ -132,7 +148,7 @@ class ButtPlanFragment : Fragment() {
             val progressBar: ProgressBar
             val tvProgress: TextView
             val rootEExcersizeDay: CardView
-
+            val tvAllDaysCompleted: ImageButton
             init {
 
                 itemView.setOnClickListener {
@@ -149,6 +165,7 @@ class ButtPlanFragment : Fragment() {
                 rootEExcersizeDay = itemView.findViewById(R.id.rootEachExcersizeDay)
                 tvProgress = itemView.findViewById(R.id.tvProgress)
                 progressBar = itemView.findViewById(R.id.progressBar)
+                tvAllDaysCompleted=itemView.findViewById(R.id.tvAllDaysCompleted)
             }
         }
 

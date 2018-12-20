@@ -27,6 +27,16 @@ public class Excesizes {
         this.videosLinks=videosLinks;
     }
 
+    public Excesizes(String[] title, int[] icons, int[] seconds,String[] detail,int [] viewType,double []calories,int[] couchTips) {
+        this.title = title;
+        this.icons = icons;
+        this.seconds = seconds;
+        this.detail=detail;
+        this.viewType=viewType;
+        this.calories=calories;
+        this.couchTips=couchTips;
+    }
+
     public int[] getViewType() {
         return viewType;
     }

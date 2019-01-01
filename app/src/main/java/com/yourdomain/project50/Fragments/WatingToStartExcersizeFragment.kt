@@ -23,6 +23,7 @@ class WatingToStartExcersizeFragment : DialogFragment() {
     private var mParamDiscription: String? = null
     private var mListener: OnFragmentInteractionListener? = null
     private var watingTime: Int = 30
+    private var secondFinshed=0;
 
     private lateinit var mtvDiscription: TextView
     private lateinit var mThisExsersizeTotalTime: TextView
@@ -48,10 +49,10 @@ class WatingToStartExcersizeFragment : DialogFragment() {
             countDownTimer = object : CountDownTimer(watingTime.toLong() * 1000, 1000) {
 
                 override fun onTick(millisUntilFinished: Long) {
-                    var sconds_ = (millisUntilFinished / 1000).toInt()
-                    mPrograssBar.progress = sconds_
-                    if (sconds_ < 4) {
-                        sendTTSBroadCast(sconds_.toString())
+                    secondFinshed = (millisUntilFinished / 1000).toInt()
+                    mPrograssBar.progress = secondFinshed
+                    if (secondFinshed < 4) {
+                        sendTTSBroadCast(secondFinshed.toString())
                     }
                 }
 

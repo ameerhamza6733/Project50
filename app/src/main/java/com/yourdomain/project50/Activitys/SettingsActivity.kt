@@ -173,7 +173,7 @@ class SettingsActivity : AppCompatActivity(), SecondsPickerFragment.OnSecondsPic
             rateUsFragment.show(supportFragmentManager, "rateUsFragment")
         }
 
-        btSHare.setOnClickListener { Utils.shareTextIntent(this@SettingsActivity, "I have just completed work out " + getString(R.string.app_name) + ". Join me: https://play.google.com/store/apps/details?id=" + application.packageName) }
+        btSHare.setOnClickListener { Utils.shareTextIntent(this@SettingsActivity, "I have just completed Day "+MY_Shared_PREF.getLastCompledDay(application) + getString(R.string.app_name) + ". Join me: https://play.google.com/store/apps/details?id=" + application.packageName) }
 
         btRemindMeEveryDay.setOnClickListener {
             showHourPicker()

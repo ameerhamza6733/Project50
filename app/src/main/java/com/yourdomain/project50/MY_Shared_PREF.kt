@@ -41,16 +41,16 @@ class MY_Shared_PREF {
         private val SHARE_PREF_COME_BACK_LATTER_FILE = "SHARE_PREF_COME_BACK_LATTER_FILE"
         private val SHARE_PREF_COME_BACK_LATTER_KEY = "SHARE_PREF_COME_BACK_LATTER_KEY"
 
-        private val SHARE_PRE_PERSON_APPEARANCE_HISTORY="SHARE_PRE_PERSON_APPEARANCE_HISTORY"
+        private val SHARE_PRE_PERSON_APPEARANCE_HISTORY = "SHARE_PRE_PERSON_APPEARANCE_HISTORY"
 
-        private val SHARE_PREF_CURRENT_DAY_FILE="SHARE_PREF_CURRENT_DAY_FILE"
-        private val SHARED_PREF_CURRENT_DAY_KEY="SHARED_PREF_CURRENT_DAY_KEY"
+        private val SHARE_PREF_CURRENT_DAY_FILE = "SHARE_PREF_CURRENT_DAY_FILE"
+        private val SHARED_PREF_CURRENT_DAY_KEY = "SHARED_PREF_CURRENT_DAY_KEY"
 
+        private val SHARED_PREF_LAST_COMPLETED_DAY_FILE = "SHARED_PREF_LAST_COMPLETED_DAY_FILE"
+        private val SHARED_PREF_LAST_COMPLETED_DAY = "SHARED_PREF_LAST_COMPLETED_DAY"
 
 
         private val gson = Gson()
-
-
 
 
         fun saveDayByKey(application: Application, key: String, day: ExerciseDay) {
@@ -104,28 +104,29 @@ class MY_Shared_PREF {
             }
         }
 
-        fun savePersonAppearanceHistory(application: Application,personAppearance: PersonAppearance){
-            val sharePref= application.getSharedPreferences(SHARE_PRE_PERSON_APPEARANCE_HISTORY,0)
-            val editer =  sharePref.edit()
+        fun savePersonAppearanceHistory(application: Application, personAppearance: PersonAppearance) {
+            val sharePref = application.getSharedPreferences(SHARE_PRE_PERSON_APPEARANCE_HISTORY, 0)
+            val editer = sharePref.edit()
             var key = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).format(Date())
 
             editer.putString(key, gson.toJson(personAppearance))
             editer.apply()
         }
 
-        fun getPersonHistory(application: Application):Array<DataPoint?>{
-            val share_pref= application.getSharedPreferences(SHARE_PRE_PERSON_APPEARANCE_HISTORY,0)
+        fun getPersonHistory(application: Application): Array<DataPoint?> {
+            val share_pref = application.getSharedPreferences(SHARE_PRE_PERSON_APPEARANCE_HISTORY, 0)
             val allEntries = share_pref.getAll()
             val dataPointArray = arrayOfNulls<DataPoint>(allEntries.size)
             var counter = 0
             for (entry in allEntries.entries) {
 
-              var appearance=  gson.fromJson(entry.value.toString(), PersonAppearance::class.java)
-                dataPointArray.set(counter, DataPoint(appearance.date,appearance.mWaight.toDouble()) )
+                var appearance = gson.fromJson(entry.value.toString(), PersonAppearance::class.java)
+                dataPointArray.set(counter, DataPoint(appearance.date, appearance.mWaight.toDouble()))
                 counter++
             }
             return dataPointArray.reversedArray()
         }
+
         fun saveAppSettings(application: Application, settings: Settings) {
             val sharePref = application.applicationContext.getSharedPreferences(SHARE_PREF_SEETINGS, 0)
             val editer = sharePref.edit()
@@ -205,33 +206,44 @@ class MY_Shared_PREF {
         }
 
 
-        fun saveCurrentDayandPlan(application: Application,currentDayAndPlan : CurrentDayandPlan){
-            val shared_pref= application.getSharedPreferences(SHARE_PREF_CURRENT_DAY_FILE,0)
-            val editer =  shared_pref.edit()
-            editer.putString(currentDayAndPlan.plan+SHARED_PREF_CURRENT_DAY_KEY,gson.toJson(currentDayAndPlan))
+        fun saveCurrentDayandPlan(application: Application, currentDayAndPlan: CurrentDayandPlan) {
+            val shared_pref = application.getSharedPreferences(SHARE_PREF_CURRENT_DAY_FILE, 0)
+            val editer = shared_pref.edit()
+            editer.putString(currentDayAndPlan.plan + SHARED_PREF_CURRENT_DAY_KEY, gson.toJson(currentDayAndPlan))
             editer.apply()
         }
 
-        fun getCurrentDayPlan(application: Application,plan :String):CurrentDayandPlan?{
-            val shared_pref=  application.getSharedPreferences(SHARE_PREF_CURRENT_DAY_FILE,0)
-            if(shared_pref.contains(plan+SHARED_PREF_CURRENT_DAY_KEY)){
-                return gson.fromJson(shared_pref.getString(plan+SHARED_PREF_CURRENT_DAY_KEY,null),CurrentDayandPlan::class.java)
+        fun getCurrentDayPlan(application: Application, plan: String): CurrentDayandPlan? {
+            val shared_pref = application.getSharedPreferences(SHARE_PREF_CURRENT_DAY_FILE, 0)
+            if (shared_pref.contains(plan + SHARED_PREF_CURRENT_DAY_KEY)) {
+                return gson.fromJson(shared_pref.getString(plan + SHARED_PREF_CURRENT_DAY_KEY, null), CurrentDayandPlan::class.java)
             }
             return null
         }
 
-       public fun clearTheAllProgress(application: Application){
-          val sharefPrefDayFile =  application.getSharedPreferences(SHARED_PREF_ALL_DAYS_FILE,0)
-           val sharefPrefPerson= application.getSharedPreferences(SHARE_PREFF_PERSON,0);
-           val sharePrefgraphs=application.getSharedPreferences(SHARE_PREF_GRAPHS_FILE,0)
-           val sharefPrefComeBackLatter = application.getSharedPreferences(SHARE_PREF_COME_BACK_LATTER_FILE,0)
-           val sharefPrefPersonHistory= application.getSharedPreferences(SHARE_PRE_PERSON_APPEARANCE_HISTORY,0)
+        public fun saveLastCompletedDay(application: Application, day: Int) {
+            val shared_PREF = application.getSharedPreferences(SHARED_PREF_LAST_COMPLETED_DAY_FILE, 0)
+            val editer = shared_PREF.edit()
+            editer.putInt(SHARED_PREF_LAST_COMPLETED_DAY, day).apply()
+        }
 
-           sharefPrefDayFile.edit().clear().commit()
-           sharefPrefPerson.edit().clear().commit()
-           sharePrefgraphs.edit().clear().commit()
-           sharefPrefComeBackLatter.edit().clear().commit()
-           sharefPrefPersonHistory.edit().clear().commit()
+        public fun getLastCompledDay(application: Application): Int {
+            val shared_PREF = application.getSharedPreferences(SHARED_PREF_LAST_COMPLETED_DAY_FILE, 0)
+            return shared_PREF.getInt(SHARED_PREF_LAST_COMPLETED_DAY, 1)
+        }
+
+        public fun clearTheAllProgress(application: Application) {
+            val sharefPrefDayFile = application.getSharedPreferences(SHARED_PREF_ALL_DAYS_FILE, 0)
+            val sharefPrefPerson = application.getSharedPreferences(SHARE_PREFF_PERSON, 0);
+            val sharePrefgraphs = application.getSharedPreferences(SHARE_PREF_GRAPHS_FILE, 0)
+            val sharefPrefComeBackLatter = application.getSharedPreferences(SHARE_PREF_COME_BACK_LATTER_FILE, 0)
+            val sharefPrefPersonHistory = application.getSharedPreferences(SHARE_PRE_PERSON_APPEARANCE_HISTORY, 0)
+
+            sharefPrefDayFile.edit().clear().commit()
+            sharefPrefPerson.edit().clear().commit()
+            sharePrefgraphs.edit().clear().commit()
+            sharefPrefComeBackLatter.edit().clear().commit()
+            sharefPrefPersonHistory.edit().clear().commit()
 
         }
 

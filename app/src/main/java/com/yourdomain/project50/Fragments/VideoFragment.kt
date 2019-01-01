@@ -61,6 +61,7 @@ class VideoFragment : DialogFragment() {
         val title = view.findViewById<TextView>(R.id.tvTitle)
         val description = view.findViewById<TextView>(R.id.tvDescription)
         val gifView = view.findViewById<ImageView>(R.id.videoGifView)
+        val mBtBack=view.findViewById<ImageButton>(R.id.btBack)
         title.setText(mTitle)
         description.setText(mDis)
 
@@ -72,6 +73,7 @@ class VideoFragment : DialogFragment() {
         Glide.with(this).load(mGifUrl).into(gifView)
 
         refreshAd()
+        mBtBack.setOnClickListener { dismiss() }
         return view
     }
 
@@ -198,11 +200,7 @@ class VideoFragment : DialogFragment() {
 
     }
 
-    /**
-     * Creates a request for a new native ad based on the boolean parameters and calls the
-     * corresponding "populate" method when one is successfully returned.
-     *
-     */
+
     private fun refreshAd() {
 
 

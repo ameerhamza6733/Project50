@@ -12,14 +12,24 @@
 
         <ImageView
 
-            android:background="@color/colorWhite"
             android:id="@+id/videoGifView"
             android:layout_width="match_parent"
             android:layout_height="350dp"
-            android:layout_marginTop="8dp"
+            android:background="@color/colorWhite"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"/>
+            app:layout_constraintTop_toBottomOf="@+id/btBack" />
+
+        <ImageButton
+            android:background="#214057"
+            android:id="@+id/btBack"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+           android:padding="8dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:srcCompat="@drawable/ic_arrow_back_white_24dp" />
+
         <TextView
             android:id="@+id/tvTitle"
             android:layout_margin="16dp"

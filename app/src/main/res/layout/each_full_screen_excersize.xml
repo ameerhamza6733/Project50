@@ -203,6 +203,7 @@
                 app:srcCompat="@drawable/ic_done_white_24dp" />
 
             <ImageButton
+                android:visibility="invisible"
                 android:id="@+id/btNext"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
@@ -219,15 +220,15 @@
 
         <ImageButton
 
-            android:background="@color/colorWhite"
-            app:layout_constraintBottom_toTopOf="@+id/tvDescription"
             android:id="@+id/btHelp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginEnd="8dp"
+            android:layout_marginBottom="4dp"
+            android:layout_marginEnd="16dp"
+            android:background="@color/colorWhite"
+            app:layout_constraintBottom_toTopOf="@+id/tvDescription"
             app:layout_constraintEnd_toEndOf="parent"
-            app:srcCompat="@drawable/ic_help_helfwhite_24dp"
-            tools:layout_editor_absoluteY="452dp" />
+            app:srcCompat="@drawable/ic_help_helfwhite_24dp" />
 
     </android.support.constraint.ConstraintLayout>
 

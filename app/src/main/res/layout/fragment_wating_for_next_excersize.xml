@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.yourdomain.project50.Fragments.RestFragment">
+    tools:context="com.yourdomain.project50.Fragments.WatingForNextExcersizeFragment">
 
     <FrameLayout
         android:background="#FEC100"

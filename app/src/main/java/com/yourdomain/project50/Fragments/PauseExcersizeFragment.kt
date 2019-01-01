@@ -62,7 +62,6 @@ class PauseExcersizeFragment : DialogFragment() {
         tvTitle = view.findViewById(R.id.tvtitle)
         gif = view.findViewById(R.id.icon)
         adPlaceHolder=view.findViewById(R.id.adPlaceholder)
-
         tvTitle.text = mParamExcesizeTilte
         tvSeconds.text = mParamExcersizeSeconds
         btContinue.setOnClickListener {
@@ -70,7 +69,7 @@ class PauseExcersizeFragment : DialogFragment() {
             dismiss()
 
         }
-
+        activity?.let { Glide.with(it).load(mParamGif).into(gif) }
         adRequest = if (ConsentInformation.getInstance(activity).consentStatus == ConsentStatus.NON_PERSONALIZED) {
             AdRequest.Builder()
                     .addNetworkExtrasBundle(AdMobAdapter::class.java, getNonPersonalizedAdsBundle())

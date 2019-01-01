@@ -81,6 +81,9 @@ class ButtPlanFragment : Fragment() {
                             .inflate(R.layout.each_excersize_day, p0, false));
 
                 }
+                ExerciseDay.VIEW_TYPEREST -> {
+                    RrestDayViewHolder(LayoutInflater.from(p0.context).inflate(R.layout.each_rest_day, p0, false))
+                }
                 ExcersizePlan.TYPE_AD -> {
                     AdViewHolderViewHolder(LayoutInflater.from(p0.context)
                             .inflate(R.layout.native_adview, p0, false));

@@ -35,9 +35,10 @@ import java.util.*
 import java.util.concurrent.TimeUnit
 
 
-class ExerciseActivity : AppCompatActivity(), WatingToStartExcersizeFragment.OnFragmentInteractionListener, PauseExcersizeFragment.OnResumeListener, QuitFragment.OnQuitListener, RestFragment.OnNextExcersizeDemoFragmentListener, SettingsVoiceControlFragment.OnVoicecontrolChangeListener, VideoFragment.OnVideoFragmentListener {
+class ExerciseActivity : AppCompatActivity(), WatingToStartExcersizeFragment.OnFragmentInteractionListener, PauseExcersizeFragment.OnResumeListener, QuitFragment.OnQuitListener, WatingForNextExcersizeFragment.OnNextExcersizeDemoFragmentListener, SettingsVoiceControlFragment.OnVoicecontrolChangeListener, VideoFragment.OnVideoFragmentListener {
     override fun onDetachedVideoFragment() {
-        countDown?.resume()
+        if (excesizes?.viewType!![counter] == Excesizes.VIEW_TYPE_LIMTED_EXCERSIZE)
+            countDown?.resume()
     }
 
     override fun onVoiceSettingUpdate(updateSettings: Settings) {
@@ -54,7 +55,7 @@ class ExerciseActivity : AppCompatActivity(), WatingToStartExcersizeFragment.OnF
     }
 
     override fun onQuit() {
-        startActivity(Intent(this,EachPlanActivity::class.java))
+        startActivity(Intent(this, EachPlanActivity::class.java))
         if (mRewardedVideoAd?.isLoaded == true)
             mRewardedVideoAd?.show()
         finish()
@@ -143,8 +144,8 @@ class ExerciseActivity : AppCompatActivity(), WatingToStartExcersizeFragment.OnF
     private lateinit var mbtBack: ImageButton
     private lateinit var mbtdone: ImageButton
     private lateinit var mbtVideo: ImageButton
-    private lateinit var mbtHelp:ImageButton
-    private var videoAd13:RewardedVideoAd?=null
+    private lateinit var mbtHelp: ImageButton
+    private var videoAd13: RewardedVideoAd? = null
 
 
     private var excesizes: Excesizes? = null
@@ -272,7 +273,7 @@ class ExerciseActivity : AppCompatActivity(), WatingToStartExcersizeFragment.OnF
         mLayout = findViewById(R.id.type_unlimted)
         adContainer = findViewById(R.id.adContanir)
         mbtVideo = findViewById(R.id.btVideo)
-        mbtHelp=findViewById(R.id.btHelp)
+        mbtHelp = findViewById(R.id.btHelp)
 
 
         mbtdone.setOnClickListener {
@@ -308,10 +309,10 @@ class ExerciseActivity : AppCompatActivity(), WatingToStartExcersizeFragment.OnF
         }
 
         mbtVideo.setOnClickListener {
-           showVideoFragment()
+            showVideoFragment()
         }
         mtotalTextView.setOnClickListener {
-           goBack()
+            goBack()
         }
 
         mbtHelp.setOnClickListener {
@@ -319,7 +320,7 @@ class ExerciseActivity : AppCompatActivity(), WatingToStartExcersizeFragment.OnF
         }
     }
 
-    private fun showVideoFragment(){
+    private fun showVideoFragment() {
         countDown?.pause()
         var adId = Admob.NATIVE_AD_ID
         mSetingsFromFirebase?.admobAds?.nativeAds8?.id?.let {
@@ -330,6 +331,7 @@ class ExerciseActivity : AppCompatActivity(), WatingToStartExcersizeFragment.OnF
         videoFragment.show(supportFragmentManager, "videoFragment")
 
     }
+
     private fun onPauseExcersize() {
         var seconds = ""
         if (excesizes?.viewType!![counter] == Excesizes.VIEW_TYPE_LIMTED_EXCERSIZE) {
@@ -350,18 +352,18 @@ class ExerciseActivity : AppCompatActivity(), WatingToStartExcersizeFragment.OnF
     }
 
     private fun updateWithOutCountDownUI() {
-        if (counter>0){
+        if (counter > 0) {
             mCurrentProgressBar.visibility = View.INVISIBLE
-            mbtNext.visibility=View.VISIBLE
-            mbtdone.visibility=View.VISIBLE
+
+            mbtdone.visibility = View.VISIBLE
             mbtStop.visibility = View.INVISIBLE
-            mbtBack.visibility=View.VISIBLE
-        }else{
+            mbtBack.visibility = View.VISIBLE
+        } else {
             mCurrentProgressBar.visibility = View.INVISIBLE
-            mbtNext.visibility=View.VISIBLE
-            mbtdone.visibility=View.VISIBLE
+
+            mbtdone.visibility = View.VISIBLE
             mbtStop.visibility = View.INVISIBLE
-            mbtBack.visibility=View.INVISIBLE
+            mbtBack.visibility = View.INVISIBLE
 
         }
 
@@ -430,7 +432,7 @@ class ExerciseActivity : AppCompatActivity(), WatingToStartExcersizeFragment.OnF
 
             MY_Shared_PREF.saveGraphCalvsDays(application, DataPoint(Date(), excesizes?.calories!![counter]), SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).format(Date()))
 
-            val watingForNextFragment = RestFragment.newInstance(excesizes?.title!![counter + 1], temp, "NEXT " + (counter + 1).toString() + "/" + (excesizes!!.icons.size).toString(), excesizes?.icons!![counter + 1], settings.workoutSettings.restTimeInSeconds, nativeAdId)
+            val watingForNextFragment = WatingForNextExcersizeFragment.newInstance(excesizes?.title!![counter + 1], temp, "NEXT " + (counter + 1).toString() + "/" + (excesizes!!.icons.size).toString(), excesizes?.icons!![counter + 1], settings.workoutSettings.restTimeInSeconds, nativeAdId)
             watingForNextFragment.setStyle(DialogFragment.STYLE_NORMAL, android.R.style.Theme_Black_NoTitleBar_Fullscreen);
             watingForNextFragment.show(supportFragmentManager, "watingForNextFragment")
 
@@ -445,7 +447,7 @@ class ExerciseActivity : AppCompatActivity(), WatingToStartExcersizeFragment.OnF
         if (excesizes?.viewType!![counter] == Excesizes.VIEW_TYPE_LIMTED_EXCERSIZE) {
             finish()
             val internt = Intent(this, ExerciseActivity::class.java)
-            internt.putExtra(ExerciseActivity.EXTRA_EXCERSIZES_DONE, counter-1)
+            internt.putExtra(ExerciseActivity.EXTRA_EXCERSIZES_DONE, counter - 1)
             internt.putExtra(ExerciseActivity.EXTRA_PLAN, currentPlan)
             internt.putExtra(ExerciseActivity.EXTRA_DAY, currentDayKey)
             startActivity(internt)
@@ -459,22 +461,23 @@ class ExerciseActivity : AppCompatActivity(), WatingToStartExcersizeFragment.OnF
     private fun updateUIWithCountDown() {
 
 
-       if (counter>0){
-           mCurrentProgressBar.visibility = View.VISIBLE
-           mbtNext.visibility=View.INVISIBLE
-           mbtdone.visibility=View.INVISIBLE
-           mbtStop.visibility = View.VISIBLE
-           mbtBack.visibility=View.VISIBLE
-       }else{
-           mCurrentProgressBar.visibility = View.VISIBLE
-           mbtNext.visibility=View.INVISIBLE
-           mbtdone.visibility=View.INVISIBLE
-           mbtStop.visibility = View.VISIBLE
-           mbtBack.visibility=View.INVISIBLE
+        if (counter > 0) {
+            mCurrentProgressBar.visibility = View.VISIBLE
+            // mbtNext.visibility=View.INVISIBLE
+            mbtdone.visibility = View.INVISIBLE
+            mbtStop.visibility = View.VISIBLE
+            mbtBack.visibility = View.VISIBLE
+        } else {
+            mCurrentProgressBar.visibility = View.VISIBLE
+            // mbtNext.visibility=View.INVISIBLE
+            mbtdone.visibility = View.INVISIBLE
+            mbtStop.visibility = View.VISIBLE
+            mbtBack.visibility = View.INVISIBLE
 
-       }
+        }
 
         mTotalProgressBar.max = excesizes?.title?.size!!
+
         mtotalTextView.text = (counter + 1).toString() + "/" + excesizes?.icons?.size.toString()
         Glide.with(this).asGif().load(excesizes?.icons?.get(counter)).into(mImageVIew)
         if (excesizes?.viewType!![counter] == Excesizes.VIEW_TYPE_LIMTED_EXCERSIZE) {
@@ -487,6 +490,7 @@ class ExerciseActivity : AppCompatActivity(), WatingToStartExcersizeFragment.OnF
         mtvTitle.text = excesizes?.title!![counter].toUpperCase()
         mTotalProgressBar.progress = counter + 1
         mCurrentProgressBar.max = excesizes?.seconds!![counter].toInt()
+        mCurrentProgressBar.setProgress(0)
         var seconds = TimeUnit.SECONDS.toMillis(excesizes?.seconds!![counter]?.toLong())
         var halftime = (excesizes?.seconds!![counter] / 2)
         var half3time = (excesizes?.seconds!![counter] / 2)
@@ -545,9 +549,10 @@ class ExerciseActivity : AppCompatActivity(), WatingToStartExcersizeFragment.OnF
 
     override fun onStop() {
         countDown?.cancel()
-        countDown=null
+        countDown = null
         super.onStop()
     }
+
     override fun onResume() {
         countDown?.resume()
         super.onResume()
@@ -560,7 +565,7 @@ class ExerciseActivity : AppCompatActivity(), WatingToStartExcersizeFragment.OnF
         mediaPlayer?.stop()
         mediaPlayer?.release()
 
-        countDown=null
+        countDown = null
         super.onDestroy()
     }
 

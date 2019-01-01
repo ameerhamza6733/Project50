@@ -85,8 +85,8 @@ public class Utils {
         intent.setType("plain/text");
         //TODO:replace your email
         intent.putExtra(Intent.EXTRA_EMAIL, new String[]{"ameerhamza6733@gmail.com"});
-        intent.putExtra(Intent.EXTRA_SUBJECT, "subject");
-        intent.putExtra(Intent.EXTRA_TEXT, "mail body");
+        intent.putExtra(Intent.EXTRA_SUBJECT, context.getString(R.string.app_name));
+        intent.putExtra(Intent.EXTRA_TEXT, "");
         context.startActivity(Intent.createChooser(intent, ""));
     }
 

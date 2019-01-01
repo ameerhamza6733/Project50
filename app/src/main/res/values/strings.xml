@@ -19,7 +19,7 @@
     <!--these icon will shows on page 3,4-->
     <integer-array name="exercise_type_icon">
         <item>@drawable/place_holder_excersize_type</item>
-        <item>@drawable/abs_plan_work_out_icon</item>
+        <item>@drawable/place_holder_excersize_type</item>
         <item>@drawable/place_holder_excersize_type</item>
     </integer-array>
     <string-array name="exercise_type_total_days">

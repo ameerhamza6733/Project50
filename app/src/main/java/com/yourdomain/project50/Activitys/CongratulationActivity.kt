@@ -102,6 +102,7 @@ class CongratulationActivity : AppCompatActivity() {
                     .build()
         }
         loadVideoAd()
+        intent?.getIntExtra(EXTRA_DAY, 1)?.let { MY_Shared_PREF.saveLastCompletedDay(application, it) }
 
     }
 

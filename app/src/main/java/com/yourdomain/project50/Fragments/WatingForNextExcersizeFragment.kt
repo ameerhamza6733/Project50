@@ -8,10 +8,8 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import com.bumptech.glide.Glide
-import com.yourdomain.project50.Activitys.ExerciseActivity
-import com.yourdomain.project50.R
 import android.widget.*
+import com.bumptech.glide.Glide
 import com.google.ads.consent.ConsentInformation
 import com.google.ads.consent.ConsentStatus
 import com.google.ads.mediation.admob.AdMobAdapter
@@ -23,18 +21,20 @@ import com.google.android.gms.ads.formats.MediaView
 import com.google.android.gms.ads.formats.NativeAdOptions
 import com.google.android.gms.ads.formats.UnifiedNativeAd
 import com.google.android.gms.ads.formats.UnifiedNativeAdView
+import com.yourdomain.project50.Activitys.ExerciseActivity
+import com.yourdomain.project50.R
 
 
-class RestFragment : DialogFragment() {
+class WatingForNextExcersizeFragment : DialogFragment() {
 
-    private val TAG = "RestFragment"
+    private val TAG = "WatingForNext"
     private var mParamTitle: String? = null
     private var mParamSeconds: String? = null
     private var mParamDoneExcersizes: String? = null
     private var mParamDrawble: Int = -1
     private var mParamRestTime: Int = 30
-    private var mNativeAdId:String?=null
-    private lateinit var adRequest:AdRequest
+    private var mNativeAdId: String? = null
+    private lateinit var adRequest: AdRequest
     private var mListener: OnNextExcersizeDemoFragmentListener? = null
 
     private lateinit var tvTitle: TextView
@@ -45,7 +45,7 @@ class RestFragment : DialogFragment() {
     private lateinit var btSkip: TextView
     private lateinit var btIncreaseCoutDown: TextView
     private lateinit var icon: ImageView
-    private lateinit var adPlaceHolder:FrameLayout
+    private lateinit var adPlaceHolder: FrameLayout
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -56,7 +56,7 @@ class RestFragment : DialogFragment() {
             mParamDoneExcersizes = arguments!!.getString(ARG_PARAM_DONE_EXCERSIZE)
             mParamDrawble = arguments!!.getInt(ARG_PARAM_ICON)
             mParamRestTime = arguments!!.getInt(ARG_PARAM_REST_TIME)
-            mNativeAdId=arguments!!.getString(ARG_PARAM_NATIVE_AD_ID)
+            mNativeAdId = arguments!!.getString(ARG_PARAM_NATIVE_AD_ID)
         }
         try {
 
@@ -69,9 +69,7 @@ class RestFragment : DialogFragment() {
 
 
     private var countDownTimer: CountDownTimer? = null
-
-    private var secodsDone: Int = 0
-
+    private var secondDone=0
     private var halfTime: Int = -1
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
@@ -96,13 +94,16 @@ class RestFragment : DialogFragment() {
         btSkip.setOnClickListener { mListener?.onSkip();dismiss() }
         adPlaceHolder = view.findViewById(R.id.adPlaceholder)
         btIncreaseCoutDown.setOnClickListener {
-            Toast.makeText(activity,"I am working on this feature: ",Toast.LENGTH_SHORT).show()
+            countDownTimer?.cancel()
+            progressBar.max=(mParamRestTime) + 10
+            progressBar.progress=(mParamRestTime-secondDone)
 
+            val secondToCountDown = (mParamRestTime-secondDone) + 10;
+            countDown(secondToCountDown.toLong())
         }
         Glide.with(this).asGif().load(mParamDrawble).into(icon)
         halfTime = (mParamRestTime / 2)
-        secodsDone = 0
-        countDown()
+        countDown(mParamRestTime.toLong())
         countDownTimer?.start()
         adRequest = if (ConsentInformation.getInstance(activity).consentStatus == ConsentStatus.NON_PERSONALIZED) {
             AdRequest.Builder()
@@ -112,17 +113,18 @@ class RestFragment : DialogFragment() {
             AdRequest.Builder()
                     .build()
         }
+
         refreshAd();
         return view;
     }
 
-    private fun countDown() {
-        countDownTimer = object : CountDownTimer(mParamRestTime.toLong() * 1000, 1000) {
+    private fun countDown(wattingTime:Long) {
+        countDownTimer = object : CountDownTimer(wattingTime * 1000, 1000) {
 
             override fun onTick(millisUntilFinished: Long) {
                 var s = (millisUntilFinished / 1000).toInt()
-               mParamRestTime=s
-                progressBar.progress = s
+                secondDone = s
+                progressBar.progress ++
                 tvProgress.text = (millisUntilFinished / 1000).toString()
                 if (s == halfTime) {
                     sendTTSBroadCast(getString(R.string.next))
@@ -275,38 +277,36 @@ class RestFragment : DialogFragment() {
     private fun refreshAd() {
 
 
-       try{
-           val builder = AdLoader.Builder(activity, mNativeAdId)
+        if (activity != null) {
+            val builder = AdLoader.Builder(activity, mNativeAdId)
 
-           builder.forUnifiedNativeAd(UnifiedNativeAd.OnUnifiedNativeAdLoadedListener { unifiedNativeAd ->
-               // OnUnifiedNativeAdLoadedListener implementation.
+            builder.forUnifiedNativeAd(UnifiedNativeAd.OnUnifiedNativeAdLoadedListener { unifiedNativeAd ->
+                // OnUnifiedNativeAdLoadedListener implementation.
 
-               val adView = layoutInflater.inflate(R.layout.native_adview, null) as UnifiedNativeAdView
-               populateUnifiedNativeAdView(unifiedNativeAd, adView)
-               adPlaceHolder.removeAllViews()
-               adPlaceHolder.addView(adView)
-           })
+                val adView = layoutInflater.inflate(R.layout.native_adview, null) as UnifiedNativeAdView
+                populateUnifiedNativeAdView(unifiedNativeAd, adView)
+                adPlaceHolder.removeAllViews()
+                adPlaceHolder.addView(adView)
+            })
 
-           val videoOptions = VideoOptions.Builder()
-                   .build()
+            val videoOptions = VideoOptions.Builder()
+                    .build()
 
-           val adOptions = NativeAdOptions.Builder()
-                   .setVideoOptions(videoOptions)
-                   .build()
+            val adOptions = NativeAdOptions.Builder()
+                    .setVideoOptions(videoOptions)
+                    .build()
 
-           builder.withNativeAdOptions(adOptions)
+            builder.withNativeAdOptions(adOptions)
 
-           val adLoader = builder.withAdListener(object : AdListener() {
-               override fun onAdFailedToLoad(errorCode: Int) {
+            val adLoader = builder.withAdListener(object : AdListener() {
+                override fun onAdFailedToLoad(errorCode: Int) {
 
-                   Toast.makeText(activity, "Failed to load native ad: $errorCode", Toast.LENGTH_SHORT).show()
-               }
-           }).build()
+                    Toast.makeText(activity, "Failed to load native ad: $errorCode", Toast.LENGTH_SHORT).show()
+                }
+            }).build()
 
-           adLoader.loadAd(adRequest)
-       }catch (e:Exception){
-
-       }
+            adLoader.loadAd(adRequest)
+        }
 
 
     }
@@ -317,6 +317,7 @@ class RestFragment : DialogFragment() {
 
         return extras
     }
+
     companion object {
 
         private val ARG_PARAM_TITLE = "ARG_PARAM_TITLE"
@@ -324,17 +325,17 @@ class RestFragment : DialogFragment() {
         private val ARG_PARAM_DONE_EXCERSIZE = "ARG_PARAM_DONE_EXCERSIZE";
         private var ARG_PARAM_ICON = "ARG_PARAM_ICON"
         private val ARG_PARAM_REST_TIME = "ARG_PARAM_REST_TIME";
-        private var ARG_PARAM_NATIVE_AD_ID="ARG_PARAM_NATIVE_AD_ID"
+        private var ARG_PARAM_NATIVE_AD_ID = "ARG_PARAM_NATIVE_AD_ID"
 
-        fun newInstance(title: String, seconds: String, doneExcersizes: String, drawble: Int, restSeconds: Int,nativeAdId:String): RestFragment {
-            val fragment = RestFragment()
+        fun newInstance(title: String, seconds: String, doneExcersizes: String, drawble: Int, restSeconds: Int, nativeAdId: String): WatingForNextExcersizeFragment {
+            val fragment = WatingForNextExcersizeFragment()
             val args = Bundle()
             args.putString(ARG_PARAM_TITLE, title)
             args.putString(ARG_PARAM_SECONDES, seconds)
             args.putString(ARG_PARAM_DONE_EXCERSIZE, doneExcersizes)
             args.putInt(ARG_PARAM_REST_TIME, restSeconds)
             args.putInt(ARG_PARAM_ICON, drawble)
-            args.putString(ARG_PARAM_NATIVE_AD_ID,nativeAdId)
+            args.putString(ARG_PARAM_NATIVE_AD_ID, nativeAdId)
             fragment.arguments = args
             return fragment
         }

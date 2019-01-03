@@ -98,7 +98,7 @@ class WatingToStartExcersizeFragment : DialogFragment() {
 
         countDownTimer?.start()
         mSkipButton.setOnClickListener { countDownTimer?.onFinish() }
-        mbtBack.setOnClickListener { activity?.finish() }
+        mbtBack.setOnClickListener { dismiss() }
         mBtSpeaker.setOnClickListener {
             val settingsVoiceControlFragment = SettingsVoiceControlFragment()
             settingsVoiceControlFragment.setStyle(DialogFragment.STYLE_NORMAL, R.style.dialog);

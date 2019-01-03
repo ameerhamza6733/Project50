@@ -146,7 +146,7 @@ class CongratulationActivity : AppCompatActivity() {
             finish()
         }
         btShare.setOnClickListener {
-            Utils.shareTextExtra(this@CongratulationActivity, "I have just completed " + tvDayComleted.text +getString(R.string.app_name)+ ". Join me " + "https://play.google.com/store/apps/details?id="+application.packageName) }
+            Utils.shareTextExtra(this@CongratulationActivity, "I have just completed " + tvDayComleted.text +" of "+getString(R.string.app_name)+ ". Join me " + "https://play.google.com/store/apps/details?id="+application.packageName) }
 
     }
 

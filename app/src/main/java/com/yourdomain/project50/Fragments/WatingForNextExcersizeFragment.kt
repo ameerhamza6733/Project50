@@ -94,12 +94,13 @@ class WatingForNextExcersizeFragment : DialogFragment() {
         btSkip.setOnClickListener { mListener?.onSkip();dismiss() }
         adPlaceHolder = view.findViewById(R.id.adPlaceholder)
         btIncreaseCoutDown.setOnClickListener {
-            countDownTimer?.cancel()
-            progressBar.max=(mParamRestTime) + 10
-            progressBar.progress=(mParamRestTime-secondDone)
 
-            val secondToCountDown = (mParamRestTime-secondDone) + 10;
+            countDownTimer?.cancel()
+            progressBar.max=mParamRestTime+10
+            progressBar.progress=progressBar.progress-10
+            val secondToCountDown = secondDone + 10;
             countDown(secondToCountDown.toLong())
+            countDownTimer?.start()
         }
         Glide.with(this).asGif().load(mParamDrawble).into(icon)
         halfTime = (mParamRestTime / 2)
@@ -119,13 +120,14 @@ class WatingForNextExcersizeFragment : DialogFragment() {
     }
 
     private fun countDown(wattingTime:Long) {
+        Log.d(TAG,"count down for : "+wattingTime)
         countDownTimer = object : CountDownTimer(wattingTime * 1000, 1000) {
 
             override fun onTick(millisUntilFinished: Long) {
                 var s = (millisUntilFinished / 1000).toInt()
                 secondDone = s
                 progressBar.progress ++
-                tvProgress.text = (millisUntilFinished / 1000).toString()
+                tvProgress.text = progressBar.progress.toString()
                 if (s == halfTime) {
                     sendTTSBroadCast(getString(R.string.next))
                     sendTTSBroadCast(mParamTitle!!)
@@ -282,11 +284,12 @@ class WatingForNextExcersizeFragment : DialogFragment() {
 
             builder.forUnifiedNativeAd(UnifiedNativeAd.OnUnifiedNativeAdLoadedListener { unifiedNativeAd ->
                 // OnUnifiedNativeAdLoadedListener implementation.
-
-                val adView = layoutInflater.inflate(R.layout.native_adview, null) as UnifiedNativeAdView
-                populateUnifiedNativeAdView(unifiedNativeAd, adView)
-                adPlaceHolder.removeAllViews()
-                adPlaceHolder.addView(adView)
+                if (activity!=null){
+                    val adView = layoutInflater.inflate(R.layout.native_adview, null) as UnifiedNativeAdView
+                    populateUnifiedNativeAdView(unifiedNativeAd, adView)
+                    adPlaceHolder.removeAllViews()
+                    adPlaceHolder.addView(adView)
+                }
             })
 
             val videoOptions = VideoOptions.Builder()

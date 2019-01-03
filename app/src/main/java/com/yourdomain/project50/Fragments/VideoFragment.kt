@@ -207,13 +207,12 @@ class VideoFragment : DialogFragment() {
         val builder = AdLoader.Builder(activity, mNativeAdId)
 
         builder.forUnifiedNativeAd(UnifiedNativeAd.OnUnifiedNativeAdLoadedListener { unifiedNativeAd ->
-            // OnUnifiedNativeAdLoadedListener implementation.
-
-            val adView = layoutInflater
-                    .inflate(R.layout.native_adview, null) as UnifiedNativeAdView
-            populateUnifiedNativeAdView(unifiedNativeAd, adView)
-            adPlaceHolder.removeAllViews()
-            adPlaceHolder.addView(adView)
+            if (activity!=null){
+                val adView = layoutInflater.inflate(R.layout.native_adview, null) as UnifiedNativeAdView
+                populateUnifiedNativeAdView(unifiedNativeAd, adView)
+                adPlaceHolder.removeAllViews()
+                adPlaceHolder.addView(adView)
+            }
         })
 
         val videoOptions = VideoOptions.Builder()

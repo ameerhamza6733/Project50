@@ -48,7 +48,7 @@ class SplashActivity : AppCompatActivity() {
         tvSpalishTitle.startAnimation(AnimationUtils.loadAnimation(this, R.anim.animation_text_view));
         Glide.with(this).load(R.drawable.spalish4).into(image)
         MobileAds.initialize(this, getString(R.string.admob_app_id));
-      scheduleThe48HourNotifications(20)
+      scheduleThe48HourNotifications(48)
        if (Utils.isNetworkAvailable(application)){
            ViewModelProviders.of(this).get(GetAdmobDataFromFireBaseViewModle::class.java).getAppSettingFromFireBase()?.observe(this, Observer {
                if (it != null) {
@@ -71,7 +71,7 @@ class SplashActivity : AppCompatActivity() {
 
         val postNotationWithDelay = OneTimeWorkRequest
                 .Builder(RemindMeAfter48Hour::class.java)
-                .setInitialDelay(intiDelay, TimeUnit.SECONDS).build()
+                .setInitialDelay(intiDelay, TimeUnit.HOURS).build()
 
 
         val workManager = WorkManager.getInstance()

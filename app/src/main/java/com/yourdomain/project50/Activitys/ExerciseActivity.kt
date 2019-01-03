@@ -19,15 +19,13 @@ import com.bumptech.glide.Glide
 import com.google.ads.consent.ConsentInformation
 import com.google.ads.consent.ConsentStatus
 import com.google.ads.mediation.admob.AdMobAdapter
-import com.google.android.gms.ads.AdRequest
-import com.google.android.gms.ads.AdSize
-import com.google.android.gms.ads.AdView
-import com.google.android.gms.ads.MobileAds
+import com.google.android.gms.ads.*
 import com.google.android.gms.ads.reward.RewardedVideoAd
 import com.jjoe64.graphview.series.DataPoint
 import com.yourdomain.project50.*
 import com.yourdomain.project50.Fragments.*
 import com.yourdomain.project50.Model.*
+import com.yourdomain.project50.R
 import com.yourdomain.project50.Utils.CountTotalTime
 import com.yourdomain.project50.ViewModle.ExcersizesByDayandTypeViewModle
 import java.text.SimpleDateFormat
@@ -153,6 +151,7 @@ class ExerciseActivity : AppCompatActivity(), WatingToStartExcersizeFragment.OnF
     private var countDown: CustomCountDownTimer? = null
     private var mediaPlayer: MediaPlayer? = null
     private var currentDayKey: Int = -3
+    private var resumeCountDown=false;
     private var excersizeDone = -2
     private var currentPlan = "-2"
 
@@ -172,6 +171,7 @@ class ExerciseActivity : AppCompatActivity(), WatingToStartExcersizeFragment.OnF
     private lateinit var adContainer: RelativeLayout
     private var mSetingsFromFirebase: AppAdmobSettingsFromFirebase? = null
     private var mRewardedVideoAd: RewardedVideoAd? = null
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -237,6 +237,28 @@ class ExerciseActivity : AppCompatActivity(), WatingToStartExcersizeFragment.OnF
         adView.adUnitId = adId
         adContainer.addView(adView)
         adView.loadAd(adRequest)
+        adView.adListener = object: AdListener() {
+            override fun onAdLoaded() {
+
+            }
+
+            override fun onAdFailedToLoad(errorCode : Int) {
+
+            }
+
+            override fun onAdOpened() {
+               countDown?.pause()
+            }
+
+            override fun onAdLeftApplication() {
+
+            }
+
+            override fun onAdClosed() {
+                // Code to be executed when when the user is about to return
+                // to the app after tapping on an ad.
+            }
+        }
 
     }
 
@@ -548,12 +570,13 @@ class ExerciseActivity : AppCompatActivity(), WatingToStartExcersizeFragment.OnF
     }
 
     override fun onStop() {
-        countDown?.cancel()
-        countDown = null
+        Log.d(TAG,"onStop")
+
         super.onStop()
     }
 
     override fun onResume() {
+        Log.d(TAG,"onResume")
         countDown?.resume()
         super.onResume()
 
@@ -564,7 +587,7 @@ class ExerciseActivity : AppCompatActivity(), WatingToStartExcersizeFragment.OnF
         handle?.removeCallbacks(runable)
         mediaPlayer?.stop()
         mediaPlayer?.release()
-
+        countDown?.cancel()
         countDown = null
         super.onDestroy()
     }

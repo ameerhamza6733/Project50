@@ -27,8 +27,7 @@ class WatingCountDownSecondsPicker : DialogFragment() {
         }
     }
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
-                              savedInstanceState: Bundle?): View? {
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         // Inflate the layout for this fragment
         var view=  inflater.inflate(R.layout.fragment_seconds_picker, container, false)
         val tvSeconds=view.findViewById<TextView>(R.id.tvSeconds)

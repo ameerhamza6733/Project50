@@ -48,6 +48,7 @@ public class Utils {
         intent2.setAction(Intent.ACTION_SEND);
         intent2.setType("text/plain");
         intent2.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        intent2.putExtra(Intent.EXTRA_SUBJECT,application.getString(R.string.app_name));
         intent2.putExtra(Intent.EXTRA_TEXT, text);
         application.startActivity(Intent.createChooser(intent2, "Share via"));
     }

@@ -10,12 +10,6 @@
     <string name="action_settings">Settings</string>
     <string name="whateverString">whateverString</string>
     <!--starting excersize_type-->
-    <!--//TODO:Edit exercise plan  make sure you add icon,todaydays and title aslo-->
-    <string-array name="exercise_type">
-        <item>FULL BODY PLAN edit </item>
-        <item>ABS PLAN edit</item>
-        <item>BUTT PLAN edit</item>
-    </string-array>
     <!--these icon will shows on page 3,4-->
     <integer-array name="exercise_type_icon">
         <item>@drawable/place_holder_excersize_type</item>

@@ -560,7 +560,7 @@ class ExerciseActivity : AppCompatActivity(), WatingToStartExcersizeFragment.OnF
         Log.d(TAG, "Saving currnet day in shared pref: " + Utils.toPersentage(counter + 1, excesizes?.title?.size!!))
         if (currentDayKey == -3) return
 
-        MY_Shared_PREF.saveDayByKey(application, (currentPlan) + (currentDayKey + 1).toString(), ExerciseDay(currentDayKey + 1, ExerciseDay.VIEW_TYPE_DAY, excesizes?.title?.size?.toLong()!!, counter.toLong(), Utils.toPersentage(counter + 1, excesizes?.title?.size!!)))
+        MY_Shared_PREF.saveDayByKey(application, (currentPlan)+" " + (currentDayKey + 1).toString(), ExerciseDay(currentDayKey + 1, ExerciseDay.VIEW_TYPE_DAY, excesizes?.title?.size?.toLong()!!, counter.toLong(), Utils.toPersentage(counter + 1, excesizes?.title?.size!!)))
     }
 
     override fun onPause() {

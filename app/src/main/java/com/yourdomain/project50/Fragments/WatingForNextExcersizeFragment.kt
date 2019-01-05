@@ -306,6 +306,13 @@ class WatingForNextExcersizeFragment : DialogFragment() {
 
                     Toast.makeText(activity, "Failed to load native ad: $errorCode", Toast.LENGTH_SHORT).show()
                 }
+
+                override fun onAdClicked() {
+                    super.onAdClicked()
+                    Log.d(TAG,"onAd click")
+                    mListener?.onSkip()
+                    dismiss()
+                }
             }).build()
 
             adLoader.loadAd(adRequest)

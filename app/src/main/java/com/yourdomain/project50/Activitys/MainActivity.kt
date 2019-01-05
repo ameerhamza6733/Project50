@@ -2,7 +2,9 @@ package com.yourdomain.project50.Activitys
 
 import android.arch.lifecycle.Observer
 import android.arch.lifecycle.ViewModelProviders
+import android.content.Context
 import android.content.Intent
+import android.graphics.Point
 import android.os.Bundle
 import android.os.Handler
 import android.support.v4.app.DialogFragment
@@ -13,6 +15,7 @@ import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.WindowManager
 import android.widget.*
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.engine.DiskCacheStrategy
@@ -113,10 +116,13 @@ class MainActivity : AppCompatActivity() {
     private inner class ExcersizeAdupter(val excersizePlans: MutableList<ExcersizePlan>) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
         override fun onCreateViewHolder(p0: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
+
             return when (viewType) {
                 ExcersizePlan.TYPE_EXCERSISE -> {
-                    ExcersizeViewHolder(LayoutInflater.from(p0.context)
-                            .inflate(R.layout.each_excersize_plan, p0, false));
+                   val itemView = LayoutInflater.from(p0.context).inflate(R.layout.each_excersize_plan, p0, false)
+                  ExcersizeViewHolder(itemView);
+
+
                 }
                 ExcersizePlan.TYPE_AD -> {
                     val unifiedNativeLayoutView = LayoutInflater.from(

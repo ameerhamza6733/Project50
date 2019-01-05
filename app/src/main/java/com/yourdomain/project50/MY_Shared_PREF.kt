@@ -20,7 +20,7 @@ class MY_Shared_PREF {
         private val TAG = "MY_Shared_PREF";
 
         private val SHARE_PREF_FILE = this.javaClass.`package`.name + "SHARE_PREF_FILE"
-        private val SHARED_PREF_ALL_DAYS_FILE = this.javaClass.`package`.name + "SHARED_PREF_ALL_DAYS_FILE"
+        private val SHARED_PREF_ALL_DAYS_FILE =  "SHARED_PREF_ALL_DAYS_FILE"
         private val SHARE_PREF_SEETINGS = "SHARE_PREF_SEETINGS";
 
         private val SHARE_PREFF_PERSON = "share pref person"

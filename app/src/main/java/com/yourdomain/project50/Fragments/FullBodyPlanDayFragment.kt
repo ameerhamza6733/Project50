@@ -116,7 +116,7 @@ class FullBodyPlanDayFragment : Fragment() {
                 }
                 if (exerciseList[p0.adapterPosition].totaleExcersizes > 0) {
                     p0.progressBar.progress = exerciseList[p0.adapterPosition].doneExcersises.toInt()
-                    if (exerciseList[p0.adapterPosition].progress.equals("100%")){
+                    if (exerciseList[p0.adapterPosition].progress.contains("100%")){
                         p0.tvProgress.visibility=View.INVISIBLE
                         p0.progressBar.visibility=View.INVISIBLE
                         p0.tvAllDaysCompleted.visibility=View.VISIBLE

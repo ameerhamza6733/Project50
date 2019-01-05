@@ -97,6 +97,7 @@ class PauseExcersizeFragment : DialogFragment() {
         mListener = null
     }
 
+
     interface OnResumeListener {
         fun ResumeListener()
     }
@@ -237,6 +238,12 @@ class PauseExcersizeFragment : DialogFragment() {
             override fun onAdFailedToLoad(errorCode: Int) {
                 adPlaceHolder.visibility = View.GONE
                 Toast.makeText(activity, "Failed to load native ad: $errorCode", Toast.LENGTH_SHORT).show()
+            }
+
+            override fun onAdClicked() {
+                super.onAdClicked()
+                mListener=null
+                dismiss()
             }
 
 

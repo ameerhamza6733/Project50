@@ -1,6 +1,8 @@
 package com.yourdomain.project50.Activitys
 
+import android.content.Context
 import android.content.Intent
+import android.graphics.Point
 import android.os.Bundle
 import android.os.Handler
 import android.support.design.widget.BottomNavigationView
@@ -8,6 +10,7 @@ import android.support.v4.app.DialogFragment
 import android.support.v4.app.Fragment
 import android.support.v4.app.FragmentManager
 import android.support.v4.app.FragmentStatePagerAdapter
+import android.support.v4.view.ViewCompat
 import android.support.v4.view.ViewPager
 import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.LinearLayoutManager
@@ -18,10 +21,8 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ImageView
-import android.widget.ProgressBar
-import android.widget.TextView
-import android.widget.Toast
+import android.view.WindowManager
+import android.widget.*
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.bumptech.glide.request.RequestOptions
@@ -31,6 +32,7 @@ import com.google.ads.mediation.admob.AdMobAdapter
 import com.google.android.gms.ads.AdRequest
 import com.google.android.gms.ads.MobileAds
 import com.google.android.gms.ads.reward.RewardedVideoAd
+import com.yourdomain.project50.CenterZoomLayoutManager
 import com.yourdomain.project50.Fragments.ABSPlanFragment
 import com.yourdomain.project50.Fragments.ButtPlanFragment
 import com.yourdomain.project50.Fragments.FullBodyPlanDayFragment
@@ -40,31 +42,33 @@ import com.yourdomain.project50.Model.Admob
 import com.yourdomain.project50.Model.AppAdmobSettingsFromFirebase
 import com.yourdomain.project50.Model.ExcersizePlan
 import com.yourdomain.project50.R
+import com.yourdomain.project50.Utils
 import com.yourdomain.project50.ViewModle.ExcersizePlansViewModle
 import kotlinx.android.synthetic.main.activity_days_excersizes.*
 
 
-class EachPlanActivity : AppCompatActivity(), FullBodyPlanDayFragment.onRefrech,ABSPlanFragment.onRefrech,ButtPlanFragment.onRefrech {
+class EachPlanActivity : AppCompatActivity(), FullBodyPlanDayFragment.onRefrech, ABSPlanFragment.onRefrech, ButtPlanFragment.onRefrech {
     override fun onRefrechButtCallBack() {
-       refrashExcersizePlanAudupter(3)
+        //refrashExcersizePlanAudupter(3)
     }
 
     override fun onRefrechAbsCallBack() {
-       refrashExcersizePlanAudupter(2)
+       // refrashExcersizePlanAudupter(2)
     }
 
     override fun onRefrechFullBodyCallBack() {
-      refrashExcersizePlanAudupter(1)
+       // refrashExcersizePlanAudupter(1)
 
     }
 
-    private fun refrashExcersizePlanAudupter(position: Int){
-        val oldPlan= excersizePlanList[position]
-        val updatedPlan = ExcersizePlan(oldPlan.name,oldPlan.totalDays,oldPlan.completedDays+1,oldPlan.image,oldPlan.ViewType)
-        excersizePlanList.set(position,updatedPlan)
+    private fun refrashExcersizePlanAudupter(position: Int) {
+        val oldPlan = excersizePlanList[position]
+        val updatedPlan = ExcersizePlan(oldPlan.name, oldPlan.totalDays, oldPlan.completedDays + 1, oldPlan.image, oldPlan.ViewType)
+        excersizePlanList.set(position, updatedPlan)
         excersizePlansListAdupter?.notifyItemChanged(position)
         excersizePlansListAdupter?.notifyDataSetChanged()
     }
+
     companion object {
         protected val TAG = "ExcersizesActivity";
         public val EXTRA_PLAN = "EXTRA_PLAN";
@@ -112,18 +116,22 @@ class EachPlanActivity : AppCompatActivity(), FullBodyPlanDayFragment.onRefrech,
         setContentView(R.layout.activity_days_excersizes)
         val mToolbar = findViewById<Toolbar>(R.id.toolbar)
         setSupportActionBar(mToolbar)
-
+        Log.d(TAG,"onCreate call");
         extraPlan = intent?.getIntExtra(EXTRA_PLAN, 0)!!
+        intent?.getBooleanExtra("EXIT",false)?.let {
+            if (it){
+
+            }
+        }
         recyclerView = findViewById(R.id.excersizeType)
         blubGifView = findViewById(R.id.blubGifView)
         boxTick = findViewById(R.id.tickBox)
 
-        recyclerView.setHasFixedSize(true)
+
         mPager = findViewById(R.id.viewpager)
         intiDataSet()
         val pagerAdapter = ScreenSlidePagerAdapter(supportFragmentManager)
-        //     val fadeOutTransformation = FadeOutTransformation()
-        // mPager.setPageTransformer(true, fadeOutTransformation);
+
 
         mPager.adapter = pagerAdapter
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener)
@@ -184,18 +192,23 @@ class EachPlanActivity : AppCompatActivity(), FullBodyPlanDayFragment.onRefrech,
     }
 
     private fun intiDataSet() {
+        Log.d(TAG,"inti data set for day left progressbar")
         val model = ExcersizePlansViewModle(application)
         excersizePlanList = model.getExcersizePlans();
         if (excersizePlanList.size > 0) {
             excersizePlanList.add(0, ExcersizePlan("native ad", 0, 0, -1, ExcersizePlan.TYPE_AD))
+            if (excersizePlansListAdupter==null)
+            {
+                excersizePlansListAdupter = ExcersizePlansAdupter(excersizePlanList);
+                val llm = CenterZoomLayoutManager(this, LinearLayoutManager.HORIZONTAL, false);
+                recyclerView.layoutManager = llm
+                recyclerView.addOnChildAttachStateChangeListener(ChildAttachListener(llm))
+                recyclerView.adapter = excersizePlansListAdupter
+                recyclerView.scrollToPosition(extraPlan + 1)
+            }else{
+               excersizePlansListAdupter?.notifyDataSetChanged()
+            }
 
-            excersizePlansListAdupter = ExcersizePlansAdupter(excersizePlanList);
-            val llm = LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false);
-
-            recyclerView.layoutManager = llm
-            recyclerView.addOnChildAttachStateChangeListener(ChildAttachListener(llm))
-            recyclerView.adapter = excersizePlansListAdupter
-            recyclerView.scrollToPosition(extraPlan + 1)
         }
 
 
@@ -207,14 +220,23 @@ class EachPlanActivity : AppCompatActivity(), FullBodyPlanDayFragment.onRefrech,
         rateUsFragment.show(supportFragmentManager, "rateUsFragment")
     }
 
+    public fun getScreenWidth(): Int {
 
-    inner class ExcersizePlansAdupter(val excersizePlans: MutableList<ExcersizePlan>) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+        val wm = this.getSystemService(Context.WINDOW_SERVICE) as WindowManager;
+        val display = wm.getDefaultDisplay();
+        val size = Point();
+        display.getSize(size);
 
+        return size.x;
+    }
+
+    inner class ExcersizePlansAdupter(var excersizePlans: MutableList<ExcersizePlan>) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
         override fun onCreateViewHolder(p0: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
             return when (viewType) {
                 ExcersizePlan.TYPE_EXCERSISE -> {
-                    ExcersizeViewHolder(LayoutInflater.from(p0.context)
-                            .inflate(R.layout.each_excersize_plan_horizental_row, p0, false));
+                    val itemView = LayoutInflater.from(p0.context).inflate(R.layout.each_excersize_plan_horizental_row, p0, false)
+
+                    ExcersizeViewHolder(itemView);
                 }
                 ExcersizePlan.TYPE_AD -> {
                     AdViewHolderViewHolder(LayoutInflater.from(p0.context)
@@ -235,15 +257,15 @@ class EachPlanActivity : AppCompatActivity(), FullBodyPlanDayFragment.onRefrech,
         }
 
         override fun onBindViewHolder(p0: RecyclerView.ViewHolder, p1: Int) {
+            Log.d(TAG,"onBindViewHolder ")
             if (ExcersizePlan.TYPE_EXCERSISE == p0.itemViewType) {
                 p0 as ExcersizeViewHolder
-                var daysComplted = (excersizePlans[p0.adapterPosition].totalDays - excersizePlans[p0.adapterPosition].completedDays)
+                var daysComplted = excersizePlans[p0.adapterPosition].completedDays
                 p0.tvtitle.text = excersizePlans[p0.adapterPosition].name
                 Glide.with(p0.tvtitle.context).load(excersizePlans[p0.adapterPosition].image).apply(RequestOptions().diskCacheStrategy(DiskCacheStrategy.RESOURCE)).into(p0.image)
                 p0.daysProgressBar.progress = excersizePlans[p0.adapterPosition].completedDays
                 p0.tvTotalDaysLeft.text = "Days left " + daysComplted
-
-                Log.d(TAG, "totale day completed by user " + excersizePlans[p0.adapterPosition].completedDays)
+                Log.d("ExcersizePlansAdupter", "onBindViewHolder: " + daysComplted)
             } else if (ExcersizePlan.TYPE_AD == p0.itemViewType) {
                 p0 as AdViewHolderViewHolder
 
@@ -260,18 +282,36 @@ class EachPlanActivity : AppCompatActivity(), FullBodyPlanDayFragment.onRefrech,
             var image: ImageView
             var tvTotalDaysLeft: TextView
             var daysProgressBar: ProgressBar
+            var root: View
+
 
             init {
 
-                itemView.isFocusableInTouchMode = true
+                root = itemView
                 tvtitle = itemView.findViewById(R.id.excersizeTitle)
                 image = itemView.findViewById(R.id.image)
                 tvTotalDaysLeft = itemView.findViewById(R.id.tvDaysLift)
                 daysProgressBar = itemView.findViewById(R.id.progressBar)
-                itemView.setOnFocusChangeListener { v, hasFocus ->
-                    //  Log.d(TAG, "focus: $hasFocus  $adapterPosition")
-                }
 
+
+                itemView.onFocusChangeListener = object : View.OnFocusChangeListener {
+                    override fun onFocusChange(v: View?, hasFocus: Boolean) {
+
+                        if (hasFocus) {
+                            // run scale animation and make it bigger
+                            Log.d(TAG, "has focus")
+
+                            itemView.animate().scaleY(1.2f);
+
+                        } else {
+                            Log.d(TAG, "has no focus")
+                            // run scale animation and make it smaller
+
+                            itemView.animate().scaleY(1f);
+
+                        }
+                    }
+                };
 
             }
 
@@ -348,7 +388,6 @@ class EachPlanActivity : AppCompatActivity(), FullBodyPlanDayFragment.onRefrech,
 
             mPager.translationX = -position * page.width
 
-            mPager.alpha = 1 - Math.abs(position)
 
 
         }

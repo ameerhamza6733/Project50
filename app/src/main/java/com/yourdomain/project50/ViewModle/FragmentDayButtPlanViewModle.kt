@@ -21,8 +21,8 @@ class FragmentDayButtPlanViewModle(application: Application) :AndroidViewModel(a
             mutableList = ArrayList();
             val hashMap = MY_Shared_PREF.getAllCompletedorInprogressDays(getApplication())
             for (dayNumber in 1..30) {
-                if (hashMap.containsKey(ExcersizePlan.PLAN_BUTT+dayNumber.toString())) {
-                    mutableList?.add(hashMap[ExcersizePlan.PLAN_BUTT+dayNumber.toString()]!!)
+                if (hashMap.containsKey(ExcersizePlan.PLAN_BUTT+" "+dayNumber.toString())) {
+                    mutableList?.add(hashMap[ExcersizePlan.PLAN_BUTT+" "+dayNumber.toString()]!!)
 
                 } else {
                     var excersizeDays = ExerciseDay(dayNumber, 1)

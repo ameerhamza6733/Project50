@@ -29,8 +29,8 @@ class FragmentFullBodyPlanViewModle(application: Application) : AndroidViewModel
                     mutableList?.add(excersizeDay)
                     continue
                 }
-                if (hashMap.containsKey(ExcersizePlan.PLAN_FULL_BODY+dayNumber.toString())) {
-                    mutableList?.add(hashMap.get(ExcersizePlan.PLAN_FULL_BODY+dayNumber.toString())!!)
+                if (hashMap.containsKey(ExcersizePlan.PLAN_FULL_BODY +" "+dayNumber.toString())) {
+                    mutableList?.add(hashMap.get(ExcersizePlan.PLAN_FULL_BODY +" "+dayNumber.toString())!!)
 
                 } else {
                     var excersizeDay = ExerciseDay(dayNumber, 1)

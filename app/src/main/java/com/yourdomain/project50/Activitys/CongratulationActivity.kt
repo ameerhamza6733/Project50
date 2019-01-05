@@ -141,17 +141,26 @@ class CongratulationActivity : AppCompatActivity() {
         }
 
         btClose.setOnClickListener {
-            startActivity(Intent(this@CongratulationActivity,EachPlanActivity::class.java))
-            showVideoAd()
-            finish()
+            showExercisesPlan()
         }
         btShare.setOnClickListener {
             Utils.shareTextExtra(this@CongratulationActivity, "I have just completed Day " + tvDayComleted.text +" of "+getString(R.string.app_name)+ ". Join me " + "https://play.google.com/store/apps/details?id="+application.packageName) }
 
     }
 
+    private fun showExercisesPlan() {
+        val intnet = Intent(this@CongratulationActivity, EachPlanActivity::class.java)
+        intnet.putExtra("EXIT", true);
+
+        startActivity(intnet)
+        showVideoAd()
+        finish()
+    }
+
     override fun onBackPressed() {
-        startActivity(Intent(this@CongratulationActivity,EachPlanActivity::class.java))
+       val intnet  = Intent(this@CongratulationActivity,EachPlanActivity::class.java)
+       intnet.putExtra("EXIT", true);
+        startActivity(intnet)
         showVideoAd()
         finish()
     }

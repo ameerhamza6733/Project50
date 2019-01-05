@@ -170,6 +170,7 @@ public class ExcersizesFullBodyConstants {
     public static void fillUpdata() {
         Excesizes day1Excersizes = new Excesizes(exercise_day1_titles, exercise_day1_gif_icons, exercise_day1_times, exercise_day1_detail, getExercise_day1_view_type, exercise_day1_calories, exercise_day1_couch_tips);
         mDayToExsizeHashMap.put(1, day1Excersizes);
+        mDayToExsizeHashMap.put(2,day1Excersizes);
 
     }
 

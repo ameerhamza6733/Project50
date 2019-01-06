@@ -179,7 +179,7 @@ class MainActivity : AppCompatActivity() {
                 itemView.setOnClickListener {
                     if (mSettingFireBase?.moreAppsDialog == true) {
                         val moreAppsDialogeFragment = MoreAppsDialogeFragment.newInstance(adapterPosition, mSettingFireBase?.moreAppsDevIdorAppId)
-                        moreAppsDialogeFragment.setStyle(DialogFragment.STYLE_NORMAL, R.style.dialog);
+                        moreAppsDialogeFragment.setStyle(DialogFragment.STYLE_NORMAL, R.style.Dialog_MinWidth);
                         moreAppsDialogeFragment.show(supportFragmentManager, "moreAppsDialogeFragment")
                     } else {
                         val intent = Intent(itemView.context, EachPlanActivity::class.java)

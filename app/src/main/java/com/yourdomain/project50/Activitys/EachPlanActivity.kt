@@ -216,7 +216,7 @@ class EachPlanActivity : AppCompatActivity(), FullBodyPlanDayFragment.onRefrech,
 
     override fun onBackPressed() {
         val rateUsFragment = RateUsFragment()
-        rateUsFragment.setStyle(DialogFragment.STYLE_NORMAL, R.style.dialog);
+        rateUsFragment.setStyle(DialogFragment.STYLE_NORMAL, R.style.Dialog_MinWidth);
         rateUsFragment.show(supportFragmentManager, "rateUsFragment")
     }
 
@@ -260,7 +260,7 @@ class EachPlanActivity : AppCompatActivity(), FullBodyPlanDayFragment.onRefrech,
             Log.d(TAG,"onBindViewHolder ")
             if (ExcersizePlan.TYPE_EXCERSISE == p0.itemViewType) {
                 p0 as ExcersizeViewHolder
-                var daysComplted = excersizePlans[p0.adapterPosition].completedDays
+                var daysComplted = excersizePlans[p0.adapterPosition].totalDays-excersizePlans[p0.adapterPosition].completedDays
                 p0.tvtitle.text = excersizePlans[p0.adapterPosition].name
                 Glide.with(p0.tvtitle.context).load(excersizePlans[p0.adapterPosition].image).apply(RequestOptions().diskCacheStrategy(DiskCacheStrategy.RESOURCE)).into(p0.image)
                 p0.daysProgressBar.progress = excersizePlans[p0.adapterPosition].completedDays

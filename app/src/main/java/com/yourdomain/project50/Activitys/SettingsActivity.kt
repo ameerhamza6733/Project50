@@ -134,13 +134,13 @@ class SettingsActivity : AppCompatActivity(), SecondsPickerFragment.OnSecondsPic
 
         btCountDownPicker.setOnClickListener {
             val countDownSecondsPicker = WatingCountDownSecondsPicker.newInstance(settings?.workoutSettings?.watingCoutDownTime!!) as WatingCountDownSecondsPicker
-            countDownSecondsPicker.setStyle(DialogFragment.STYLE_NORMAL, R.style.dialog);
+            countDownSecondsPicker.setStyle(DialogFragment.STYLE_NORMAL, R.style.Dialog_MinWidth);
             countDownSecondsPicker.show(supportFragmentManager, "countDownSecondsPicker")
         }
 
         btRestPicker.setOnClickListener {
             val secondsPickerFragment = SecondsPickerFragment.newInstance(settings?.workoutSettings?.restTimeInSeconds!!) as SecondsPickerFragment
-            secondsPickerFragment.setStyle(DialogFragment.STYLE_NORMAL, R.style.dialog);
+            secondsPickerFragment.setStyle(DialogFragment.STYLE_NORMAL, R.style.Dialog_MinWidth);
             secondsPickerFragment.show(supportFragmentManager, "SecondsPickerFragment")
 
         }
@@ -159,7 +159,7 @@ class SettingsActivity : AppCompatActivity(), SecondsPickerFragment.OnSecondsPic
         btTestVoice.setOnClickListener { sendTTSBroadCast(getString(R.string.did_you_hear_test_voice)) }
         btTTSLanguage.setOnClickListener {
             val ttsLauguagePicker = TTSLauguagePicker()
-            ttsLauguagePicker.setStyle(DialogFragment.STYLE_NORMAL, R.style.dialog);
+            ttsLauguagePicker.setStyle(DialogFragment.STYLE_NORMAL, R.style.Dialog_MinWidth);
             ttsLauguagePicker.show(supportFragmentManager, "ttsLauguagePicker")
         }
 
@@ -169,7 +169,7 @@ class SettingsActivity : AppCompatActivity(), SecondsPickerFragment.OnSecondsPic
 
         btRateUs.setOnClickListener {
             val rateUsFragment = RateUsFragment()
-            rateUsFragment.setStyle(DialogFragment.STYLE_NORMAL, R.style.dialog);
+            rateUsFragment.setStyle(DialogFragment.STYLE_NORMAL, R.style.Dialog_MinWidth);
             rateUsFragment.show(supportFragmentManager, "rateUsFragment")
         }
 

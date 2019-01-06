@@ -101,7 +101,7 @@ class WatingToStartExcersizeFragment : DialogFragment() {
         mbtBack.setOnClickListener { dismiss() }
         mBtSpeaker.setOnClickListener {
             val settingsVoiceControlFragment = SettingsVoiceControlFragment()
-            settingsVoiceControlFragment.setStyle(DialogFragment.STYLE_NORMAL, R.style.dialog);
+            settingsVoiceControlFragment.setStyle(DialogFragment.STYLE_NORMAL, R.style.Dialog_MinWidth);
             settingsVoiceControlFragment.show(activity?.supportFragmentManager, "settingsVoiceControlFragment")
 
         }

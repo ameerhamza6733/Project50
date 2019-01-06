@@ -25,6 +25,7 @@ class MoreAppsDialogeFragment : DialogFragment() {
             intdex = arguments!!.getInt(ARG_EXTRA_INDEX)
             moreAppsDevIdorAppId = arguments!!.getString(ARG_EXTRA_DEV_ID_OR_APP_ID)
         }
+
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
@@ -45,6 +46,9 @@ class MoreAppsDialogeFragment : DialogFragment() {
         }
         return view
     }
+
+
+
 
     companion object {
 

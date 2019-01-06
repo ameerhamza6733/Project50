@@ -326,7 +326,7 @@ class ExerciseActivity : AppCompatActivity(), WatingToStartExcersizeFragment.OnF
         }
         mbtSpeaker.setOnClickListener {
             val settingsVoiceControlFragment = SettingsVoiceControlFragment()
-            settingsVoiceControlFragment.setStyle(DialogFragment.STYLE_NORMAL, R.style.dialog);
+            settingsVoiceControlFragment.setStyle(DialogFragment.STYLE_NORMAL, R.style.Dialog_MinWidth);
             settingsVoiceControlFragment.show(supportFragmentManager, "settingsVoiceControlFragment")
         }
 
@@ -602,7 +602,7 @@ class ExerciseActivity : AppCompatActivity(), WatingToStartExcersizeFragment.OnF
             sendTTSBroadCast(getString(R.string.dont_quit_keep_going))
         }
         val quitFragment = QuitFragment()
-        quitFragment.setStyle(DialogFragment.STYLE_NORMAL, R.style.dialog);
+        quitFragment.setStyle(DialogFragment.STYLE_NORMAL, R.style.Dialog_MinWidth);
         quitFragment.show(supportFragmentManager, "quitFragment")
     }
 

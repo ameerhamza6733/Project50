@@ -174,7 +174,7 @@ class ReportsFragment : Fragment() {
         series.valueDependentColor = ValueDependentColor { data -> Color.rgb(data?.x?.toInt()!! * 255 / 4, Math.abs(data.y * 255 / 6).toInt(), 100) }
         btEditBMI!!.setOnClickListener {
             val editBMIDialogeFragment = EditBMIDialogeFragment()
-            editBMIDialogeFragment.setStyle(DialogFragment.STYLE_NORMAL, R.style.dialog)
+            editBMIDialogeFragment.setStyle(DialogFragment.STYLE_NORMAL, R.style.Dialog_MinWidth)
             editBMIDialogeFragment.show(childFragmentManager, "editBMIDialogeFragment")
         }
         if (PersonAppearance.TYPE_CM_KG == person!!.personAppearance.SCALE_TYPE) {

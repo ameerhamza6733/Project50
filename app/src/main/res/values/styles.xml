@@ -39,7 +39,9 @@
     <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
 
     <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
-    <style name="dialog" parent="Theme.AppCompat.Light.Dialog.MinWidth"></style>
+    <style name="Dialog_MinWidth" parent="Theme.AppCompat.Light.Dialog.MinWidth">
+        <item name="android:windowBackground">@android:color/transparent</item>
+    </style>
 
     <string name="ad_attribution">Ad</string>
 

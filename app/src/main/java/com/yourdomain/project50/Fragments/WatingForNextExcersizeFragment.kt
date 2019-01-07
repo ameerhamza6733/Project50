@@ -8,6 +8,7 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.WindowManager
 import android.widget.*
 import com.bumptech.glide.Glide
 import com.google.ads.consent.ConsentInformation
@@ -72,9 +73,9 @@ class WatingForNextExcersizeFragment : DialogFragment() {
     private var secondDone=0
     private var halfTime: Int = -1
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
-                              savedInstanceState: Bundle?): View? {
-        // Inflate the layout for this fragment
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+        getActivity()?.getWindow()?.addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
+
         val view = inflater.inflate(R.layout.fragment_wating_for_next_excersize, container, false)
 
         tvTitle = view.findViewById(R.id.title)
@@ -96,7 +97,7 @@ class WatingForNextExcersizeFragment : DialogFragment() {
         btIncreaseCoutDown.setOnClickListener {
 
             countDownTimer?.cancel()
-            progressBar.max=mParamRestTime+10
+            progressBar.max=secondDone+10
             progressBar.progress=progressBar.progress-10
             val secondToCountDown = secondDone + 10;
             countDown(secondToCountDown.toLong())

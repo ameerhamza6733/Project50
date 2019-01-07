@@ -136,7 +136,7 @@ class CongratulationActivity : AppCompatActivity() {
 
         if (intent?.getIntExtra(EXTRA_DAY, 0) == 1 || intent?.getIntExtra(EXTRA_DAY, 0) == 30) {
             val rateUsFragment = RateUsFragment()
-            rateUsFragment.setStyle(DialogFragment.STYLE_NORMAL, R.style.Dialog_MinWidth);
+            rateUsFragment.setStyle(DialogFragment.STYLE_NORMAL, R.style.Dialog_MinWidth_Transparent);
             rateUsFragment.show(supportFragmentManager, "rateUsFragment")
         }
 
@@ -150,8 +150,6 @@ class CongratulationActivity : AppCompatActivity() {
 
     private fun showExercisesPlan() {
         val intnet = Intent(this@CongratulationActivity, EachPlanActivity::class.java)
-        intnet.putExtra("EXIT", true);
-
         startActivity(intnet)
         showVideoAd()
         finish()

@@ -23,6 +23,7 @@ import com.google.android.gms.ads.formats.NativeAdOptions
 import com.google.android.gms.ads.formats.UnifiedNativeAd
 import com.google.android.gms.ads.formats.UnifiedNativeAdView
 import com.yourdomain.project50.Activitys.ExerciseActivity
+import com.yourdomain.project50.CustomCountDownTimer
 import com.yourdomain.project50.R
 
 
@@ -35,6 +36,7 @@ class WatingForNextExcersizeFragment : DialogFragment() {
     private var mParamDrawble: Int = -1
     private var mParamRestTime: Int = 30
     private var mNativeAdId: String? = null
+
     private lateinit var adRequest: AdRequest
     private var mListener: OnNextExcersizeDemoFragmentListener? = null
 
@@ -69,8 +71,8 @@ class WatingForNextExcersizeFragment : DialogFragment() {
     }
 
 
-    private var countDownTimer: CountDownTimer? = null
-    private var secondDone=0
+    private var countDownTimer: CustomCountDownTimer? = null
+    private var secondRemaning=0
     private var halfTime: Int = -1
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
@@ -97,16 +99,15 @@ class WatingForNextExcersizeFragment : DialogFragment() {
         btIncreaseCoutDown.setOnClickListener {
 
             countDownTimer?.cancel()
-            progressBar.max=secondDone+10
+            progressBar.max=secondRemaning+10
             progressBar.progress=progressBar.progress-10
-            val secondToCountDown = secondDone + 10;
+            val secondToCountDown = secondRemaning + 10;
             countDown(secondToCountDown.toLong())
-            countDownTimer?.start()
         }
         Glide.with(this).asGif().load(mParamDrawble).into(icon)
-        halfTime = (mParamRestTime / 2)
+
         countDown(mParamRestTime.toLong())
-        countDownTimer?.start()
+
         adRequest = if (ConsentInformation.getInstance(activity).consentStatus == ConsentStatus.NON_PERSONALIZED) {
             AdRequest.Builder()
                     .addNetworkExtrasBundle(AdMobAdapter::class.java, getNonPersonalizedAdsBundle())
@@ -121,14 +122,15 @@ class WatingForNextExcersizeFragment : DialogFragment() {
     }
 
     private fun countDown(wattingTime:Long) {
-        Log.d(TAG,"count down for : "+wattingTime)
-        countDownTimer = object : CountDownTimer(wattingTime * 1000, 1000) {
+        Log.d(TAG,"count down for : "+progressBar.max)
+        halfTime=((wattingTime * 1000)/2).toInt()
+        countDownTimer = object : CustomCountDownTimer(wattingTime * 1000, 1000) {
 
             override fun onTick(millisUntilFinished: Long) {
                 var s = (millisUntilFinished / 1000).toInt()
-                secondDone = s
-                progressBar.progress ++
-                tvProgress.text = progressBar.progress.toString()
+                secondRemaning = s
+                progressBar.progress =s
+                tvProgress.text = secondRemaning.toString()
                 if (s == halfTime) {
                     sendTTSBroadCast(getString(R.string.next))
                     sendTTSBroadCast(mParamTitle!!)
@@ -148,7 +150,7 @@ class WatingForNextExcersizeFragment : DialogFragment() {
 
             }
 
-        }
+        }.start()
     }
 
     private fun sendTTSBroadCast(string: String) {
@@ -160,7 +162,23 @@ class WatingForNextExcersizeFragment : DialogFragment() {
         }
     }
 
+    override fun onPause() {
+        Log.d(TAG, "onPause");
+        countDownTimer?.pause()
+        resumeCountDown=true
+        super.onPause()
+    }
 
+
+    override fun onResume() {
+        Log.d(TAG, "onResume")
+       if (resumeCountDown){
+           countDownTimer?.resume()
+           resumeCountDown=false
+       }
+        super.onResume()
+
+    }
     override fun onAttach(context: Context?) {
         super.onAttach(context)
         if (context is OnNextExcersizeDemoFragmentListener) {
@@ -169,10 +187,7 @@ class WatingForNextExcersizeFragment : DialogFragment() {
         }
     }
 
-    override fun onResume() {
-        super.onResume()
-        Log.d(TAG, "onResume");
-    }
+
 
     override fun onStart() {
         super.onStart()
@@ -304,15 +319,17 @@ class WatingForNextExcersizeFragment : DialogFragment() {
 
             val adLoader = builder.withAdListener(object : AdListener() {
                 override fun onAdFailedToLoad(errorCode: Int) {
-
                     Toast.makeText(activity, "Failed to load native ad: $errorCode", Toast.LENGTH_SHORT).show()
                 }
 
+                override fun onAdOpened() {
+                    Log.d(TAG,"onAdOpened")
+                    super.onAdOpened()
+                }
+
                 override fun onAdClicked() {
+                    Log.d(TAG,"onAdClicked")
                     super.onAdClicked()
-                    Log.d(TAG,"onAd click")
-                    mListener?.onSkip()
-                    dismiss()
                 }
             }).build()
 
@@ -337,7 +354,7 @@ class WatingForNextExcersizeFragment : DialogFragment() {
         private var ARG_PARAM_ICON = "ARG_PARAM_ICON"
         private val ARG_PARAM_REST_TIME = "ARG_PARAM_REST_TIME";
         private var ARG_PARAM_NATIVE_AD_ID = "ARG_PARAM_NATIVE_AD_ID"
-
+        private var resumeCountDown=false;
         fun newInstance(title: String, seconds: String, doneExcersizes: String, drawble: Int, restSeconds: Int, nativeAdId: String): WatingForNextExcersizeFragment {
             val fragment = WatingForNextExcersizeFragment()
             val args = Bundle()

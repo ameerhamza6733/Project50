@@ -151,7 +151,7 @@ class ExerciseActivity : AppCompatActivity(), WatingToStartExcersizeFragment.OnF
     private var countDown: CustomCountDownTimer? = null
     private var mediaPlayer: MediaPlayer? = null
     private var currentDayKey: Int = -3
-    private var resumeCountDown=false;
+    private var resumeCountDown = false;
     private var excersizeDone = -2
     private var currentPlan = "-2"
 
@@ -237,17 +237,17 @@ class ExerciseActivity : AppCompatActivity(), WatingToStartExcersizeFragment.OnF
         adView.adUnitId = adId
         adContainer.addView(adView)
         adView.loadAd(adRequest)
-        adView.adListener = object: AdListener() {
+        adView.adListener = object : AdListener() {
             override fun onAdLoaded() {
 
             }
 
-            override fun onAdFailedToLoad(errorCode : Int) {
+            override fun onAdFailedToLoad(errorCode: Int) {
 
             }
 
             override fun onAdOpened() {
-               countDown?.pause()
+                countDown?.pause()
             }
 
             override fun onAdLeftApplication() {
@@ -453,7 +453,7 @@ class ExerciseActivity : AppCompatActivity(), WatingToStartExcersizeFragment.OnF
             }
 
             MY_Shared_PREF.saveGraphCalvsDays(application, DataPoint(Date(), excesizes?.calories!![counter]), SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).format(Date()))
-
+            countDown = null
             val watingForNextFragment = WatingForNextExcersizeFragment.newInstance(excesizes?.title!![counter + 1], temp, "NEXT " + (counter + 1).toString() + "/" + (excesizes!!.icons.size).toString(), excesizes?.icons!![counter + 1], settings.workoutSettings.restTimeInSeconds, nativeAdId)
             watingForNextFragment.setStyle(DialogFragment.STYLE_NORMAL, android.R.style.Theme_Black_NoTitleBar_Fullscreen);
             watingForNextFragment.show(supportFragmentManager, "watingForNextFragment")
@@ -560,7 +560,7 @@ class ExerciseActivity : AppCompatActivity(), WatingToStartExcersizeFragment.OnF
         Log.d(TAG, "Saving currnet day in shared pref: " + Utils.toPersentage(counter + 1, excesizes?.title?.size!!))
         if (currentDayKey == -3) return
 
-        MY_Shared_PREF.saveDayByKey(application, (currentPlan)+" " + (currentDayKey + 1).toString(), ExerciseDay(currentDayKey + 1, ExerciseDay.VIEW_TYPE_DAY, excesizes?.title?.size?.toLong()!!, counter.toLong(), Utils.toPersentage(counter + 1, excesizes?.title?.size!!)))
+        MY_Shared_PREF.saveDayByKey(application, (currentPlan) + " " + (currentDayKey + 1).toString(), ExerciseDay(currentDayKey + 1, ExerciseDay.VIEW_TYPE_DAY, excesizes?.title?.size?.toLong()!!, counter.toLong(), Utils.toPersentage(counter + 1, excesizes?.title?.size!!)))
     }
 
     override fun onPause() {
@@ -569,14 +569,9 @@ class ExerciseActivity : AppCompatActivity(), WatingToStartExcersizeFragment.OnF
         super.onPause()
     }
 
-    override fun onStop() {
-        Log.d(TAG,"onStop")
-
-        super.onStop()
-    }
 
     override fun onResume() {
-        Log.d(TAG,"onResume")
+        Log.d(TAG, "onResume")
         countDown?.resume()
         super.onResume()
 

@@ -6,7 +6,9 @@ import android.support.v4.app.DialogFragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
 import android.widget.TextView
+import com.bumptech.glide.Glide
 import com.yourdomain.project50.Activitys.EachPlanActivity
 import com.yourdomain.project50.R
 import com.yourdomain.project50.Utils
@@ -17,6 +19,7 @@ import com.yourdomain.project50.Utils
 class MoreAppsDialogeFragment : DialogFragment() {
     private lateinit var btLatter: TextView
     private lateinit var btyas: TextView
+    private lateinit var imageViewMoreApps:ImageView
     private var intdex = -1
     private var moreAppsDevIdorAppId: String? = null
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -32,6 +35,7 @@ class MoreAppsDialogeFragment : DialogFragment() {
         val view = inflater.inflate(R.layout.more_app_dialoge_framgment, container, false)
         btLatter = view.findViewById(R.id.btLatter)
         btyas = view.findViewById(R.id.btYasNow)
+        imageViewMoreApps=view.findViewById(R.id.imageViewMoreApps)
         btLatter.setOnClickListener {
             val intent = Intent(activity, EachPlanActivity::class.java)
             intent.putExtra(EachPlanActivity.EXTRA_PLAN, intdex)
@@ -44,6 +48,7 @@ class MoreAppsDialogeFragment : DialogFragment() {
             }
 
         }
+        Glide.with(this).asBitmap().load(R.drawable.more_apps_message).into(imageViewMoreApps)
         return view
     }
 

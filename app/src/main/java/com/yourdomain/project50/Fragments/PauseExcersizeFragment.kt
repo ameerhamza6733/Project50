@@ -20,6 +20,7 @@ import com.google.android.gms.ads.formats.MediaView
 import com.google.android.gms.ads.formats.NativeAdOptions
 import com.google.android.gms.ads.formats.UnifiedNativeAd
 import com.google.android.gms.ads.formats.UnifiedNativeAdView
+import com.yourdomain.project50.Activitys.ExerciseActivity
 import com.yourdomain.project50.R
 
 
@@ -65,8 +66,7 @@ class PauseExcersizeFragment : DialogFragment() {
         tvTitle.text = mParamExcesizeTilte
         tvSeconds.text = mParamExcersizeSeconds
         btContinue.setOnClickListener {
-
-            dismiss()
+           dismiss()
 
         }
         activity?.let { Glide.with(it).load(mParamGif).into(gif) }
@@ -86,6 +86,8 @@ class PauseExcersizeFragment : DialogFragment() {
         super.onAttach(context)
         if (context is OnResumeListener) {
             mListener = context
+        ExerciseActivity.resumeCountDown=false
+
         } else {
             throw RuntimeException(context!!.toString() + " must implement OnFragmentInteractionListener")
         }
@@ -93,6 +95,7 @@ class PauseExcersizeFragment : DialogFragment() {
 
     override fun onDetach() {
         mListener?.ResumeListener()
+        ExerciseActivity.resumeCountDown=true
         super.onDetach()
         mListener = null
     }
@@ -241,11 +244,9 @@ class PauseExcersizeFragment : DialogFragment() {
             }
 
             override fun onAdClicked() {
-                super.onAdClicked()
-                mListener=null
-                dismiss()
-            }
 
+                super.onAdClicked()
+            }
 
         }).build()
 

@@ -116,7 +116,7 @@ class WatingForNextExcersizeFragment : DialogFragment() {
             AdRequest.Builder()
                     .build()
         }
-
+        resumeCountDown=false
         refreshAd();
         return view;
     }

@@ -76,6 +76,7 @@ class ExerciseActivity : AppCompatActivity(), WatingToStartExcersizeFragment.OnF
     }
 
     override fun ResumeListener() {
+        Log.d(TAG, "ResumeListener")
         countDown?.resume()
     }
 
@@ -126,6 +127,7 @@ class ExerciseActivity : AppCompatActivity(), WatingToStartExcersizeFragment.OnF
         val EXTRA_DAY = "ExerciseActivity.extra day";
         val EXTRA_EXCERSIZES_DONE = "ExcersizeListActivity.EXTRA_EXCERSIZES_DONE"
         val EXTRA_PLAN = "ExerciseActivity.EXTRA_PLA"
+        var resumeCountDown = true
     }
 
     private lateinit var mTotalProgressBar: ProgressBar
@@ -155,7 +157,7 @@ class ExerciseActivity : AppCompatActivity(), WatingToStartExcersizeFragment.OnF
     private var excersizeDone = -2
     private var currentPlan = "-2"
 
-    private var TAG = "ExerciseActivity";
+    private var TAG = "ExerciseActivityTAG";
 
     private var totleTime = ""
     private lateinit var settings: Settings
@@ -248,6 +250,7 @@ class ExerciseActivity : AppCompatActivity(), WatingToStartExcersizeFragment.OnF
 
             override fun onAdOpened() {
                 countDown?.pause()
+               resumeCountDown=true
             }
 
             override fun onAdLeftApplication() {
@@ -565,6 +568,7 @@ class ExerciseActivity : AppCompatActivity(), WatingToStartExcersizeFragment.OnF
 
     override fun onPause() {
         Log.d(TAG, "onPause");
+        if (resumeCountDown)
         countDown?.pause()
         super.onPause()
     }
@@ -572,7 +576,8 @@ class ExerciseActivity : AppCompatActivity(), WatingToStartExcersizeFragment.OnF
 
     override fun onResume() {
         Log.d(TAG, "onResume")
-        countDown?.resume()
+        if (resumeCountDown)
+            countDown?.resume()
         super.onResume()
 
     }

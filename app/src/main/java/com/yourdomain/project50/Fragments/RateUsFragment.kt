@@ -10,6 +10,12 @@ import android.widget.TextView
 import com.bumptech.glide.Glide
 import com.yourdomain.project50.R
 import com.yourdomain.project50.Utils
+import com.bumptech.glide.load.resource.bitmap.RoundedCorners
+import com.bumptech.glide.load.resource.bitmap.CenterCrop
+import com.bumptech.glide.load.resource.bitmap.FitCenter
+import com.bumptech.glide.request.RequestOptions
+
+
 
 /**
  * Created by apple on 11/26/18.
@@ -21,6 +27,8 @@ class RateUsFragment : DialogFragment() {
         val rateImage = view.findViewById<ImageView>(R.id.imageRate)
         val btRateUs = view.findViewById<TextView>(R.id.btRateUs)
         val btRateClose = view.findViewById<TextView>(R.id.btRateClose)
+        var requestOptions = RequestOptions()
+
         Glide.with(this).asBitmap().load(R.drawable.rate_us).into(rateImage)
         btRateUs.setOnClickListener {
             Utils.openGooglePlay(activity?.application, activity?.packageName)

@@ -77,7 +77,7 @@ class VideoFragment : DialogFragment() {
         return view
     }
 
-    // TODO: Rename method, update argument and hook method into UI event
+
 
     override fun onAttach(context: Context?) {
         super.onAttach(context)
@@ -98,7 +98,6 @@ class VideoFragment : DialogFragment() {
     }
 
     companion object {
-        // TODO: Rename parameter arguments, choose names that match
         // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
         private val ARG_PARAM_TITLE = "ARG_PARAM_TITLE"
         private val ARG_PARAM_DES = "ARG_PARAM_DES"

@@ -183,6 +183,7 @@ class MainActivity : AppCompatActivity() {
                         moreAppsDialogeFragment.show(supportFragmentManager, "moreAppsDialogeFragment")
                     } else {
                         val intent = Intent(itemView.context, EachPlanActivity::class.java)
+                        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK)
                         intent.putExtra(EachPlanActivity.EXTRA_PLAN, adapterPosition)
                         itemView.context.startActivity(intent)
                         finish()

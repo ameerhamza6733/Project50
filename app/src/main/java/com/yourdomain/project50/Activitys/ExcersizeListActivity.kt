@@ -95,6 +95,17 @@ class ExcersizeListActivity : AppCompatActivity() {
         }
         loadBannerAds()
         loadInterstial()
+        mInterstitialAd?.adListener = object : AdListener() {
+
+            override fun onAdFailedToLoad(p0: Int) {
+                super.onAdFailedToLoad(p0)
+                when(p0){
+                    3->{
+                        loadInterstial()
+                    }
+                }
+            }
+        }
         intent?.action?.let {
             if (it.equals(ACTION_START_EXCERSIZE)) {
                 openExcersizeActivty()
@@ -124,17 +135,7 @@ class ExcersizeListActivity : AppCompatActivity() {
             mInterstitialAd?.adUnitId = mSetingsFromFirebase?.admobAds?.interstitialAds5?.id
         }
         mInterstitialAd?.loadAd(adRequest)
-        mInterstitialAd?.adListener = object : AdListener() {
-            override fun onAdLoaded() {
-                super.onAdLoaded()
-                Log.d(TAG, "onAdLoaded")
-            }
 
-            override fun onAdFailedToLoad(p0: Int) {
-                super.onAdFailedToLoad(p0)
-                Log.d(TAG, "onAdFailedToLoad")
-            }
-        }
 
     }
 

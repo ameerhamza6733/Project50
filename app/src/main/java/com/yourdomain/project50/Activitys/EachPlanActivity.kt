@@ -10,7 +10,6 @@ import android.support.v4.app.DialogFragment
 import android.support.v4.app.Fragment
 import android.support.v4.app.FragmentManager
 import android.support.v4.app.FragmentStatePagerAdapter
-import android.support.v4.view.ViewCompat
 import android.support.v4.view.ViewPager
 import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.LinearLayoutManager
@@ -22,7 +21,10 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.WindowManager
-import android.widget.*
+import android.widget.ImageView
+import android.widget.ProgressBar
+import android.widget.TextView
+import android.widget.Toast
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.bumptech.glide.request.RequestOptions
@@ -31,7 +33,9 @@ import com.google.ads.consent.ConsentStatus
 import com.google.ads.mediation.admob.AdMobAdapter
 import com.google.android.gms.ads.AdRequest
 import com.google.android.gms.ads.MobileAds
+import com.google.android.gms.ads.reward.RewardItem
 import com.google.android.gms.ads.reward.RewardedVideoAd
+import com.google.android.gms.ads.reward.RewardedVideoAdListener
 import com.yourdomain.project50.CenterZoomLayoutManager
 import com.yourdomain.project50.Fragments.ABSPlanFragment
 import com.yourdomain.project50.Fragments.ButtPlanFragment
@@ -42,38 +46,46 @@ import com.yourdomain.project50.Model.Admob
 import com.yourdomain.project50.Model.AppAdmobSettingsFromFirebase
 import com.yourdomain.project50.Model.ExcersizePlan
 import com.yourdomain.project50.R
-import com.yourdomain.project50.Utils
 import com.yourdomain.project50.ViewModle.ExcersizePlansViewModle
 import kotlinx.android.synthetic.main.activity_days_excersizes.*
 
 
-class EachPlanActivity : AppCompatActivity(), FullBodyPlanDayFragment.onRefrech, ABSPlanFragment.onRefrech, ButtPlanFragment.onRefrech {
-    override fun onRefrechButtCallBack() {
-        //refrashExcersizePlanAudupter(3)
-    }
-
-    override fun onRefrechAbsCallBack() {
-       // refrashExcersizePlanAudupter(2)
-    }
-
-    override fun onRefrechFullBodyCallBack() {
-       // refrashExcersizePlanAudupter(1)
+class EachPlanActivity : AppCompatActivity(), RewardedVideoAdListener {
+    override fun onRewardedVideoAdClosed() {
 
     }
 
-    private fun refrashExcersizePlanAudupter(position: Int) {
-        val oldPlan = excersizePlanList[position]
-        val updatedPlan = ExcersizePlan(oldPlan.name, oldPlan.totalDays, oldPlan.completedDays + 1, oldPlan.image, oldPlan.ViewType)
-        excersizePlanList.set(position, updatedPlan)
-        excersizePlansListAdupter?.notifyItemChanged(position)
-        excersizePlansListAdupter?.notifyDataSetChanged()
+    override fun onRewardedVideoAdLeftApplication() {
     }
+
+    override fun onRewardedVideoAdLoaded() {
+    }
+
+    override fun onRewardedVideoAdOpened() {
+    }
+
+    override fun onRewardedVideoCompleted() {
+    }
+
+    override fun onRewarded(p0: RewardItem?) {
+    }
+
+    override fun onRewardedVideoStarted() {
+    }
+
+    override fun onRewardedVideoAdFailedToLoad(p0: Int) {
+        Log.d(TAG,"onRewardedVideoAdFailedToLoad: "+p0)
+        when (p0) {
+            3 -> {
+                requestToLoadVideoAd()
+            }
+        }
+    }
+
 
     companion object {
         protected val TAG = "ExcersizesActivity";
         public val EXTRA_PLAN = "EXTRA_PLAN";
-        private val MIN_SCALE = 0.65f
-        private val MIN_ALPHA = 0.3f
         var mRewardedVideoAd: RewardedVideoAd? = null
 
     }
@@ -116,10 +128,10 @@ class EachPlanActivity : AppCompatActivity(), FullBodyPlanDayFragment.onRefrech,
         setContentView(R.layout.activity_days_excersizes)
         val mToolbar = findViewById<Toolbar>(R.id.toolbar)
         setSupportActionBar(mToolbar)
-        Log.d(TAG,"onCreate call");
+        Log.d(TAG, "onCreate call");
         extraPlan = intent?.getIntExtra(EXTRA_PLAN, 0)!!
-        intent?.getBooleanExtra("EXIT",false)?.let {
-            if (it){
+        intent?.getBooleanExtra("EXIT", false)?.let {
+            if (it) {
 
             }
         }
@@ -137,14 +149,8 @@ class EachPlanActivity : AppCompatActivity(), FullBodyPlanDayFragment.onRefrech,
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener)
         mRewardedVideoAd = MobileAds.getRewardedVideoAdInstance(this);
         mAdmobSetingsFromFirebase = MY_Shared_PREF.getFirebaseAdmobAppSettings(application)
-        if (ConsentInformation.getInstance(this).consentStatus == ConsentStatus.PERSONALIZED) {
-            showNonPersonalizedAds()
-        } else if (ConsentInformation.getInstance(this).consentStatus == ConsentStatus.NON_PERSONALIZED) {
-            showNonPersonalizedAds()
-        } else {
-            showPersonalizedAds()
-        }
-
+        requestToLoadVideoAd()
+        mRewardedVideoAd?.rewardedVideoAdListener = this
         Glide.with(this).asGif().load(R.drawable.blubgif).into(blubGifView)
         Glide.with(this).asBitmap().load(R.drawable.ic_tick_white_24dp).into(boxTick)
 
@@ -158,9 +164,19 @@ class EachPlanActivity : AppCompatActivity(), FullBodyPlanDayFragment.onRefrech,
         boxTick.setOnClickListener {
             val intent = Intent(this@EachPlanActivity, MainActivity::class.java)
             startActivity(intent)
+            finish()
         }
     }
 
+    private fun requestToLoadVideoAd() {
+        if (ConsentInformation.getInstance(this).consentStatus == ConsentStatus.PERSONALIZED) {
+            showNonPersonalizedAds()
+        } else if (ConsentInformation.getInstance(this).consentStatus == ConsentStatus.NON_PERSONALIZED) {
+            showNonPersonalizedAds()
+        } else {
+            showPersonalizedAds()
+        }
+    }
 
     private fun showPersonalizedAds() {
         var adId: String = Admob.REWADEDR_VIDEO_AD_ID
@@ -182,6 +198,7 @@ class EachPlanActivity : AppCompatActivity(), FullBodyPlanDayFragment.onRefrech,
                         .addNetworkExtrasBundle(AdMobAdapter::class.java, getNonPersonalizedAdsBundle())
                         .build())
 
+
     }
 
     fun getNonPersonalizedAdsBundle(): Bundle {
@@ -192,21 +209,20 @@ class EachPlanActivity : AppCompatActivity(), FullBodyPlanDayFragment.onRefrech,
     }
 
     private fun intiDataSet() {
-        Log.d(TAG,"inti data set for day left progressbar")
+        Log.d(TAG, "inti data set for day left progressbar")
         val model = ExcersizePlansViewModle(application)
         excersizePlanList = model.getExcersizePlans();
         if (excersizePlanList.size > 0) {
             excersizePlanList.add(0, ExcersizePlan("native ad", 0, 0, -1, ExcersizePlan.TYPE_AD))
-            if (excersizePlansListAdupter==null)
-            {
+            if (excersizePlansListAdupter == null) {
                 excersizePlansListAdupter = ExcersizePlansAdupter(excersizePlanList);
                 val llm = CenterZoomLayoutManager(this, LinearLayoutManager.HORIZONTAL, false);
                 recyclerView.layoutManager = llm
                 recyclerView.addOnChildAttachStateChangeListener(ChildAttachListener(llm))
                 recyclerView.adapter = excersizePlansListAdupter
                 recyclerView.scrollToPosition(extraPlan + 1)
-            }else{
-               excersizePlansListAdupter?.notifyDataSetChanged()
+            } else {
+                excersizePlansListAdupter?.notifyDataSetChanged()
             }
 
         }
@@ -257,10 +273,10 @@ class EachPlanActivity : AppCompatActivity(), FullBodyPlanDayFragment.onRefrech,
         }
 
         override fun onBindViewHolder(p0: RecyclerView.ViewHolder, p1: Int) {
-            Log.d(TAG,"onBindViewHolder ")
+            Log.d(TAG, "onBindViewHolder ")
             if (ExcersizePlan.TYPE_EXCERSISE == p0.itemViewType) {
                 p0 as ExcersizeViewHolder
-                var daysComplted = excersizePlans[p0.adapterPosition].totalDays-excersizePlans[p0.adapterPosition].completedDays
+                var daysComplted = excersizePlans[p0.adapterPosition].totalDays - excersizePlans[p0.adapterPosition].completedDays
                 p0.tvtitle.text = excersizePlans[p0.adapterPosition].name
                 Glide.with(p0.tvtitle.context).load(excersizePlans[p0.adapterPosition].image).apply(RequestOptions().diskCacheStrategy(DiskCacheStrategy.RESOURCE)).into(p0.image)
                 p0.daysProgressBar.progress = excersizePlans[p0.adapterPosition].completedDays
@@ -387,7 +403,6 @@ class EachPlanActivity : AppCompatActivity(), FullBodyPlanDayFragment.onRefrech,
         override fun transformPage(page: View, position: Float) {
 
             mPager.translationX = -position * page.width
-
 
 
         }

@@ -169,7 +169,7 @@ class SettingsActivity : AppCompatActivity(), SecondsPickerFragment.OnSecondsPic
 
         btRateUs.setOnClickListener {
             val rateUsFragment = RateUsFragment()
-            rateUsFragment.setStyle(DialogFragment.STYLE_NORMAL, R.style.Dialog_MinWidth);
+            rateUsFragment.setStyle(DialogFragment.STYLE_NORMAL, R.style.Dialog_MinWidth_Transparent);
             rateUsFragment.show(supportFragmentManager, "rateUsFragment")
         }
 

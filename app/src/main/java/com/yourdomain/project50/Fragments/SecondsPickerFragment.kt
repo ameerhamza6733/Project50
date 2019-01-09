@@ -84,7 +84,7 @@ open class SecondsPickerFragment : DialogFragment() {
     }
 
    open interface OnSecondsPickerListener {
-        // TODO: Update argument type and name
+
         fun onPicker(seconds:Int)
     }
 }// Required empty public constructor

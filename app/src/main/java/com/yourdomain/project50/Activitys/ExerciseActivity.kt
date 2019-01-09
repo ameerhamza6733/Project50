@@ -20,7 +20,9 @@ import com.google.ads.consent.ConsentInformation
 import com.google.ads.consent.ConsentStatus
 import com.google.ads.mediation.admob.AdMobAdapter
 import com.google.android.gms.ads.*
+import com.google.android.gms.ads.reward.RewardItem
 import com.google.android.gms.ads.reward.RewardedVideoAd
+import com.google.android.gms.ads.reward.RewardedVideoAdListener
 import com.jjoe64.graphview.series.DataPoint
 import com.yourdomain.project50.*
 import com.yourdomain.project50.Fragments.*
@@ -33,7 +35,38 @@ import java.util.*
 import java.util.concurrent.TimeUnit
 
 
-class ExerciseActivity : AppCompatActivity(), WatingToStartExcersizeFragment.OnFragmentInteractionListener, PauseExcersizeFragment.OnResumeListener, QuitFragment.OnQuitListener, WatingForNextExcersizeFragment.OnNextExcersizeDemoFragmentListener, SettingsVoiceControlFragment.OnVoicecontrolChangeListener, VideoFragment.OnVideoFragmentListener {
+class ExerciseActivity : AppCompatActivity(), WatingToStartExcersizeFragment.OnFragmentInteractionListener, PauseExcersizeFragment.OnResumeListener, QuitFragment.OnQuitListener, WatingForNextExcersizeFragment.OnNextExcersizeDemoFragmentListener, SettingsVoiceControlFragment.OnVoicecontrolChangeListener, VideoFragment.OnVideoFragmentListener, RewardedVideoAdListener {
+    override fun onRewardedVideoAdClosed() {
+
+    }
+
+    override fun onRewardedVideoAdLeftApplication() {
+    }
+
+    override fun onRewardedVideoAdLoaded() {
+    }
+
+    override fun onRewardedVideoAdOpened() {
+    }
+
+    override fun onRewardedVideoCompleted() {
+    }
+
+    override fun onRewarded(p0: RewardItem?) {
+    }
+
+    override fun onRewardedVideoStarted() {
+    }
+
+    override fun onRewardedVideoAdFailedToLoad(p0: Int) {
+
+        when (p0) {
+            3 -> {
+                loadVideoAd()
+            }
+        }
+    }
+
     override fun onDetachedVideoFragment() {
         if (excesizes?.viewType!![counter] == Excesizes.VIEW_TYPE_LIMTED_EXCERSIZE)
             countDown?.resume()
@@ -227,6 +260,7 @@ class ExerciseActivity : AppCompatActivity(), WatingToStartExcersizeFragment.OnF
         if (mSetingsFromFirebase?.admobAds?.bannerAds7?.enable == true)
             loadBannerAds()
         loadVideoAd()
+        mRewardedVideoAd?.rewardedVideoAdListener = this
     }
 
     private fun loadBannerAds() {
@@ -250,7 +284,7 @@ class ExerciseActivity : AppCompatActivity(), WatingToStartExcersizeFragment.OnF
 
             override fun onAdOpened() {
                 countDown?.pause()
-               resumeCountDown=true
+                resumeCountDown = true
             }
 
             override fun onAdLeftApplication() {
@@ -569,7 +603,7 @@ class ExerciseActivity : AppCompatActivity(), WatingToStartExcersizeFragment.OnF
     override fun onPause() {
         Log.d(TAG, "onPause");
         if (resumeCountDown)
-        countDown?.pause()
+            countDown?.pause()
         super.onPause()
     }
 

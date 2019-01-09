@@ -35,7 +35,7 @@ class ScaleActivity : AppCompatActivity(), CMandKGscaleFragment.OnINCandLBSRadio
             val person = Person()
             person.personAppearance = personAppearance
             MY_Shared_PREF.savePerson(application, person)
-            MY_Shared_PREF.savePersonAppearanceHistory(application,personAppearance)
+            MY_Shared_PREF.savePersonAppearanceHistory(application, personAppearance)
             finish()
         }
     }
@@ -56,17 +56,23 @@ class ScaleActivity : AppCompatActivity(), CMandKGscaleFragment.OnINCandLBSRadio
         mSetingsFromFirebase = MY_Shared_PREF.getFirebaseAdmobAppSettings(application)
         if (mSetingsFromFirebase?.admobAds?.interstitialAds2?.enable == true)
             mInterstitialAd = InterstitialAd(this);
+
         mInterstitialAd?.adListener = object : AdListener() {
-            override fun onAdLoaded() {
-                super.onAdLoaded()
-                Log.d(TAG, "onAdLoaded")
-            }
 
             override fun onAdFailedToLoad(p0: Int) {
                 super.onAdFailedToLoad(p0)
-                Log.d("onAdFailedToLoad", "" + p0)
+                when (p0) {
+                    3 -> {
+                        requsteToLoadIntestialAd()
+                    }
+                }
             }
         }
+        showCMandKGscaleFragment()
+
+    }
+
+    private fun requsteToLoadIntestialAd() {
         if (ConsentInformation.getInstance(this).consentStatus == ConsentStatus.PERSONALIZED) {
             showNonPersonalizedAds()
         } else if (ConsentInformation.getInstance(this).consentStatus == ConsentStatus.NON_PERSONALIZED) {
@@ -74,9 +80,6 @@ class ScaleActivity : AppCompatActivity(), CMandKGscaleFragment.OnINCandLBSRadio
         } else {
             showPersonalizedAds()
         }
-
-        showCMandKGscaleFragment()
-
     }
 
     private fun showCMandKGscaleFragment() {

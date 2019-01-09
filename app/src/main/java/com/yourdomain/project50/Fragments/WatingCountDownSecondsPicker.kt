@@ -87,7 +87,7 @@ class WatingCountDownSecondsPicker : DialogFragment() {
 
 
     open interface OnWattingCountDownSecondPickerListener {
-        // TODO: Update argument type and name
+
         fun onWattingSecondPicked(seconds:Int)
     }
 }// Required empty public constructor

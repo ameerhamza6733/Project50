@@ -96,7 +96,7 @@ class SettingsVoiceControlFragment : DialogFragment() {
     }
 
     interface OnVoicecontrolChangeListener {
-        // TODO: Update argument type and name
+
         fun onVoiceSettingUpdate(updateSettings: Settings)
     }
 }// Required empty public constructor

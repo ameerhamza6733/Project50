@@ -25,6 +25,7 @@ import java.util.Locale;
 public class TTSHelperService extends Service implements TextToSpeech.OnInitListener {
     public static final String ACTION_TTS = "TTSHelperService.ACTION_TTS";
     public static final String ACTION_NEW_LANGUAGES="ACTION_NEW_LANGUAGES";
+    public static final String ACTION_STOP="stop";
     private static final String TAG = "SpeachService";
     public static TextToSpeech myTTS;
     public static Locale locale;
@@ -86,6 +87,14 @@ public class TTSHelperService extends Service implements TextToSpeech.OnInitList
     }
 
     @Override
+    public int onStartCommand(Intent intent, int flags, int startId) {
+        if (intent.getAction()!=null && intent.getAction().equals(ACTION_STOP)){
+            stopSelf();
+        }
+        return super.onStartCommand(intent, flags, startId);
+    }
+
+    @Override
     public void onDestroy() {
         if (myTTS != null) {
             myTTS.stop();
@@ -93,7 +102,7 @@ public class TTSHelperService extends Service implements TextToSpeech.OnInitList
         }
         LocalBroadcastManager.getInstance(this).unregisterReceiver(mNewTTStext);
         super.onDestroy();
-        Log.i(TAG, "onDestroy() ran");
+        Log.w(TAG, "tts service stoped");
     }
 
     @Nullable

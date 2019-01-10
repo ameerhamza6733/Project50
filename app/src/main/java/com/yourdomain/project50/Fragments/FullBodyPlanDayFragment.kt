@@ -170,9 +170,7 @@ class FullBodyPlanDayFragment : Fragment() {
                     intent.putExtra(ExcersizeListActivity.EXTRA_PLAN, ExcersizePlan.PLAN_FULL_BODY)
                     intent.putExtra(ExcersizeListActivity.EXTRA_DAY, adapterPosition)
                     itemView.context.startActivity(intent)
-                    if (EachPlanActivity.mRewardedVideoAd?.isLoaded == true) {
-                        EachPlanActivity.mRewardedVideoAd?.show()
-                    }
+
                notifyDataSetChanged()
                 }
                 tvDay = itemView.findViewById(R.id.tvDay)

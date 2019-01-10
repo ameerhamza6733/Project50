@@ -1,5 +1,6 @@
 package com.yourdomain.project50.Fragments
 
+import android.content.Intent
 import android.os.Bundle
 import android.support.v4.app.DialogFragment
 import android.view.LayoutInflater
@@ -14,7 +15,7 @@ import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.bumptech.glide.load.resource.bitmap.CenterCrop
 import com.bumptech.glide.load.resource.bitmap.FitCenter
 import com.bumptech.glide.request.RequestOptions
-
+import com.yourdomain.project50.Activitys.ExitActivity
 
 
 /**
@@ -35,7 +36,11 @@ class RateUsFragment : DialogFragment() {
         }
         btRateClose.setOnClickListener {
            if (activity?.javaClass?.simpleName?.contains("EachPlanActivity")==true){
-               activity?.finish()
+               val intent = Intent(activity, ExitActivity::class.java)
+               intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
+               intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+               intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK)
+               activity?.startActivity(intent)
            }else {
                try {
                    dismiss()

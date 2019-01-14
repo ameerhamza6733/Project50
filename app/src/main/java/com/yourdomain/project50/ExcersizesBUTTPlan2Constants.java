@@ -10,12 +10,12 @@ import java.util.HashMap;
  * Created by hamza rafiq on 11/13/18.
  */
 
-public class ExcersizesBUTTPlanConstants {
+public class ExcersizesBUTTPlan2Constants {
 
 
     @SuppressLint("UseSparseArrays")
     private static HashMap<Integer, Excesizes> mDayToExsizeHashMap = new HashMap<>();
-    private static String[] excersizes_day1_title = {"Jumping jacks day1"
+    private static String[] excersizes_day1_title = {"Jumping jacks day1 butt plan 2"
             , "high stepping"
             , "standing bicycle crunches"
             , "cross arm crunches"};

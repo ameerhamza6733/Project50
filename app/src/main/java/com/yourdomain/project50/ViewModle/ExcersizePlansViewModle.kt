@@ -20,7 +20,7 @@ class ExcersizePlansViewModle(application: Application) : AndroidViewModel(appli
     public fun getExcersizePlans(): MutableList<ExcersizePlan> {
 excersizePlanList?.clear()
 
-        val excersizesTypes = arrayOf(ExcersizePlan.PLAN_FULL_BODY,ExcersizePlan.PLAN_ABS,ExcersizePlan.PLAN_BUTT)
+        val excersizesTypes = arrayOf(ExcersizePlan.PLAN_FULL_BODY,ExcersizePlan.PLAN_ABS,ExcersizePlan.PLAN_BUTT,ExcersizePlan.PLAN_BUTT_New)
         val excersizeTypeImages = getApplication<Application>().resources.obtainTypedArray(R.array.exercise_type_icon)
         val excersizeTypeTotalDays = getApplication<Application>().resources.getStringArray(R.array.exercise_type_total_days)
         val daysComplted = MY_Shared_PREF.getAllCompletedorInprogressDays(getApplication())

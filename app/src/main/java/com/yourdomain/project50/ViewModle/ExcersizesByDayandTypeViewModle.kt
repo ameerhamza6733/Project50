@@ -4,6 +4,7 @@ import android.arch.lifecycle.LiveData
 import android.arch.lifecycle.MutableLiveData
 import android.arch.lifecycle.ViewModel
 import com.yourdomain.project50.ExcersizesABSPlanConstants
+import com.yourdomain.project50.ExcersizesBUTTPlan2Constants
 import com.yourdomain.project50.ExcersizesBUTTPlanConstants
 import com.yourdomain.project50.ExcersizesFullBodyConstants
 import com.yourdomain.project50.Model.ExcersizePlan
@@ -30,8 +31,14 @@ class ExcersizesByDayandTypeViewModle : ViewModel() {
                     val excesizes = ExcersizesABSPlanConstants.getExcersizeByDay(day + 1)
                     mutableLiveData?.value = excesizes
                 }
-                else -> {
+                ExcersizePlan.PLAN_BUTT -> {
                     val excesizes = ExcersizesBUTTPlanConstants.getDay1ExcersizeKeys(day + 1)
+                    mutableLiveData?.value = excesizes
+                }
+                //TODO:5)AddNewPlan please fill up data for newly created plan from database
+                //TODO:6)AddNewPlan To create database please copy past ExcersizesBUTTPlanConstants file with different name e.g. ExcersizesBUTTPlan2Constants
+                ExcersizePlan.PLAN_BUTT_New->{
+                    val excesizes = ExcersizesBUTTPlan2Constants.getDay1ExcersizeKeys(day + 1)
                     mutableLiveData?.value = excesizes
                 }
             }

@@ -11,12 +11,16 @@
     <string name="whateverString">whateverString</string>
     <!--starting excersize_type-->
     <!--these icon will shows on page 3,4-->
+    <!--//TODO:2)AddNewPlan Add icon for newly created plan-->
     <integer-array name="exercise_type_icon">
         <item>@drawable/place_holder_excersize_type</item>
         <item>@drawable/place_holder_excersize_type</item>
         <item>@drawable/place_holder_excersize_type</item>
+        <item>@drawable/place_holder_excersize_type</item>
     </integer-array>
+    <!--//TODO:2)AddNewPlan Add totle number is days for newly created plan-->
     <string-array name="exercise_type_total_days">
+        <item>30</item>
         <item>30</item>
         <item>30</item>
         <item>30</item>

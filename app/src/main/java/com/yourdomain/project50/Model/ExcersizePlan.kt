@@ -7,8 +7,11 @@ class ExcersizePlan(var name:String, var totalDays:Int, val completedDays:Int, v
     companion object {
         val TYPE_AD=2
         val TYPE_EXCERSISE=1;
+        //plan name should be ends with charter
         val PLAN_FULL_BODY="FULL BODY PLAN"
         val PLAN_ABS="ABS PLAN";
         val PLAN_BUTT="BUTT PLAN"
+        //TODO:1)AddNewPlan Create new Plan
+        val PLAN_BUTT_New="PLAN_BUTT_New "
     }
 }

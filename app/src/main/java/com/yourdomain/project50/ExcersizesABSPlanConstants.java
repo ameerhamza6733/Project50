@@ -7,7 +7,7 @@ import com.yourdomain.project50.Model.Excesizes;
 import java.util.HashMap;
 
 /**
- * Created by apple on 11/13/18.
+ * Created by hamza rafiq on 11/13/18.
  */
 
 public class ExcersizesABSPlanConstants {
@@ -24,9 +24,9 @@ public class ExcersizesABSPlanConstants {
             , R.drawable.simple
             , R.drawable.simple};
     private static int[] excersize_day1_times = {15,
-            40,
+            10,
             60,
-            40
+            10
     };
 
     private static double[] excersize_day1_calories = {150,

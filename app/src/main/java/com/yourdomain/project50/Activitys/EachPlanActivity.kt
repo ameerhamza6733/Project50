@@ -37,9 +37,7 @@ import com.google.android.gms.ads.reward.RewardItem
 import com.google.android.gms.ads.reward.RewardedVideoAd
 import com.google.android.gms.ads.reward.RewardedVideoAdListener
 import com.yourdomain.project50.CenterZoomLayoutManager
-import com.yourdomain.project50.Fragments.ABSPlanFragment
-import com.yourdomain.project50.Fragments.ButtPlanFragment
-import com.yourdomain.project50.Fragments.FullBodyPlanDayFragment
+import com.yourdomain.project50.Fragments.EachDayFragment
 import com.yourdomain.project50.Fragments.RateUsFragment
 import com.yourdomain.project50.MY_Shared_PREF
 import com.yourdomain.project50.Model.Admob
@@ -118,8 +116,8 @@ class EachPlanActivity : AppCompatActivity(), RewardedVideoAdListener {
     private var mAdmobSetingsFromFirebase: AppAdmobSettingsFromFirebase? = null
     private lateinit var excersizePlanList: MutableList<ExcersizePlan>
 
-
-    private val NUM_PAGES = 3
+    //TODO:3)AddNewPlan defile  number of plans you have
+    private val NUM_PAGES = 4
     private var extraPlan = 0;
 
 
@@ -356,15 +354,20 @@ class EachPlanActivity : AppCompatActivity(), RewardedVideoAdListener {
                 when (llm.findFirstCompletelyVisibleItemPosition()) {
                     1 -> {
                         currentVisibalExcersizePlan = ExcersizePlan.PLAN_FULL_BODY
-                        mPager.setCurrentItem(0)
+                        mPager.setCurrentItem(llm.findFirstCompletelyVisibleItemPosition()-1)
                     }
                     2 -> {
                         currentVisibalExcersizePlan = ExcersizePlan.PLAN_ABS
-                        mPager.setCurrentItem(1)
+                        mPager.setCurrentItem(llm.findFirstCompletelyVisibleItemPosition()-1)
                     }
                     3 -> {
                         currentVisibalExcersizePlan = ExcersizePlan.PLAN_BUTT
-                        mPager.setCurrentItem(2)
+                        mPager.setCurrentItem(llm.findFirstCompletelyVisibleItemPosition()-1)
+                    }
+                    //TODO:4)AddNewPlan add new plan to UI
+                    4->{
+                        currentVisibalExcersizePlan = ExcersizePlan.PLAN_BUTT_New
+                        mPager.setCurrentItem(llm.findFirstCompletelyVisibleItemPosition()-1)
                     }
                 }
 
@@ -386,13 +389,16 @@ class EachPlanActivity : AppCompatActivity(), RewardedVideoAdListener {
         override fun getItem(position: Int): Fragment? {
             when (position) {
                 0 -> {
-                    return FullBodyPlanDayFragment()
+                    return EachDayFragment.newInstance(ExcersizePlan.PLAN_FULL_BODY)
                 }
                 1 -> {
-                    return ABSPlanFragment()
+                    return EachDayFragment.newInstance(ExcersizePlan.PLAN_ABS)
                 }
                 2 -> {
-                    return ButtPlanFragment()
+                    return EachDayFragment.newInstance(ExcersizePlan.PLAN_BUTT)
+                }
+                3->{
+                    return EachDayFragment.newInstance(ExcersizePlan.PLAN_BUTT_New)
                 }
             }
             return null

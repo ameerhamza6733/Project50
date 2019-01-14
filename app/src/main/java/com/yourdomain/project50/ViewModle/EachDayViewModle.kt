@@ -11,13 +11,13 @@ import java.util.*
 /**
  * Created by apple on 11/13/18.
  */
-class FragmentFullBodyPlanViewModle(application: Application) : AndroidViewModel(application) {
+class EachDayViewModle(application: Application) : AndroidViewModel(application) {
     private var mutableList: java.util.ArrayList<ExerciseDay>? = null
     private var mutableLiveData: MutableLiveData<ArrayList<ExerciseDay>?>? = null
     val restDays: IntArray = intArrayOf(5, 15, 20,25)
 
 
-    fun getDays(): MutableLiveData<ArrayList<ExerciseDay>?>? {
+    fun getDays(plan:String): MutableLiveData<ArrayList<ExerciseDay>?>? {
         if (mutableLiveData == null) {
             mutableLiveData = MutableLiveData()
             mutableList = ArrayList();
@@ -29,8 +29,8 @@ class FragmentFullBodyPlanViewModle(application: Application) : AndroidViewModel
                     mutableList?.add(excersizeDay)
                     continue
                 }
-                if (hashMap.containsKey(ExcersizePlan.PLAN_FULL_BODY +" "+dayNumber.toString())) {
-                    mutableList?.add(hashMap.get(ExcersizePlan.PLAN_FULL_BODY +" "+dayNumber.toString())!!)
+                if (hashMap.containsKey(plan +" "+dayNumber.toString())) {
+                    mutableList?.add(hashMap.get(plan +" "+dayNumber.toString())!!)
 
                 } else {
                     var excersizeDay = ExerciseDay(dayNumber, 1)
@@ -43,6 +43,9 @@ class FragmentFullBodyPlanViewModle(application: Application) : AndroidViewModel
         }
         return mutableLiveData
     }
+    fun clear(){
+        mutableLiveData=null
 
+    }
 
 }

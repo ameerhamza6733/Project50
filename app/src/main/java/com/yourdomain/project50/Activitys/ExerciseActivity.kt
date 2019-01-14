@@ -139,17 +139,7 @@ class ExerciseActivity : AppCompatActivity(), WatingToStartExcersizeFragment.OnF
         intent.putExtra(CongratulationActivity.EXTRA_EXCERSIZES, person.totleEXERCISES)
         intent.putExtra(CongratulationActivity.EXTRA_DAY, currentDayKey + 1)
         intent.putExtra(CongratulationActivity.EXTRA_CAL, person.totleKCalBurn)
-        when (currentPlan) {
-            ExcersizePlan.PLAN_FULL_BODY -> {
-                FullBodyPlanDayFragment.refrashRecylerViewIndex = currentDayKey
-            }
-            ExcersizePlan.PLAN_ABS -> {
-                ABSPlanFragment.refrashRecylerViewIndex = currentDayKey
-            }
-            ExcersizePlan.PLAN_BUTT -> {
-                ButtPlanFragment.refrashRecylerViewIndex = currentDayKey
-            }
-        }
+        EachDayFragment.refrashRecylerViewIndex = currentDayKey
         startActivity(intent)
         finish()
 

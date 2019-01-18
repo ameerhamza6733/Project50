@@ -448,8 +448,8 @@ class ExerciseActivity : AppCompatActivity(), WatingToStartExcersizeFragment.OnF
             runable = Runnable {
                 try {
                     if (settings.workoutSettings.CoachTips) {
-                        Log.d(TAG, "cuch tips " + getString(excesizes?.couchTips!![counter]))
-                        sendTTSBroadCast(getString(excesizes?.couchTips!![counter]!!))
+                        Log.d(TAG, "cuch tips " + excesizes?.couchTips!![counter])
+                        sendTTSBroadCast(excesizes?.couchTips!![counter]!!)
                     }
 
                 } catch (e: Exception) {

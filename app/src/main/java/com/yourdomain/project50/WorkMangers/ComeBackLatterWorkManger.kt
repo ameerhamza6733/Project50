@@ -1,5 +1,6 @@
 package com.yourdomain.project50.WorkMangers
 
+import android.annotation.SuppressLint
 import android.annotation.TargetApi
 import android.app.Notification
 import android.app.NotificationChannel
@@ -7,6 +8,7 @@ import android.app.NotificationManager
 import android.app.PendingIntent
 import android.content.Context
 import android.content.Intent
+import android.graphics.BitmapFactory
 import android.graphics.Color
 import android.os.Build
 import android.support.v4.app.NotificationCompat
@@ -64,8 +66,11 @@ open class ComeBackLatterWorkManger(context: Context, params: WorkerParameters) 
 
         val mBuilder = NotificationCompat.Builder(applicationContext, applicationContext.getString(R.string.app_name))
                 .setSmallIcon(R.mipmap.ic_launcher)
+                .setOngoing(true)
+                .setLargeIcon(BitmapFactory.decodeResource(applicationContext?.getResources(), R.mipmap.ic_launcher))
+                .setContentTitle(applicationContext.getString(R.string.app_name))
                 .setCustomBigContentView(contentView)
-                .setPriority(getPriorty())
+                .setPriority(NotificationCompat.PRIORITY_MAX)
                 .setWhen(Calendar.getInstance().timeInMillis);
         notification = mBuilder.build()
 
@@ -74,11 +79,12 @@ open class ComeBackLatterWorkManger(context: Context, params: WorkerParameters) 
         return notification
     }
 
+
     @TargetApi(26)
     @Synchronized
     private fun createChannel(notificationManager: NotificationManager?) {
-        val name = "lockScreen"
-        val importance = NotificationManager.IMPORTANCE_DEFAULT
+        val name = applicationContext.getString(R.string.app_name)
+        val importance = NotificationManager.IMPORTANCE_HIGH
 
         val mChannel = NotificationChannel(applicationContext.getString(R.string.app_name), name, importance)
 
@@ -87,13 +93,7 @@ open class ComeBackLatterWorkManger(context: Context, params: WorkerParameters) 
         notificationManager!!.createNotificationChannel(mChannel)
     }
 
-    private fun getPriorty(): Int {
-        return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-            NotificationManager.IMPORTANCE_HIGH
-        } else {
-            Notification.PRIORITY_HIGH
-        }
-    }
+
 
     private fun getStartPaddingIntent(): PendingIntent {
         val comeBackLatter = MY_Shared_PREF.getComeBackLatterExcersize(applicationContext)

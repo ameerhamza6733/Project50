@@ -14,9 +14,9 @@ public class Excesizes {
     private int[] viewType;
     private double [] calories;
     private String []videosLinks;
-    private int [] couchTips;
+    private String [] couchTips;
 
-    public Excesizes(String[] title, int[] icons, int[] seconds,String[] detail,int [] viewType,double []calories,int[] couchTips,String [] videosLinks) {
+    public Excesizes(String[] title, int[] icons, int[] seconds,String[] detail,int [] viewType,double []calories,String[] couchTips,String [] videosLinks) {
         this.title = title;
         this.icons = icons;
         this.seconds = seconds;
@@ -27,7 +27,7 @@ public class Excesizes {
         this.videosLinks=videosLinks;
     }
 
-    public Excesizes(String[] title, int[] icons, int[] seconds,String[] detail,int [] viewType,double []calories,int[] couchTips) {
+    public Excesizes(String[] title, int[] icons, int[] seconds,String[] detail,int [] viewType,double []calories,String[] couchTips) {
         this.title = title;
         this.icons = icons;
         this.seconds = seconds;
@@ -61,7 +61,7 @@ public class Excesizes {
         return calories;
     }
 
-    public int[] getCouchTips() {
+    public String[] getCouchTips() {
         return couchTips;
     }
 

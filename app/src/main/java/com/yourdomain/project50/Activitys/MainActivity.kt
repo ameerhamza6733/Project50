@@ -105,6 +105,12 @@ class MainActivity : AppCompatActivity() {
         val model = ExcersizePlansViewModle(application)
         var list = model.getExcersizePlans();
         if (list.size > 0) {
+           mAdmobSettingsFromFireBase?.admobAds?.nativeAds3?.enable?.let {
+               if (it){
+                   var excersize = ExcersizePlan("native ad", 0, 0, -1, ExcersizePlan.TYPE_AD)
+                   list?.add(excersize)
+               }
+           }
             progressBar.visibility = View.INVISIBLE
             var excersizeAdupter = ExcersizeAdupter(list);
             recyclerView.layoutManager = LinearLayoutManager(this)

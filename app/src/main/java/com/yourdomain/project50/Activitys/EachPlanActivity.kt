@@ -117,7 +117,7 @@ class EachPlanActivity : AppCompatActivity(), RewardedVideoAdListener {
     private lateinit var excersizePlanList: MutableList<ExcersizePlan>
 
     //TODO:3)AddNewPlan defile  number of plans you have
-    private val NUM_PAGES = 4
+    private val NUM_PAGES = 5
     private var extraPlan = 0;
 
 
@@ -369,6 +369,11 @@ class EachPlanActivity : AppCompatActivity(), RewardedVideoAdListener {
                         currentVisibalExcersizePlan = ExcersizePlan.PLAN_BUTT_New
                         mPager.setCurrentItem(llm.findFirstCompletelyVisibleItemPosition()-1)
                     }
+                    5->{
+                        currentVisibalExcersizePlan = ExcersizePlan.TEST_NEW_PLAN
+                        mPager.setCurrentItem(llm.findFirstCompletelyVisibleItemPosition()-1)
+                    }
+
                 }
 
             })
@@ -400,6 +405,10 @@ class EachPlanActivity : AppCompatActivity(), RewardedVideoAdListener {
                 3->{
                     return EachDayFragment.newInstance(ExcersizePlan.PLAN_BUTT_New)
                 }
+                4->{
+                    return EachDayFragment.newInstance(ExcersizePlan.TEST_NEW_PLAN)
+                }
+
             }
             return null
         }

@@ -34,8 +34,7 @@ open class CMandKGscaleFragment : Fragment(), View.OnClickListener {
             }
             R.id.btNext -> {
                 if (agreeToPrivicyPolicy) {
-                    val intent = Intent(activity,MainActivity::class.java)
-                    activity?.startActivity(intent)
+
                     val personAppearance=PersonAppearance(mScaleType,tvHight.text.toString().toDouble(),tvWaight.text.toString().toDouble(), Date())
                     mListener?.onNext(personAppearance)
                 } else {
@@ -82,7 +81,7 @@ open class CMandKGscaleFragment : Fragment(), View.OnClickListener {
     protected val mMinWeight = 25f
 
     protected var mScaleType = -1
-    protected var agreeToPrivicyPolicy = false
+    protected var agreeToPrivicyPolicy = true
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -110,6 +109,7 @@ open class CMandKGscaleFragment : Fragment(), View.OnClickListener {
         btNext = rootView.findViewById(R.id.btNext)
 
         radioCentimenter.isChecked=true
+        checkBoxPrivacyPolicy.isChecked=true
 
 
         btNext.setOnClickListener(this)

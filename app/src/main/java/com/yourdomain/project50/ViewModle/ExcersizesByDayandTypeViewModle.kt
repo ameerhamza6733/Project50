@@ -3,10 +3,7 @@ package com.yourdomain.project50.ViewModle
 import android.arch.lifecycle.LiveData
 import android.arch.lifecycle.MutableLiveData
 import android.arch.lifecycle.ViewModel
-import com.yourdomain.project50.ExcersizesABSPlanConstants
-import com.yourdomain.project50.ExcersizesBUTTPlan2Constants
-import com.yourdomain.project50.ExcersizesBUTTPlanConstants
-import com.yourdomain.project50.ExcersizesFullBodyConstants
+import com.yourdomain.project50.DataBaseConstants.*
 import com.yourdomain.project50.Model.ExcersizePlan
 import com.yourdomain.project50.Model.Excesizes
 
@@ -41,6 +38,11 @@ class ExcersizesByDayandTypeViewModle : ViewModel() {
                     val excesizes = ExcersizesBUTTPlan2Constants.getDay1ExcersizeKeys(day + 1)
                     mutableLiveData?.value = excesizes
                 }
+                ExcersizePlan.TEST_NEW_PLAN->{
+                    val excesizes = ExcersizesNEW_PLAN_TESTConstants.getDay1ExcersizeKeys(day + 1)
+                    mutableLiveData?.value = excesizes
+                }
+
             }
 
         }

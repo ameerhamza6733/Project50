@@ -13,5 +13,6 @@ class ExcersizePlan(var name:String, var totalDays:Int, val completedDays:Int, v
         val PLAN_BUTT="BUTT PLAN"
         //TODO:1)AddNewPlan Create new Plan
         val PLAN_BUTT_New="PLAN_BUTT_New "
+        val TEST_NEW_PLAN="test new plan"
     }
 }

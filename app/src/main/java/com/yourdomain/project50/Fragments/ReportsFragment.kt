@@ -177,11 +177,13 @@ class ReportsFragment : Fragment() {
             editBMIDialogeFragment.setStyle(DialogFragment.STYLE_NORMAL, R.style.Dialog_MinWidth)
             editBMIDialogeFragment.show(childFragmentManager, "editBMIDialogeFragment")
         }
-        if (PersonAppearance.TYPE_CM_KG == person!!.personAppearance.SCALE_TYPE) {
+        if (PersonAppearance.TYPE_CM_KG == person?.personAppearance?.SCALE_TYPE) {
             currentBMI = Utils.calculateBMIinKg(person!!.personAppearance.mWaight, Utils.CMtoM(person!!.personAppearance.mHight))
 
-        } else {
+        } else if(PersonAppearance.TYPE_IN_LBS == person?.personAppearance?.SCALE_TYPE) {
             currentBMI = Utils.calcautleBMIinlbs(person!!.personAppearance.mWaight, Utils.FeetToInch(person!!.personAppearance.mHight))
+        }else{
+            Toast.makeText(activity,"Your weight and hight are not added please update it ",Toast.LENGTH_SHORT).show()
         }
 
         tvBmi!!.text = "BMI : " + String.format("%.1f", currentBMI)
@@ -351,10 +353,12 @@ class ReportsFragment : Fragment() {
             builder.forUnifiedNativeAd(UnifiedNativeAd.OnUnifiedNativeAdLoadedListener { unifiedNativeAd ->
                 // OnUnifiedNativeAdLoadedListener implementation.
 
-                val adView = layoutInflater.inflate(R.layout.native_adview, null) as UnifiedNativeAdView
-                populateUnifiedNativeAdView(unifiedNativeAd, adView)
-                adPlaceHolder.removeAllViews()
-                adPlaceHolder.addView(adView)
+               if (activity!=null){
+                   val adView = layoutInflater.inflate(R.layout.native_adview, null) as UnifiedNativeAdView
+                   populateUnifiedNativeAdView(unifiedNativeAd, adView)
+                   adPlaceHolder.removeAllViews()
+                   adPlaceHolder.addView(adView)
+               }
             })
 
             val videoOptions = VideoOptions.Builder()

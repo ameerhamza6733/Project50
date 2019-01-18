@@ -17,9 +17,11 @@
         <item>@drawable/place_holder_excersize_type</item>
         <item>@drawable/place_holder_excersize_type</item>
         <item>@drawable/place_holder_excersize_type</item>
+        <item>@drawable/place_holder_excersize_type</item>
     </integer-array>
     <!--//TODO:2)AddNewPlan Add totle number is days for newly created plan-->
     <string-array name="exercise_type_total_days">
+        <item>30</item>
         <item>30</item>
         <item>30</item>
         <item>30</item>
@@ -44,26 +46,7 @@
     <string name="dont_quit_keep_going">don\'t quit keep going</string>
     <string name="take_a_rest">Take a rest</string>
 
-    <string name="exercise_abs_couch_tips_day1_exercise1">this is couch tips day 1 exercise 1</string>
-    <string name="exercise_abs_couch_tips_day1_exercise2">this is couch tips day 1 exercise 2</string>
-    <string name="exercise_abs_couch_tips_day1_exercise3">this is couch tips day 1 exercise 3</string>
-    <string name="exercise_abs_couch_tips_day1_exercise4">this is couch tips day 1 exercise 4</string>
 
-    <string name="exercise_abs_couch_tip_defult"></string>
-
-
-    <string name="exercise_butt_plan_couch_tips_day1_excerise1">this is couch tips day 1 exercise 1</string>
-    <string name="exercise_butt_plan_tips_day1_excerise2">this is couch tips day 1 exercise 2</string>
-    <string name="exercise_butt_plan_tips_day1_exercise3">this is couch tips day 1 exercise 3</string>
-    <string name="exercise_butt_plan_tips_day1_exercise4">this is couch tips day 1 exercise 4</string>
-
-    <string name="exercise_butt_plan_couch_tip_defult"></string>
-
-    <string name="exercise_full_body_plan_couch_tips_day1_exercise1">this is couch tips day 1 exercise 1</string>
-    <string name="exercise_full_body_plan_couch_tips_day1_exercise2">this is couch tips day 1 exercise 2</string>
-
-
-    <string name="exercise_full_body_plan_couch_tip_defult"></string>
 
 
     <string name="did_you_hear_test_voice">Did you hair test voice</string>
@@ -75,4 +58,7 @@
     <string name="admob_app_id">ca-app-pub-3940256099942544~3347511713</string>
     <string name="comeback_notification_title">come back latter title</string>
     <string name="comeback_notification_description">come back latter description</string>
+    <string name="this_is_notifacation_description">this is notifacation description</string>
+    <string name="snooze">Snooze</string>
+    <string name="start">START</string>
 </resources>

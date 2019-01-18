@@ -1,6 +1,7 @@
 package com.yourdomain.project50.Activitys
 
 
+import android.content.Intent
 import android.os.Bundle
 import android.support.v4.app.FragmentTransaction
 import android.support.v7.app.AppCompatActivity
@@ -31,13 +32,16 @@ class ScaleActivity : AppCompatActivity(), CMandKGscaleFragment.OnINCandLBSRadio
     override fun onNext(personAppearance: PersonAppearance) {
         if (mInterstitialAd?.isLoaded == true) {
             mInterstitialAd?.show()
-            Log.d(TAG, personAppearance.toString())
-            val person = Person()
-            person.personAppearance = personAppearance
-            MY_Shared_PREF.savePerson(application, person)
-            MY_Shared_PREF.savePersonAppearanceHistory(application, personAppearance)
-            finish()
+
         }
+        Log.d(TAG, personAppearance.toString())
+        val person = Person()
+        person.personAppearance = personAppearance
+        MY_Shared_PREF.savePerson(application, person)
+        MY_Shared_PREF.savePersonAppearanceHistory(application, personAppearance)
+        val intent = Intent(this,MainActivity::class.java)
+        startActivity(intent)
+        finish()
     }
 
     override fun onINCandLBSRadioClick() {
@@ -55,7 +59,10 @@ class ScaleActivity : AppCompatActivity(), CMandKGscaleFragment.OnINCandLBSRadio
 
         mSetingsFromFirebase = MY_Shared_PREF.getFirebaseAdmobAppSettings(application)
         if (mSetingsFromFirebase?.admobAds?.interstitialAds2?.enable == true)
+        {
             mInterstitialAd = InterstitialAd(this);
+            requsteToLoadIntestialAd()
+        }
 
         mInterstitialAd?.adListener = object : AdListener() {
 

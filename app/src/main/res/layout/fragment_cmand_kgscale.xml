@@ -152,12 +152,14 @@
             android:orientation="horizontal">
 
             <android.support.v7.widget.AppCompatCheckBox
+               android:checked="true"
                 android:id="@+id/PrivacyPolicyCheckBox"
                 app:buttonTint="@color/colorAccent"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content" />
 
             <TextView
+
                 android:id="@+id/tvAgreeToPrivacyPolicy"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"

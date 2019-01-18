@@ -30,10 +30,7 @@ class ScaleActivity : AppCompatActivity(), CMandKGscaleFragment.OnINCandLBSRadio
     }
 
     override fun onNext(personAppearance: PersonAppearance) {
-        if (mInterstitialAd?.isLoaded == true) {
-            mInterstitialAd?.show()
-
-        }
+        Log.d(TAG,"OnNext: ")
         Log.d(TAG, personAppearance.toString())
         val person = Person()
         person.personAppearance = personAppearance
@@ -41,6 +38,12 @@ class ScaleActivity : AppCompatActivity(), CMandKGscaleFragment.OnINCandLBSRadio
         MY_Shared_PREF.savePersonAppearanceHistory(application, personAppearance)
         val intent = Intent(this,MainActivity::class.java)
         startActivity(intent)
+        if (mInterstitialAd?.isLoaded == true) {
+            mInterstitialAd?.show()
+
+        }else{
+            Log.d(TAG,"add not loaded")
+        }
         finish()
     }
 
@@ -70,9 +73,15 @@ class ScaleActivity : AppCompatActivity(), CMandKGscaleFragment.OnINCandLBSRadio
                 super.onAdFailedToLoad(p0)
                 when (p0) {
                     3 -> {
+                        Log.d(TAG,"add not loaded")
                         requsteToLoadIntestialAd()
                     }
                 }
+            }
+
+            override fun onAdLoaded() {
+                super.onAdLoaded()
+                Log.d(TAG,"ad loaded")
             }
         }
         showCMandKGscaleFragment()

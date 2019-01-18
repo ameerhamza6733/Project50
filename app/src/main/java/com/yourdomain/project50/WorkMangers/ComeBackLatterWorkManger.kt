@@ -66,7 +66,6 @@ open class ComeBackLatterWorkManger(context: Context, params: WorkerParameters) 
 
         val mBuilder = NotificationCompat.Builder(applicationContext, applicationContext.getString(R.string.app_name))
                 .setSmallIcon(R.mipmap.ic_launcher)
-                .setOngoing(true)
                 .setLargeIcon(BitmapFactory.decodeResource(applicationContext?.getResources(), R.mipmap.ic_launcher))
                 .setContentTitle(applicationContext.getString(R.string.app_name))
                 .setCustomBigContentView(contentView)

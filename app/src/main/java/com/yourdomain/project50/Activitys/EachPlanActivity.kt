@@ -212,6 +212,8 @@ class EachPlanActivity : AppCompatActivity(), RewardedVideoAdListener {
         excersizePlanList = model.getExcersizePlans();
         if (excersizePlanList.size > 0) {
             excersizePlanList.add(0, ExcersizePlan("native ad", 0, 0, -1, ExcersizePlan.TYPE_AD))
+            excersizePlanList.add( ExcersizePlan("native ad", 0, 0, -1, ExcersizePlan.TYPE_AD))
+
             if (excersizePlansListAdupter == null) {
                 excersizePlansListAdupter = ExcersizePlansAdupter(excersizePlanList);
                 val llm = CenterZoomLayoutManager(this, LinearLayoutManager.HORIZONTAL, false);

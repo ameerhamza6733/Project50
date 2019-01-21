@@ -11,6 +11,7 @@ import android.net.NetworkInfo;
 import android.net.Uri;
 import android.util.Log;
 
+import com.crashlytics.android.Crashlytics;
 import com.yourdomain.project50.Model.Excesizes;
 
 import java.util.Calendar;
@@ -188,15 +189,20 @@ public class Utils {
                         //kill the application
                         System.exit(0);
                     } else {
+                        Crashlytics.log("Was not able to restart application, mStartActivity null");
                         Log.e(TAG, "Was not able to restart application, mStartActivity null");
                     }
                 } else {
+                    Crashlytics.log("Was not able to restart application, PM null");
                     Log.e(TAG, "Was not able to restart application, PM null");
                 }
             } else {
+                Crashlytics.log("Was not able to restart application, Context null");
                 Log.e(TAG, "Was not able to restart application, Context null");
             }
         } catch (Exception ex) {
+            Crashlytics.log("Was not able to restart application ");
+            Crashlytics.logException(ex);
             Log.e(TAG, "Was not able to restart application");
         }
     }

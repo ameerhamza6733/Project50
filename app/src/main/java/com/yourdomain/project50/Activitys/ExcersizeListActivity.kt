@@ -106,11 +106,11 @@ class ExcersizeListActivity : AppCompatActivity() {
                 }
             }
         }
-        intent?.action?.let {
-            if (it.equals(ACTION_START_EXCERSIZE)) {
-                openExcersizeActivty()
-            }
-        }
+//        intent?.action?.let {
+//            if (it.equals(ACTION_START_EXCERSIZE)) {
+//                openExcersizeActivty()
+//            }
+//        }
     }
 
     private fun openExcersizeActivty() {

@@ -3,6 +3,8 @@ package com.yourdomain.project50
 import android.app.Application
 import android.content.Context
 import android.util.Log
+import com.crashlytics.android.Crashlytics
+import com.google.firebase.analytics.FirebaseAnalytics
 import com.google.gson.Gson
 import com.jjoe64.graphview.series.DataPoint
 import com.yourdomain.project50.Model.*
@@ -109,7 +111,7 @@ class MY_Shared_PREF {
             val editer = sharePref.edit()
             var key = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).format(Date())
             editer.putString(key, gson.toJson(personAppearance))
-            editer.commit()
+            editer.apply()
         }
 
         fun getPersonHistory(application: Application): Array<DataPoint?> {
@@ -238,12 +240,12 @@ class MY_Shared_PREF {
             val sharefPrefComeBackLatter = application.getSharedPreferences(SHARE_PREF_COME_BACK_LATTER_FILE, 0)
             val sharefPrefPersonHistory = application.getSharedPreferences(SHARE_PRE_PERSON_APPEARANCE_HISTORY, 0)
 
-            sharefPrefDayFile.edit().clear().commit()
-            sharefPrefPerson.edit().clear().commit()
-            sharePrefgraphs.edit().clear().commit()
-            sharefPrefComeBackLatter.edit().clear().commit()
-            sharefPrefPersonHistory.edit().clear().commit()
-
+            sharefPrefDayFile.edit().clear().apply()
+            sharefPrefPerson.edit().clear().apply()
+            sharePrefgraphs.edit().clear().apply()
+            sharefPrefComeBackLatter.edit().clear().apply()
+             sharefPrefPersonHistory.edit().clear().apply()
+            Crashlytics.log("clearing the shared pref")
         }
 
 

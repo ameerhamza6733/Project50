@@ -88,8 +88,12 @@ public class TTSHelperService extends Service implements TextToSpeech.OnInitList
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
-        if (intent.getAction()!=null && intent.getAction().equals(ACTION_STOP)){
-            stopSelf();
+        if (intent!=null){
+            if (intent.getAction()!=null && intent.getAction().equals(ACTION_STOP)){
+                stopSelf();
+            }
+        }else {
+            Log.d(TAG,"ooooooooooooo i want crash please let me crash :" );
         }
         return super.onStartCommand(intent, flags, startId);
     }

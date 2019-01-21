@@ -27,6 +27,7 @@ import java.net.URL
 import androidx.work.ExistingWorkPolicy
 import androidx.work.OneTimeWorkRequest
 import androidx.work.WorkManager
+import com.crashlytics.android.Crashlytics
 import com.yourdomain.project50.WorkMangers.RemindMeAfter48Hour
 import java.util.concurrent.TimeUnit
 
@@ -37,6 +38,7 @@ class SplashActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_spalish)
+        Crashlytics.log("SplashActivity on Create")
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
             val w = window
             w.setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,

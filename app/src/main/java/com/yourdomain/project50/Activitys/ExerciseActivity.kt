@@ -221,9 +221,9 @@ class ExerciseActivity : AppCompatActivity(), WatingToStartExcersizeFragment.OnF
             if (it != null) {
                 excesizes = it
                 var string = ""
-                if (it.viewType[counter + 1] == Excesizes.VIEW_TYPE_LIMTED_EXCERSIZE) {
+                if (it.viewType.size != counter + 1 && it.viewType[counter + 1] == Excesizes.VIEW_TYPE_LIMTED_EXCERSIZE) {
                     string = it.seconds[counter + 1].toString() + "''"
-                } else if (it.viewType[counter + 1] == Excesizes.VIEW_TYPE_UN_LIMTED_EXCERSIZE) {
+                } else if (it.viewType.size != counter + 1 && it.viewType[counter + 1] == Excesizes.VIEW_TYPE_UN_LIMTED_EXCERSIZE) {
                     string = "x" + it.seconds[counter + 1].toString()
                 }
 
@@ -233,9 +233,12 @@ class ExerciseActivity : AppCompatActivity(), WatingToStartExcersizeFragment.OnF
                     sendTTSBroadCast(it.title[counter + 1])
                 }
                 totleTime = CountTotalTime(it.viewType, it.seconds)
-                val fragmet = WatingToStartExcersizeFragment.newInstance(totleTime, string, it.detail[counter + 1], settings.workoutSettings.watingCoutDownTime)
-                fragmet.setStyle(DialogFragment.STYLE_NORMAL, android.R.style.Theme_Black_NoTitleBar_Fullscreen);
-                fragmet.show(supportFragmentManager, "WatingToStartExcersizeFragment")
+                if ((counter + 1) != it.detail.size) {
+                    val fragmet = WatingToStartExcersizeFragment.newInstance(totleTime, string, it.detail[counter + 1], settings.workoutSettings.watingCoutDownTime)
+                    fragmet.setStyle(DialogFragment.STYLE_NORMAL, android.R.style.Theme_Black_NoTitleBar_Fullscreen);
+                    fragmet.show(supportFragmentManager, "WatingToStartExcersizeFragment")
+
+                }
             }
         })
         mSetingsFromFirebase = MY_Shared_PREF.getFirebaseAdmobAppSettings(application)
@@ -467,11 +470,13 @@ class ExerciseActivity : AppCompatActivity(), WatingToStartExcersizeFragment.OnF
             }
         } else {
             var temp = ""
-            if (excesizes?.viewType!![counter + 1] == Excesizes.VIEW_TYPE_LIMTED_EXCERSIZE) {
-                temp = temp + excesizes?.seconds!![counter + 1].toString() + "s"
-            } else if (excesizes?.viewType!![counter + 1] == Excesizes.VIEW_TYPE_UN_LIMTED_EXCERSIZE) {
-                updateWithOutCountDownUI()
-                temp = temp + "x " + excesizes?.seconds!![counter + 1].toString()
+            if ((counter + 1) != excesizes?.viewType?.size) {
+                if (excesizes?.viewType!![counter + 1] == Excesizes.VIEW_TYPE_LIMTED_EXCERSIZE) {
+                    temp = temp + excesizes?.seconds!![counter + 1].toString() + "s"
+                } else if (excesizes?.viewType!![counter + 1] == Excesizes.VIEW_TYPE_UN_LIMTED_EXCERSIZE) {
+                    updateWithOutCountDownUI()
+                    temp = temp + "x " + excesizes?.seconds!![counter + 1].toString()
+                }
             }
             Log.d(TAG, "showing data for wating fragment: " + temp)
             var nativeAdId = Admob.NATIVE_AD_ID
@@ -481,10 +486,12 @@ class ExerciseActivity : AppCompatActivity(), WatingToStartExcersizeFragment.OnF
 
             MY_Shared_PREF.saveGraphCalvsDays(application, DataPoint(Date(), excesizes?.calories!![counter]), SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).format(Date()))
             countDown = null
-            val watingForNextFragment = WatingForNextExcersizeFragment.newInstance(excesizes?.title!![counter + 1], temp, "NEXT " + (counter + 1).toString() + "/" + (excesizes!!.icons.size).toString(), excesizes?.icons!![counter + 1], settings.workoutSettings.restTimeInSeconds, nativeAdId)
-            watingForNextFragment.setStyle(DialogFragment.STYLE_NORMAL, android.R.style.Theme_Black_NoTitleBar_Fullscreen);
-            watingForNextFragment.show(supportFragmentManager, "watingForNextFragment")
+           if ((counter+1)!=excesizes?.title?.size){
+               val watingForNextFragment = WatingForNextExcersizeFragment.newInstance(excesizes?.title!![counter + 1], temp, "NEXT " + (counter + 1).toString() + "/" + (excesizes!!.icons.size).toString(), excesizes?.icons!![counter + 1], settings.workoutSettings.restTimeInSeconds, nativeAdId)
+               watingForNextFragment.setStyle(DialogFragment.STYLE_NORMAL, android.R.style.Theme_Black_NoTitleBar_Fullscreen);
+               watingForNextFragment.show(supportFragmentManager, "watingForNextFragment")
 
+           }
         }
         val comeBackLatter = ComeBackLatter(counter, currentDayKey, currentPlan)
         MY_Shared_PREF.saveComeBackLatterExcersize(application, comeBackLatter)

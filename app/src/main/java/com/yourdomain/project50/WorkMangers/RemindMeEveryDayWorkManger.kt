@@ -2,6 +2,7 @@ package com.yourdomain.project50.WorkMangers
 
 import android.content.Context
 import androidx.work.*
+import com.yourdomain.project50.Model.ComeBackLatter
 import java.util.concurrent.TimeUnit
 
 /**
@@ -21,5 +22,9 @@ class RemindMeEveryDayWorkManger(context: Context, params: WorkerParameters) : C
                 postNotationWithDelay
         ).enqueue()
         return Result.SUCCESS
+    }
+
+    override fun comeBackLatter(): ComeBackLatter? {
+        return null
     }
 }

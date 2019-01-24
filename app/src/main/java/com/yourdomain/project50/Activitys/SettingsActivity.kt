@@ -14,6 +14,7 @@ import android.widget.CompoundButton
 import android.widget.Switch
 import android.widget.TextView
 import android.widget.TimePicker
+import androidx.work.Data
 import androidx.work.ExistingWorkPolicy
 import androidx.work.OneTimeWorkRequest
 import androidx.work.WorkManager
@@ -26,6 +27,7 @@ import com.yourdomain.project50.Model.Settings
 import com.yourdomain.project50.R
 import com.yourdomain.project50.TTSHelperService
 import com.yourdomain.project50.Utils
+import com.yourdomain.project50.WorkMangers.ComeBackLatterWorkManger
 import com.yourdomain.project50.WorkMangers.RemindMeEveryDayWorkManger
 import java.text.SimpleDateFormat
 import java.util.*
@@ -219,6 +221,8 @@ class SettingsActivity : AppCompatActivity(), SecondsPickerFragment.OnSecondsPic
     }
 
     private fun scheduleTheDailyNotifications(intiDelay: Long) {
+
+
 
         val postNotationWithDelay = OneTimeWorkRequest
                 .Builder(RemindMeEveryDayWorkManger::class.java)

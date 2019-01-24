@@ -550,6 +550,8 @@ class ExerciseActivity : AppCompatActivity(), WatingToStartExcersizeFragment.OnF
         var seconds = TimeUnit.SECONDS.toMillis(excesizes?.seconds!![counter]?.toLong())
         var halftime = (excesizes?.seconds!![counter] / 2)
         var half3time = (excesizes?.seconds!![counter] / 2)
+        countDown?.cancel()
+        countDown=null
         countDown = object : CustomCountDownTimer(seconds, 1000) {
             override fun onFinish() {
                 playSound(R.raw.beep_end_exercise)
@@ -620,6 +622,7 @@ class ExerciseActivity : AppCompatActivity(), WatingToStartExcersizeFragment.OnF
         mediaPlayer?.release()
         countDown?.cancel()
         countDown = null
+        stopTtsService()
         super.onDestroy()
     }
 
@@ -645,7 +648,12 @@ class ExerciseActivity : AppCompatActivity(), WatingToStartExcersizeFragment.OnF
             LocalBroadcastManager.getInstance(this@ExerciseActivity.applicationContext!!).sendBroadcast(intent)
         }
     }
+fun stopTtsService(){
+    val intent = Intent(this,TTSHelperService::class.java)
+    intent.setAction(TTSHelperService.ACTION_STOP)
+   startService(intent)
 
+}
 
     private fun playSound(raw: Int) {
 

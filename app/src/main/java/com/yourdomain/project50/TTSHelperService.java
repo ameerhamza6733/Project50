@@ -103,6 +103,7 @@ public class TTSHelperService extends Service implements TextToSpeech.OnInitList
         if (myTTS != null) {
             myTTS.stop();
             myTTS.shutdown();
+            myTTS=null;
         }
         LocalBroadcastManager.getInstance(this).unregisterReceiver(mNewTTStext);
         super.onDestroy();

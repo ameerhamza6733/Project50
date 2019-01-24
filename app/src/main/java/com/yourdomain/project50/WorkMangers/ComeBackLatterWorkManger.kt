@@ -20,6 +20,7 @@ import com.yourdomain.project50.Activitys.ExcersizeListActivity
 import com.yourdomain.project50.Activitys.OnSnoozeReciverActivity
 import com.yourdomain.project50.Activitys.SplashActivity
 import com.yourdomain.project50.MY_Shared_PREF
+import com.yourdomain.project50.Model.ComeBackLatter
 import com.yourdomain.project50.R
 import java.util.*
 
@@ -92,10 +93,8 @@ open class ComeBackLatterWorkManger(context: Context, params: WorkerParameters) 
         notificationManager!!.createNotificationChannel(mChannel)
     }
 
-
-
     private fun getStartPaddingIntent(): PendingIntent {
-        val comeBackLatter = MY_Shared_PREF.getComeBackLatterExcersize(applicationContext)
+        val comeBackLatter =comeBackLatter()
         var resutmentButtonIntent = Intent(applicationContext, SplashActivity::class.java)
         if (comeBackLatter != null)
             resutmentButtonIntent = Intent(applicationContext, ExcersizeListActivity::class.java)
@@ -113,6 +112,9 @@ open class ComeBackLatterWorkManger(context: Context, params: WorkerParameters) 
     }
 
 
+    public open fun comeBackLatter() : ComeBackLatter? {
+       return MY_Shared_PREF.getComeBackLatterExcersize(applicationContext)
+    }
     private fun getPaddingSnoozeInternt(): PendingIntent {
         val shoozenActivtyIntent = Intent(applicationContext, OnSnoozeReciverActivity::class.java)
         shoozenActivtyIntent.flags = Intent.FLAG_ACTIVITY_NEW_TASK

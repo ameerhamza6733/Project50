@@ -113,19 +113,21 @@ class MY_Shared_PREF {
             editer.putString(key, gson.toJson(personAppearance))
             editer.apply()
         }
-
-        fun getPersonHistory(application: Application): Array<DataPoint?> {
-            val share_pref = application.getSharedPreferences(SHARE_PRE_PERSON_APPEARANCE_HISTORY, 0)
+        fun getPersonHistory(application: Application):Array<DataPoint?>{
+            val share_pref= application.getSharedPreferences(SHARE_PRE_PERSON_APPEARANCE_HISTORY,0)
             val allEntries = share_pref.getAll()
             val dataPointArray = arrayOfNulls<DataPoint>(allEntries.size)
-            var counter = 0
+
+            var reverseCounter =  allEntries.size-1
             for (entry in allEntries.entries) {
 
-                var appearance = gson.fromJson(entry.value.toString(), PersonAppearance::class.java)
-                dataPointArray.set(counter, DataPoint(appearance.date, appearance.mWaight.toDouble()))
-                counter++
+                var appearance=  gson.fromJson(entry.value.toString(), PersonAppearance::class.java)
+                dataPointArray.set(reverseCounter, DataPoint(appearance.date,appearance.mWaight.toDouble()) )
+                reverseCounter--
+
             }
-            return dataPointArray.reversedArray()
+
+            return dataPointArray
         }
 
         fun saveAppSettings(application: Application, settings: Settings) {
@@ -177,16 +179,16 @@ class MY_Shared_PREF {
             val sharef_Pref = application.getSharedPreferences(SHARE_PREF_GRAPHS_FILE, 0)
             val allEntries = sharef_Pref.getAll()
             val dataPointArray = arrayOfNulls<DataPoint>(allEntries.size)
-            var counter = 0
+            var reverseCount = allEntries.size-1
             for (entry in allEntries.entries) {
-                // i in [1, 10), 10 is excluded
-                dataPointArray.set(counter, gson.fromJson(entry.value.toString(), DataPoint::class.java))
-                Log.d(TAG, "key : " + entry.key + " value of x :  " + dataPointArray[counter]?.x?.toLong()?.let { Date(it) })
-                counter++
+                dataPointArray.set(reverseCount, gson.fromJson(entry.value.toString(), DataPoint::class.java))
+                Log.d(TAG, "key : " + entry.key + " value of x :  " + dataPointArray[reverseCount]?.x?.toLong()?.let { Date(it)}+  "value of y : "+ dataPointArray[reverseCount]!!.y)
+                reverseCount--
             }
-
-            return dataPointArray.reversedArray()
+            val sortedArray =  dataPointArray.sortedBy { it?.x }
+            return sortedArray.toTypedArray()
         }
+
 
         fun saveAppsSettingFromFireBase(application: Application, appSettingFromFirebase: AppSettingsFromFireBase) {
             val sharePref = application.getSharedPreferences(SHARE_PREF_SETTING_FROM_FIREBASE_FILE, 0)

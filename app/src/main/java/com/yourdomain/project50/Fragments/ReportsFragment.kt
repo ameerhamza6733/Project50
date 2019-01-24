@@ -105,41 +105,45 @@ class ReportsFragment : Fragment() {
     }
 
     @SuppressLint("SetTextI18n")
-    private fun updateWeightGraph() {
+    private fun updateWeightGraph()  {
 
-        val series = LineGraphSeries(waightDataPoint!!)
-        waightGraph!!.gridLabelRenderer.labelFormatter = DateAsXAxisLabelFormatter(activity)
-        if (waightDataPoint!!.size < 8) {
-            waightGraph!!.gridLabelRenderer.numHorizontalLabels = waightDataPoint!!.size // only 4 because of the space
-            waightGraph!!.viewport.setMinX(waightDataPoint!![0]?.x!!)
-            waightGraph!!.viewport.setMaxX(waightDataPoint!![waightDataPoint!!.size - 1]?.x!!)
-            waightGraph!!.viewport.isXAxisBoundsManual = true
-            waightGraph!!.viewport.isScrollable = true
-        } else {
-            waightGraph!!.gridLabelRenderer.numHorizontalLabels = 7
-            waightGraph!!.viewport.setMinX(waightDataPoint!![0]?.x!!)
-            waightGraph!!.viewport.setMaxX(waightDataPoint!![7]?.x!!)
-            waightGraph!!.viewport.isXAxisBoundsManual = true
-            waightGraph!!.viewport.isScrollable = true
-        }
+     try{
+         val series = LineGraphSeries(waightDataPoint!!)
+         waightGraph!!.gridLabelRenderer.labelFormatter = DateAsXAxisLabelFormatter(activity)
+         if (waightDataPoint!!.size < 8) {
+             waightGraph!!.gridLabelRenderer.numHorizontalLabels = waightDataPoint!!.size // only 4 because of the space
+             waightGraph!!.viewport.setMinX(waightDataPoint!![0]?.x!!)
+             waightGraph!!.viewport.setMaxX(waightDataPoint!![waightDataPoint!!.size - 1]?.x!!)
+             waightGraph!!.viewport.isXAxisBoundsManual = true
+             waightGraph!!.viewport.isScrollable = true
+         } else {
+             waightGraph!!.gridLabelRenderer.numHorizontalLabels = 7
+             waightGraph!!.viewport.setMinX(waightDataPoint!![0]?.x!!)
+             waightGraph!!.viewport.setMaxX(waightDataPoint!![7]?.x!!)
+             waightGraph!!.viewport.isXAxisBoundsManual = true
+             waightGraph!!.viewport.isScrollable = true
+         }
 
 
-        waightGraph!!.gridLabelRenderer.setHumanRounding(false)
+         waightGraph!!.gridLabelRenderer.setHumanRounding(false)
 
-        waightGraph!!.addSeries(series)
+         waightGraph!!.addSeries(series)
 
-        waightGraph!!.title = "Weight"
-        waightGraph!!.gridLabelRenderer.labelFormatter = object : DefaultLabelFormatter() {
-            override fun formatLabel(value: Double, isValueX: Boolean): String {
-                return if (isValueX) {
-                    // show normal x values
-                    simpleDateFormat.format(Date(value.toLong()))
-                } else {
-                    // show currency for y values
-                    DecimalFormat("#").format(value)
-                }
-            }
-        }
+         waightGraph!!.title = "Weight"
+         waightGraph!!.gridLabelRenderer.labelFormatter = object : DefaultLabelFormatter() {
+             override fun formatLabel(value: Double, isValueX: Boolean): String {
+                 return if (isValueX) {
+                     // show normal x values
+                     simpleDateFormat.format(Date(value.toLong()))
+                 } else {
+                     // show currency for y values
+                     DecimalFormat("#").format(value)
+                 }
+             }
+         }
+     }catch (E:Exception){
+         E.printStackTrace()
+     }
         tvHigest.text = ""+ waightDataPoint[getIndexOfLargest()]!!.y
         tvLightest.text=""+waightDataPoint[getIndexOfLowest()]!!.y
         tvCurrent.text=""+waightDataPoint[waightDataPoint.size-1]!!.y
@@ -169,64 +173,68 @@ class ReportsFragment : Fragment() {
 
 
     private fun updateCalGraph() {
-        val series = BarGraphSeries(dataPoints!!)
+       try {
+           val series = BarGraphSeries(dataPoints!!)
 
-        series.valueDependentColor = ValueDependentColor { data -> Color.rgb(data?.x?.toInt()!! * 255 / 4, Math.abs(data.y * 255 / 6).toInt(), 100) }
-        btEditBMI!!.setOnClickListener {
-            val editBMIDialogeFragment = EditBMIDialogeFragment()
-            editBMIDialogeFragment.setStyle(DialogFragment.STYLE_NORMAL, R.style.Dialog_MinWidth)
-            editBMIDialogeFragment.show(childFragmentManager, "editBMIDialogeFragment")
-        }
-        if (PersonAppearance.TYPE_CM_KG == person?.personAppearance?.SCALE_TYPE) {
-            currentBMI = Utils.calculateBMIinKg(person!!.personAppearance.mWaight, Utils.CMtoM(person!!.personAppearance.mHight))
+           series.valueDependentColor = ValueDependentColor { data -> Color.rgb(data?.x?.toInt()!! * 255 / 4, Math.abs(data.y * 255 / 6).toInt(), 100) }
+           btEditBMI!!.setOnClickListener {
+               val editBMIDialogeFragment = EditBMIDialogeFragment()
+               editBMIDialogeFragment.setStyle(DialogFragment.STYLE_NORMAL, R.style.Dialog_MinWidth)
+               editBMIDialogeFragment.show(childFragmentManager, "editBMIDialogeFragment")
+           }
+           if (PersonAppearance.TYPE_CM_KG == person?.personAppearance?.SCALE_TYPE) {
+               currentBMI = Utils.calculateBMIinKg(person!!.personAppearance.mWaight, Utils.CMtoM(person!!.personAppearance.mHight))
 
-        } else if(PersonAppearance.TYPE_IN_LBS == person?.personAppearance?.SCALE_TYPE) {
-            currentBMI = Utils.calcautleBMIinlbs(person!!.personAppearance.mWaight, Utils.FeetToInch(person!!.personAppearance.mHight))
-        }else{
-            Toast.makeText(activity,"Your weight and hight are not added please update it ",Toast.LENGTH_SHORT).show()
-        }
+           } else if(PersonAppearance.TYPE_IN_LBS == person?.personAppearance?.SCALE_TYPE) {
+               currentBMI = Utils.calcautleBMIinlbs(person!!.personAppearance.mWaight, Utils.FeetToInch(person!!.personAppearance.mHight))
+           }else{
+               Toast.makeText(activity,"Your weight and hight are not added please update it ",Toast.LENGTH_SHORT).show()
+           }
 
-        tvBmi!!.text = "BMI : " + String.format("%.1f", currentBMI)
-        Glide.with(this).load(Utils.getDrawbleAccodingToBMI(currentBMI)).into(bmiImageView!!)
-        series.isDrawValuesOnTop = true
-        series.valuesOnTopColor = Color.RED
-        series.spacing = 50
-
-
-        calGraph!!.gridLabelRenderer.labelFormatter = DateAsXAxisLabelFormatter(activity)
+           tvBmi!!.text = "BMI : " + String.format("%.1f", currentBMI)
+           Glide.with(this).load(Utils.getDrawbleAccodingToBMI(currentBMI)).into(bmiImageView!!)
+           series.isDrawValuesOnTop = true
+           series.valuesOnTopColor = Color.RED
+           series.spacing = 50
 
 
-        if (dataPoints!!.size < 8) {
-            calGraph!!.gridLabelRenderer.numHorizontalLabels = dataPoints!!.size // only 4 because of the space
-            calGraph!!.viewport.setMinX(dataPoints!![0]?.x!!)
-            calGraph!!.viewport.setMaxX(dataPoints!![dataPoints!!.size - 1]?.x!!)
-            calGraph!!.viewport.isXAxisBoundsManual = true
-            calGraph!!.viewport.isScrollable = true
-        } else {
-            calGraph!!.gridLabelRenderer.numHorizontalLabels = 7
-            calGraph!!.viewport.setMinX(dataPoints!![0]?.x!!)
-            calGraph!!.viewport.setMaxX(dataPoints!![7]?.x!!)
-            calGraph!!.viewport.isXAxisBoundsManual = true
-            calGraph!!.viewport.isScrollable = true
-        }
+           calGraph!!.gridLabelRenderer.labelFormatter = DateAsXAxisLabelFormatter(activity)
 
 
-        calGraph!!.gridLabelRenderer.setHumanRounding(false)
+           if (dataPoints!!.size < 8) {
+               calGraph!!.gridLabelRenderer.numHorizontalLabels = dataPoints!!.size // only 4 because of the space
+               calGraph!!.viewport.setMinX(dataPoints!![0]?.x!!)
+               calGraph!!.viewport.setMaxX(dataPoints!![dataPoints!!.size - 1]?.x!!)
+               calGraph!!.viewport.isXAxisBoundsManual = true
+               calGraph!!.viewport.isScrollable = true
+           } else {
+               calGraph!!.gridLabelRenderer.numHorizontalLabels = 7
+               calGraph!!.viewport.setMinX(dataPoints!![0]?.x!!)
+               calGraph!!.viewport.setMaxX(dataPoints!![7]?.x!!)
+               calGraph!!.viewport.isXAxisBoundsManual = true
+               calGraph!!.viewport.isScrollable = true
+           }
 
-        calGraph!!.addSeries(series)
+
+           calGraph!!.gridLabelRenderer.setHumanRounding(false)
+
+           calGraph!!.addSeries(series)
 
 
-        calGraph!!.gridLabelRenderer.labelFormatter = object : DefaultLabelFormatter() {
-            override fun formatLabel(value: Double, isValueX: Boolean): String {
-                return if (isValueX) {
-                    // show normal x values
-                    simpleDateFormat.format(Date(value.toLong()))
-                } else {
-                    // show currency for y values
-                    DecimalFormat("#").format(value)
-                }
-            }
-        }
+           calGraph!!.gridLabelRenderer.labelFormatter = object : DefaultLabelFormatter() {
+               override fun formatLabel(value: Double, isValueX: Boolean): String {
+                   return if (isValueX) {
+                       // show normal x values
+                       simpleDateFormat.format(Date(value.toLong()))
+                   } else {
+                       // show currency for y values
+                       DecimalFormat("#").format(value)
+                   }
+               }
+           }
+       }catch (E:Exception){
+
+       }
     }
 
     private fun setUpDefultValue(): Array<DataPoint?> {

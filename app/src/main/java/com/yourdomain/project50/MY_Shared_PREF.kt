@@ -209,7 +209,7 @@ class MY_Shared_PREF {
         }
 
 
-        fun saveCurrentDayandPlan(application: Application, currentDayAndPlan: CurrentDayandPlan) {
+        fun saveCurrentDayandPlan(application: Context, currentDayAndPlan: CurrentDayandPlan) {
             val shared_pref = application.getSharedPreferences(SHARE_PREF_CURRENT_DAY_FILE, 0)
             val editer = shared_pref.edit()
             editer.putString(currentDayAndPlan.plan + SHARED_PREF_CURRENT_DAY_KEY, gson.toJson(currentDayAndPlan))

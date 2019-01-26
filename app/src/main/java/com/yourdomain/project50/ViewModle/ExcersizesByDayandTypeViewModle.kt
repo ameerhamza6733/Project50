@@ -3,6 +3,7 @@ package com.yourdomain.project50.ViewModle
 import android.arch.lifecycle.LiveData
 import android.arch.lifecycle.MutableLiveData
 import android.arch.lifecycle.ViewModel
+import android.util.Log
 import com.yourdomain.project50.DataBaseConstants.*
 import com.yourdomain.project50.Model.ExcersizePlan
 import com.yourdomain.project50.Model.Excesizes
@@ -15,8 +16,10 @@ class ExcersizesByDayandTypeViewModle : ViewModel() {
 
 
     private var mutableLiveData: MutableLiveData<Excesizes>? = null
+    private val TAG="ExcersizesByDayand"
 
     fun getExcersizs(day: Int,plan :String): LiveData<Excesizes>? {
+        Log.d(TAG,"plan : "+plan+ " day "+day)
         if (mutableLiveData == null) {
             mutableLiveData = MutableLiveData()
             when (plan) {

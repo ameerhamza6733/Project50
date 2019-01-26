@@ -21,6 +21,7 @@ import com.yourdomain.project50.Activitys.OnSnoozeReciverActivity
 import com.yourdomain.project50.Activitys.SplashActivity
 import com.yourdomain.project50.MY_Shared_PREF
 import com.yourdomain.project50.Model.ComeBackLatter
+import com.yourdomain.project50.Model.CurrentDayandPlan
 import com.yourdomain.project50.R
 import java.util.*
 
@@ -70,9 +71,11 @@ open class ComeBackLatterWorkManger(context: Context, params: WorkerParameters) 
                 .setLargeIcon(BitmapFactory.decodeResource(applicationContext?.getResources(), R.mipmap.ic_launcher))
                 .setContentTitle(applicationContext.getString(R.string.app_name))
                 .setCustomBigContentView(contentView)
+
                 .setPriority(NotificationCompat.PRIORITY_MAX)
+
                 .setWhen(Calendar.getInstance().timeInMillis);
-        notification = mBuilder.build()
+        notification = mBuilder.setAutoCancel(true).build()
 
 
         mNotificationManager1.notify(ONGOING_NOTIFICATION_ID, notification)
@@ -97,7 +100,13 @@ open class ComeBackLatterWorkManger(context: Context, params: WorkerParameters) 
         val comeBackLatter =comeBackLatter()
         var resutmentButtonIntent = Intent(applicationContext, SplashActivity::class.java)
         if (comeBackLatter != null)
+        {
             resutmentButtonIntent = Intent(applicationContext, ExcersizeListActivity::class.java)
+            Log.d(TAG,"come back data : "+ comeBackLatter?.excersizePlan +"extra day: "+comeBackLatter?.excersizeDayKey)
+            MY_Shared_PREF.saveCurrentDayandPlan(applicationContext, CurrentDayandPlan(comeBackLatter?.excersizeDayKey,comeBackLatter?.excersizePlan!!))
+
+        }
+
         resutmentButtonIntent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_SINGLE_TOP
         resutmentButtonIntent.flags = Intent.FLAG_ACTIVITY_NEW_TASK
         resutmentButtonIntent.action = ExcersizeListActivity.ACTION_START_EXCERSIZE
@@ -106,7 +115,7 @@ open class ComeBackLatterWorkManger(context: Context, params: WorkerParameters) 
         resutmentButtonIntent.putExtra(ExcersizeListActivity.EXTRA_DAY, comeBackLatter?.excersizeDayKey)
         resutmentButtonIntent.putExtra(ExcersizeListActivity.EXTRA_PLAN, comeBackLatter?.excersizePlan)
 
-        val contentIntent = PendingIntent.getActivity(applicationContext, 0, resutmentButtonIntent, 0)
+        var contentIntent = PendingIntent.getActivity(applicationContext, 0, resutmentButtonIntent,  PendingIntent.FLAG_UPDATE_CURRENT)
         return contentIntent
 
     }

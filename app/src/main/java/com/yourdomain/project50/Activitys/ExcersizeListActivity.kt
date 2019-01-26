@@ -59,8 +59,9 @@ class ExcersizeListActivity : AppCompatActivity() {
         setContentView(R.layout.activity_excersize_list)
         currentDayKey = intent.getIntExtra(EXTRA_DAY, -2)
         excersizeDone = intent.getIntExtra(EXTRA_EXCERSIZES_DONE, -2)
-        Log.d(TAG, "excersize done: " + excersizeDone);
+
         currentExcesizesPlan = intent.getStringExtra(EXTRA_PLAN)
+        Log.d(TAG,"current  plan  :"+ currentExcesizesPlan)
         if (currentDayKey != -2) {
             currentDay = MY_Shared_PREF.getDayByKey(application, currentExcesizesPlan + currentDayKey.toString())
 

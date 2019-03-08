@@ -37,10 +37,10 @@ public class ExcersizesABSPlanConstants {
     };
 
     private static int[] getExcersize_day1_view_typet = {
-            Excesizes.VIEW_TYPE_LIMTED_EXCERSIZE,
-            Excesizes.VIEW_TYPE_LIMTED_EXCERSIZE,
             Excesizes.VIEW_TYPE_UN_LIMTED_EXCERSIZE,
-            Excesizes.VIEW_TYPE_LIMTED_EXCERSIZE
+            Excesizes.VIEW_TYPE_UN_LIMTED_EXCERSIZE,
+            Excesizes.VIEW_TYPE_UN_LIMTED_EXCERSIZE,
+            Excesizes.VIEW_TYPE_UN_LIMTED_EXCERSIZE
     };
     private static String[] excersizes_day1_detail = {
             "A jumping jack  or star jump also called side-straddle hop in the US military,",

@@ -332,10 +332,12 @@ class ExerciseActivity : AppCompatActivity(), WatingToStartExcersizeFragment.OnF
 
             if (counter + 1 < excesizes?.icons?.size!!) {
                 onNext(false);
-                updateExcersizeCountInSharePref()
+
             } else {
                 sayCongragulation()
             }
+            updateExcersizeCountInSharePref()
+
         }
         mbtBack.setOnClickListener { onBack() }
         mbtNext.setOnClickListener {
@@ -345,6 +347,7 @@ class ExerciseActivity : AppCompatActivity(), WatingToStartExcersizeFragment.OnF
             } else {
                 sayCongragulation()
             }
+
         }
         mbtStop.setOnClickListener {
             try {
